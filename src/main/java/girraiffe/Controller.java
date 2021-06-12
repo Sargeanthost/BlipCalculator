@@ -61,7 +61,13 @@ public class Controller {
 
     @FXML
     public void generateResults(ActionEvent e){
-        System.out.println("click");
+        try {
+            System.out.println(Double.valueOf(String.valueOf(startingYLevelInput.getText())));
+            System.out.println(Double.valueOf(String.valueOf(lowestBlipMediumYLevelInput.getText())));
+            System.out.println(Double.valueOf(String.valueOf(highestBlipMediumYLevelInput.getText())));
+        } catch (Exception ignore) {
+
+        }
     }
 
 
