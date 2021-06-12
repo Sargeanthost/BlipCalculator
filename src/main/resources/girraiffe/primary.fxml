@@ -12,8 +12,6 @@
           <Menu fx:id="menu" mnemonicParsing="false" text="File">
             <items>
                   <CheckMenuItem fx:id="alwaysOnTopCheckMenuItem" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="csvSaveLocationMenuItem" mnemonicParsing="false" onAction="#openCsvFileLocation" text="CSV Save Location" />
             </items>
           </Menu>
         </menus>

@@ -39,9 +39,17 @@ public class Controller {
     }
 
     //remake this so that when the generate button is clicked all the math and file choosing happens there.
+
     @FXML
-    private void openCsvFileLocation(ActionEvent e) {
+    private void generateResults(ActionEvent e) {
         //isn't persistent across builds as I expected, will make a stack exchange post later
+        try{
+        var ylevel = Double.valueOf(String.valueOf(startingYLevelInput.getText()));
+        var lowerBlipYLevel = Double.valueOf(String.valueOf(lowestBlipMediumYLevelInput.getText()));
+        var higherBlipYLevel = Double.valueOf(String.valueOf(highestBlipMediumYLevelInput.getText()));
+        } catch (Exception ignore){
+        }
+        //getting save dir
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(
                 new File(helper.PREFERENCES.get(helper.preferencesKeyArray[0], helper.DOCUMENTS_DIRECTORY)));
@@ -57,18 +65,11 @@ public class Controller {
         } catch (BackingStoreException backingStoreException) {
             backingStoreException.printStackTrace();
         }
+        //writing csv
+
     }
 
-    @FXML
-    public void generateResults(ActionEvent e){
-        try {
-            System.out.println(Double.valueOf(String.valueOf(startingYLevelInput.getText())));
-            System.out.println(Double.valueOf(String.valueOf(lowestBlipMediumYLevelInput.getText())));
-            System.out.println(Double.valueOf(String.valueOf(highestBlipMediumYLevelInput.getText())));
-        } catch (Exception ignore) {
 
-        }
-    }
 
 
 }
