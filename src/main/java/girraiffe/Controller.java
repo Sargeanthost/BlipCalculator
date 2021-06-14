@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 public class Controller {
     private Helper helper;
     private TierHelper tierHelper;
-    private double yDifference = 0;
+    private double heightDifference = 0;
 
     @FXML
     private CheckMenuItem alwaysOnTopCheckMenuItem;
@@ -17,14 +17,14 @@ public class Controller {
     private TextField startingYLevelInput;
 
     @FXML
-    private TextField highestBlipMediumYLevelInput;
+    private TextField blipHeightInput;
 
     @FXML
     private void initialize() {
         helper = new Helper();
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingYLevelInput);
-        helper.setNumericFormatter(highestBlipMediumYLevelInput);
+        helper.setNumericFormatter(blipHeightInput);
     }
 
     @FXML
@@ -37,11 +37,11 @@ public class Controller {
     @FXML
     private void generateResults(ActionEvent e) {
         //isn't persistent across builds as I expected, will make a stack exchange post later
-        var yLevel = 0.0;
-        var higherBlipYLevel = 0.0;
+        var startingHeight = 0.0;
+        var blipHeight = 0.0;
         try{
-        yLevel = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
-        higherBlipYLevel = Double.parseDouble(String.valueOf(highestBlipMediumYLevelInput.getText()));
+        startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
+        blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
         } catch (Exception ignore){
         }
 //        //getting save dir
@@ -61,10 +61,18 @@ public class Controller {
 //            backingStoreException.printStackTrace();
 //        }
         //writing csv
-        yDifference = yLevel - higherBlipYLevel;
-        System.out.println(yDifference);
-        System.out.println(tierHelper.getBlipTier(-yDifference));
-        System.out.println(tierHelper.getNewApex() + yDifference);
+
+        heightDifference = startingHeight - blipHeight;
+        System.out.println("\nHeight Difference: " + heightDifference);
+        System.out.println("Blip Tier Offset: " +tierHelper.getBlipTier(-heightDifference));
+        System.out.println("Blip Height: " + tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference));
+        System.out.println("Jump Apex: " + tierHelper.getNewApex(startingHeight));
+
+        //2nd blip apex is at 54.47297
+        //2nd blip is at 53.22378
+        //2nd blip is calculated at 53.2238
+        //2nd blip apex is calculated  at 54.4730
+
     }
 
 

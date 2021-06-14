@@ -14,6 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        //TODO add chain option so you dont have to plug in computed values
         App.stage = stage;
         Parent root = new FXMLLoader((App.class.getResource("primary.fxml"))).load();
         Scene scene = new Scene(root, 290, 165);

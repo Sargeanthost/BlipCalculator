@@ -11,11 +11,9 @@ public class TierHelper {
         private double tier = 0;
 
         public TierHelper(){
-
                 /** Tier, Height */
                 tierMap = new TreeMap<>();
 
-                //TODO switch these around
                 tierMap.put( -255.1895, -104);
                 tierMap.put( -251.7029, -103);
                 tierMap.put( -248.2252, -102);
@@ -130,15 +128,27 @@ public class TierHelper {
 
         /** Given the difference in height from the starting y and the top of the blip medium, this function will return
          * the tier the tick before landing
+         *
+         * @return returns the tier at witch the blip takes place
          */
-        public double getBlipTier(double yDifference){
-                tier = tierMap.ceilingKey(yDifference) == null ? 0 : tierMap.ceilingKey(yDifference);
+        public double getBlipTier(double heightDifference){
+                tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
                 return tier;
         }
 
-        public double getNewApex(){
-                //TODO add back lower blip label as we need to add that to this result
-                return tier + 1.2492;
+        public double getNewApex(double startingHeight){
+                return startingHeight + tier + 1.2492 ;
+        }
+
+
+        public int getTier(double tierOffset){
+                //fp stuff
+                return tierMap.get(tierOffset) == null ? 0 : tierMap.get(tierOffset);
+        }
+        //tier 1: blip at - starting should be .1041
+        public double getDifferenceFromTierAndStartHeight(double height, double heightDifference){
+                tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
+                return height + tier;
         }
 }
 
