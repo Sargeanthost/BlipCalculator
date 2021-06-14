@@ -1,14 +1,17 @@
 package girraiffe;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class Controller {
     private Helper helper;
     private TierHelper tierHelper;
-    private double heightDifference = 0;
 
     @FXML
     private CheckMenuItem alwaysOnTopCheckMenuItem;
@@ -20,11 +23,17 @@ public class Controller {
     private TextField blipHeightInput;
 
     @FXML
+    TextArea outputTextArea;
+
+    @FXML
     private void initialize() {
         helper = new Helper();
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingYLevelInput);
         helper.setNumericFormatter(blipHeightInput);
+        PrintStream printStream = new PrintStream(new Console(outputTextArea));
+        System.setErr(printStream);
+        System.setOut(printStream);
     }
 
     @FXML
@@ -62,7 +71,7 @@ public class Controller {
 //        }
         //writing csv
 
-        heightDifference = startingHeight - blipHeight;
+        double heightDifference = startingHeight - blipHeight;
         System.out.println("\nHeight Difference: " + heightDifference);
         System.out.println("Blip Tier Offset: " +tierHelper.getBlipTier(-heightDifference));
         System.out.println("Blip Height: " + tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference));
@@ -74,8 +83,21 @@ public class Controller {
         //2nd blip apex is calculated  at 54.4730
 
     }
+    public static class Console extends OutputStream {
+        private final TextArea console;
 
+        public Console(TextArea console) {
+            this.console = console;
+        }
 
+        public void appendText(String valueOf) {
+            Platform.runLater(() -> console.appendText(valueOf));
+        }
 
+        public void write(int b) throws IOException {
+            appendText(String.valueOf((char)b));
+        }
+    }
 
 }
+
