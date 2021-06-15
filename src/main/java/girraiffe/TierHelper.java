@@ -131,7 +131,7 @@ public class TierHelper {
          *
          * @return returns the tier at witch the blip takes place
          */
-        public double getBlipTier(double heightDifference){
+        public double getBlipTierOffset(double heightDifference){
                 tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
                 return tier;
         }
@@ -141,15 +141,15 @@ public class TierHelper {
         }
 
 
-        public int getTier(double tierOffset){
-                //fp stuff
+        public int getTier(double heightDifference){
+                tierOffset = getBlipTierOffset(heightDifference);
                 return tierMap.get(tierOffset) == null ? 0 : tierMap.get(tierOffset);
         }
+
         //tier 1: blip at - starting should be .1041
         public double getDifferenceFromTierAndStartHeight(double height, double heightDifference){
+//not sure the point of this. could get the absolute value of height-nearestTier
                 tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
-                //TODO DOESNT WORK WITH DOWNBLIPS FIX THIS ASAP
-                System.out.print(tier <= 0 ? "Blip Failed.\n\n" : "");
                 return height + tier;
         }
 }
