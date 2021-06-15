@@ -137,12 +137,13 @@ public class TierHelper {
         }
 
         public double getNewApex(double startingHeight){
+                //change to explicit?
                 return startingHeight + tier + 1.2492 ;
         }
 
 
         public int getTier(double heightDifference){
-                tierOffset = getBlipTierOffset(heightDifference);
+                double tierOffset = getBlipTierOffset(heightDifference);
                 return tierMap.get(tierOffset) == null ? 0 : tierMap.get(tierOffset);
         }
 

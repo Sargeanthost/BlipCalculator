@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +29,10 @@ public class Controller {
     private TextField jumpApexTextField;
 
     @FXML
-    private TextField nearstTierTextField;
+    private TextField nearestTierTextField;
+
+    @FXML
+    private Spinner<Integer> chainSpinner;
 
     @FXML
     private void initialize() {
@@ -56,6 +58,7 @@ public class Controller {
         //isn't persistent across builds as I expected, will make a stack exchange post later
         var startingHeight = 0.0;
         var blipHeight = 0.0;
+        int chain =chainSpinner.getValue();
         try{
         startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
         blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
@@ -79,12 +82,42 @@ public class Controller {
 //        }
         //writing csv
 
-        double heightDifference = startingHeight - blipHeight;
-        //TODO make some of this labels
-        System.out.println("\nHeight Difference: " + heightDifference);
-        nearstTierTextField.setText(String.valueOf(tierHelper.getBlipTierOffset(-heightDifference)));
-        System.out.println("Blip Height: " + tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference));
-        jumpApexTextField.setText(String.valueOf(tierHelper.getNewApex(startingHeight)));
+        calculateBlip(chain, startingHeight, blipHeight);
+//        double heightDifference = startingHeight - blipHeight;
+
+        //tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference)
+        //tierHelper.getNewApex(startingHeight)
+//        nearestTierTextField.setText(String.valueOf(tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference))); // starting height - tier offset
+//        jumpApexTextField.setText(String.valueOf(tierHelper.getNewApex(startingHeight)));
+    }
+
+    private void calculateBlip(int chain, double startingHeight, final double blipHeight) {
+        //blipHeight will be the y level of the blip -- constant
+        //blipOffset will be the startingHeight - tier offset of where you blip at -- recompute
+        //jump apex is the jump of where you blip at -- recompute
+        //starting height will be the blip tier offset -- recompute
+
+        //get rid of assignment to math here
+        double heightDifference = 0;
+        double jumpApex = 0;
+        double nearestTier = 0;
+
+    System.out.println(chain);
+        for(int i = 0; i < chain; i++){
+            //calculates .1041 too high somehow
+            heightDifference = startingHeight - blipHeight;
+            nearestTier = tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference);
+            jumpApex = tierHelper.getNewApex(startingHeight); // done
+            System.out.println(nearestTier); //106.26169999999999
+            System.out.println(jumpApex); // done  107.51089999999999
+
+            startingHeight = nearestTier;
+            System.out.println("I: " + i);
+        }
+        System.out.println("\n" + nearestTier);
+        System.out.println(jumpApex);
+        nearestTierTextField.setText(String.valueOf(nearestTier)); // starting height - tier offset
+        jumpApexTextField.setText(String.valueOf(jumpApex));
     }
 
     public static class Console extends OutputStream {

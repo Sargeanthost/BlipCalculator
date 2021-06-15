@@ -72,7 +72,7 @@
                   </Label>
                   <HBox layoutX="10.0" layoutY="105.0">
                      <children>
-                        <TextField fx:id="nearstTierTextField" editable="false" text="0" />
+                        <TextField fx:id="nearestTierTextField" editable="false" text="0" />
                      </children>
                      <padding>
                         <Insets left="10.0" />

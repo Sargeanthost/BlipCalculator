@@ -14,8 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        //TODO add chain option so you dont have to plug in computed values
-        //TODO add chain check mark and display last blip statistics - WORKING
+        //MAYBE convert to integer and then floating point? it would get rid of error but not sure if i want to change all the types
         App.stage = stage;
         Parent root = new FXMLLoader((App.class.getResource("primary.fxml"))).load();
         Scene scene = new Scene(root, 450, 345.0);
