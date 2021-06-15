@@ -15,6 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //MAYBE convert to integer and then floating point? it would get rid of error but not sure if i want to change all the types
+        //TODO fixe fp errors
         App.stage = stage;
         Parent root = new FXMLLoader((App.class.getResource("primary.fxml"))).load();
         Scene scene = new Scene(root, 450, 345.0);

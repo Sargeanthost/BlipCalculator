@@ -8,6 +8,9 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 public class Controller {
     private Helper helper;
@@ -54,17 +57,26 @@ public class Controller {
     //remake this so that when the generate button is clicked all the math happens and have another button to save those offsets.
 
     @FXML
-    private void generateResults(ActionEvent e) {
+    private void generateBlipStatistics(ActionEvent e) {
         //isn't persistent across builds as I expected, will make a stack exchange post later
         var startingHeight = 0.0;
         var blipHeight = 0.0;
-        int chain =chainSpinner.getValue();
+        int chain = chainSpinner.getValue();
         try{
         startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
         blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
         } catch (Exception ignore){
         }
-//        //getting save dir
+
+        //do we have to return something for OCSV to catch?
+        calculateBlip(chain, startingHeight, blipHeight);
+
+    }
+
+    @FXML
+    private void saveCSV(){
+    System.out.println("Save csv");
+        //        //getting save dir
 //        DirectoryChooser directoryChooser = new DirectoryChooser();
 //        directoryChooser.setInitialDirectory(
 //                new File(helper.PREFERENCES.get(helper.preferencesKeyArray[0], helper.DOCUMENTS_DIRECTORY)));
@@ -80,43 +92,23 @@ public class Controller {
 //        } catch (BackingStoreException backingStoreException) {
 //            backingStoreException.printStackTrace();
 //        }
-        //writing csv
-
-        calculateBlip(chain, startingHeight, blipHeight);
-//        double heightDifference = startingHeight - blipHeight;
-
-        //tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference)
-        //tierHelper.getNewApex(startingHeight)
-//        nearestTierTextField.setText(String.valueOf(tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference))); // starting height - tier offset
-//        jumpApexTextField.setText(String.valueOf(tierHelper.getNewApex(startingHeight)));
     }
 
     private void calculateBlip(int chain, double startingHeight, final double blipHeight) {
-        //blipHeight will be the y level of the blip -- constant
-        //blipOffset will be the startingHeight - tier offset of where you blip at -- recompute
-        //jump apex is the jump of where you blip at -- recompute
-        //starting height will be the blip tier offset -- recompute
 
-        //get rid of assignment to math here
         double heightDifference = 0;
         double jumpApex = 0;
         double nearestTier = 0;
 
-    System.out.println(chain);
         for(int i = 0; i < chain; i++){
-            //calculates .1041 too high somehow
             heightDifference = startingHeight - blipHeight;
-            nearestTier = tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference);
-            jumpApex = tierHelper.getNewApex(startingHeight); // done
-            System.out.println(nearestTier); //106.26169999999999
-            System.out.println(jumpApex); // done  107.51089999999999
+            nearestTier = new BigDecimal(String.valueOf(tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference)), new MathContext(7, RoundingMode.FLOOR)).doubleValue();
+            jumpApex = new BigDecimal(String.valueOf(tierHelper.getNewApex(startingHeight)), new MathContext(7, RoundingMode.FLOOR)).doubleValue();
 
             startingHeight = nearestTier;
-            System.out.println("I: " + i);
         }
-        System.out.println("\n" + nearestTier);
-        System.out.println(jumpApex);
-        nearestTierTextField.setText(String.valueOf(nearestTier)); // starting height - tier offset
+
+        nearestTierTextField.setText(String.valueOf(nearestTier));
         jumpApexTextField.setText(String.valueOf(jumpApex));
     }
 
