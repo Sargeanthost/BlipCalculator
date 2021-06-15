@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,10 +24,17 @@ public class Controller {
     private TextField blipHeightInput;
 
     @FXML
-    TextArea outputTextArea;
+    private TextArea outputTextArea;
+
+    @FXML
+    private TextField jumpApexTextField;
+
+    @FXML
+    private TextField nearstTierTextField;
 
     @FXML
     private void initialize() {
+        //TODO update tier values to labels instead of console and get rid (?) of console.
         helper = new Helper();
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingYLevelInput);
@@ -72,10 +80,11 @@ public class Controller {
         //writing csv
 
         double heightDifference = startingHeight - blipHeight;
+        //TODO make some of this labels
         System.out.println("\nHeight Difference: " + heightDifference);
-        System.out.println("Blip Tier Offset: " +tierHelper.getBlipTier(-heightDifference));
+        nearstTierTextField.setText(String.valueOf(tierHelper.getBlipTier(-heightDifference)));
         System.out.println("Blip Height: " + tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference));
-        System.out.println("Jump Apex: " + tierHelper.getNewApex(startingHeight));
+        jumpApexTextField.setText(String.valueOf(tierHelper.getNewApex(startingHeight)));
 
         //2nd blip apex is at 54.47297
         //2nd blip is at 53.22378
@@ -98,6 +107,5 @@ public class Controller {
             appendText(String.valueOf((char)b));
         }
     }
-
 }
 

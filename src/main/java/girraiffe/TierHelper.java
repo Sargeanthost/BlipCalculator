@@ -148,6 +148,7 @@ public class TierHelper {
         //tier 1: blip at - starting should be .1041
         public double getDifferenceFromTierAndStartHeight(double height, double heightDifference){
                 tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
+                //TODO DOESNT WORK WITH DOWNBLIPS FIX THIS ASAP
                 System.out.print(tier <= 0 ? "Blip Failed.\n\n" : "");
                 return height + tier;
         }
