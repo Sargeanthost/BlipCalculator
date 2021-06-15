@@ -49,7 +49,7 @@ public class Controller {
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
-    //remake this so that when the generate button is clicked all the math and file choosing happens there.
+    //remake this so that when the generate button is clicked all the math happens and have another button to save those offsets.
 
     @FXML
     private void generateResults(ActionEvent e) {
@@ -82,16 +82,11 @@ public class Controller {
         double heightDifference = startingHeight - blipHeight;
         //TODO make some of this labels
         System.out.println("\nHeight Difference: " + heightDifference);
-        nearstTierTextField.setText(String.valueOf(tierHelper.getBlipTier(-heightDifference)));
+        nearstTierTextField.setText(String.valueOf(tierHelper.getBlipTierOffset(-heightDifference)));
         System.out.println("Blip Height: " + tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference));
         jumpApexTextField.setText(String.valueOf(tierHelper.getNewApex(startingHeight)));
-
-        //2nd blip apex is at 54.47297
-        //2nd blip is at 53.22378
-        //2nd blip is calculated at 53.2238
-        //2nd blip apex is calculated  at 54.4730
-
     }
+
     public static class Console extends OutputStream {
         private final TextArea console;
 
