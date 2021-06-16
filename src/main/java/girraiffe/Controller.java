@@ -16,6 +16,10 @@ public class Controller {
     private Helper helper;
     private TierHelper tierHelper;
 
+    private double blipHeight = 0;
+    private double startingHeight = 0;
+    private  double blipBottomYLevel = 0;
+
     @FXML
     private CheckMenuItem alwaysOnTopCheckMenuItem;
 
@@ -24,6 +28,9 @@ public class Controller {
 
     @FXML
     private TextField blipHeightInput;
+
+    @FXML
+    private TextField blipBottomYLevelTextField;
 
     @FXML
     private TextArea outputTextArea;
@@ -43,9 +50,11 @@ public class Controller {
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingYLevelInput);
         helper.setNumericFormatter(blipHeightInput);
+
         PrintStream printStream = new PrintStream(new Console(outputTextArea));
         System.setErr(printStream);
         System.setOut(printStream);
+
     }
 
     @FXML
@@ -56,16 +65,15 @@ public class Controller {
     @FXML
     private void generateBlipStatistics(ActionEvent e) {
         //isn't persistent across builds as I expected, will make a stack exchange post later
-        var startingHeight = 0.0;
-        var blipHeight = 0.0;
+
         int chain = chainSpinner.getValue();
-
         try{
-        startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
-        blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
+            startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
+            blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
+            blipBottomYLevel = Double.parseDouble(String.valueOf(blipBottomYLevelTextField.getText()));
         } catch (Exception ignore){
+            System.out.println("Blip height and starting height not assigned");
         }
-
         //do we have to return something for OCSV to catch?
         calculateBlip(chain, startingHeight, blipHeight);
     }
@@ -93,7 +101,7 @@ public class Controller {
 
     private void calculateBlip(int chain, double startingHeight, final double blipHeight) {
 
-        double heightDifference = 0;
+        double heightDifference;
         double jumpApex = 0;
         double nearestTierHeightOffset = 0;
         double nextTierOffset = 0;
@@ -103,24 +111,14 @@ public class Controller {
             heightDifference = startingHeight - blipHeight;
             nearestTierHeightOffset = new BigDecimal(String.valueOf(tierHelper.getNearestTier(startingHeight, -heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
             jumpApex = new BigDecimal(String.valueOf(tierHelper.getNewApex(startingHeight)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
-            //pos checking
+            //poss checking
             nearestTierOffset = new BigDecimal(String.valueOf(tierHelper.getTierOffset(-heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue(); //key from map
             nextTierOffset = tierHelper.getPreviousTierOffset(nearestTierOffset);
 
-
-
-//            tierHelper.isBlipPossible(nearestTierHeightOffset, );
             startingHeight = nearestTierHeightOffset;
         }
 
-    // startingHeight - next tier?
-    //        System.out.println(blipHeight + tierHelper.getNextTierOffset(nearestTier));
-    //        System.out.println(blipHeight + tierHelper.getPreviousTierOffset(nearestTier));
-    //        System.out.println(blipHeight + tierHelper.getTierOffsetFloored(startingHeight -
-    // nearestTierHeightOffset = new
-    // BigDecimal(String.valueOf(tierHelper.getNearestTier(startingHeight, -heightDifference)), new
-    // MathContext(9, RoundingMode.FLOOR)).doubleValue()));
-        System.out.println(tierHelper.isBlipPossible(nearestTierOffset, nextTierOffset, nearestTierHeightOffset) ? "Blip is possible." : "Blip is not possible.");
+        System.out.println(tierHelper.isBlipPossible(nearestTierOffset, nextTierOffset, nearestTierHeightOffset, blipHeight, blipBottomYLevel) ? "Blip is possible." : "Blip is not possible.");
         nearestTierTextField.setText(String.valueOf(nearestTierHeightOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
     }
@@ -136,7 +134,7 @@ public class Controller {
             Platform.runLater(() -> console.appendText(valueOf));
         }
 
-        public void write(int b) throws IOException {
+        public void write(int b) {
             appendText(String.valueOf((char)b));
         }
     }

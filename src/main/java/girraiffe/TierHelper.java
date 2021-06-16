@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.*;
-//import java.util.Map;
+
 
 
 //import static java.util.Map.entry;
@@ -176,15 +176,10 @@ public class TierHelper {
                 return height + tierOffset;
         }
 
-        public boolean isBlipPossible(double predictedTierOffset, double nextTierOffset, double blipHeight){
-
+        public boolean isBlipPossible(double predictedTierOffset, double nextTierOffset, double blipHeight, double blipYLevel, double blipBottomYLevel){
                 double tierDifference = Math.abs((new BigDecimal(String.valueOf(nextTierOffset)).subtract(new BigDecimal(String.valueOf(predictedTierOffset))).doubleValue()));
-//                System.out.println(blipHeight - tierDifference);
-
-                if((blipHeight - tierDifference) <= 0){
-                        return true;
-                }
-                return false;
+                System.out.println("\nMaximum Blip Y Height" + (blipHeight - tierDifference));
+                return (blipHeight - tierDifference) <= blipBottomYLevel;
         }
 
         public double getNextTierOffset(double key){
@@ -195,11 +190,6 @@ public class TierHelper {
         public double getPreviousTierOffset(double key){
                 //goes up on the map
                 return tierMap.lowerKey(key);
-        }
-
-        public double getTierOffsetFloored(double heightDifference){
-                tierOffset = tierMap.floorKey(heightDifference) == null ? 0 : tierMap.floorKey(heightDifference);
-                return tierOffset;
         }
 }
 
