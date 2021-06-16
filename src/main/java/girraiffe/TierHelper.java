@@ -1,5 +1,8 @@
 package girraiffe;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 //import java.util.Map;
 
@@ -7,11 +10,11 @@ import java.util.*;
 //import static java.util.Map.entry;
 
 public class TierHelper {
-        public final NavigableMap<Double, Integer> tierMap;
-        private double tier = 0;
+        private final NavigableMap<Double, Integer> tierMap;
+        private double tierOffset = 0;
 
         public TierHelper(){
-                /** Tier, Height */
+                /* TierOffset, Tier */
                 tierMap = new TreeMap<>();
 
                 tierMap.put( -255.1895, -104);
@@ -124,34 +127,79 @@ public class TierHelper {
                 tierMap.put(1.0156,	3);
                 tierMap.put(1.1708,	4);
                 tierMap.put(1.2492,	5);
+                //higher v
+                //lower ^
+                //ture if it preserves stack order
         }
 
-        /** Given the difference in height from the starting y and the top of the blip medium, this function will return
-         * the tier the tick before landing
+        /**
+         * Gets the tier offset from the {@link #tierMap} table
          *
-         * @return returns the tier at witch the blip takes place
+         * @param heightDifference the height difference for which to perform a tier lookup on
+         * @return returns the offset from the table
          */
-        public double getBlipTierOffset(double heightDifference){
-                tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
-                return tier;
+        public double getTierOffset(double heightDifference){
+                tierOffset = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
+                return tierOffset;
         }
 
+        /**
+         * Implicitly calculates the new jump apex based off of the last blip calculation.
+         *
+         * @param startingHeight the height from which to preform the jump calculation
+         * @return returns the new jump apex
+         */
         public double getNewApex(double startingHeight){
-                //change to explicit?
-                return startingHeight + tier + 1.2492 ;
+                return startingHeight + tierOffset + 1.2492 ;
         }
 
-
+        /**
+         * Gets the tier based of of the delta in height.
+         *
+         * @param heightDifference the height distance to compute the tier. Make sure this has the correct sign
+         * @return the tier. Note: will most likely be negative
+         */
         public int getTier(double heightDifference){
-                double tierOffset = getBlipTierOffset(heightDifference);
+                double tierOffset = getTierOffset(heightDifference);
                 return tierMap.get(tierOffset) == null ? 0 : tierMap.get(tierOffset);
         }
 
-        //tier 1: blip at - starting should be .1041
-        public double getDifferenceFromTierAndStartHeight(double height, double heightDifference){
-//not sure the point of this. could get the absolute value of height-nearestTier
-                tier = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
-                return height + tier;
+        /**
+         * Gets the nearest to the blip height
+         *
+         * @param height the height at which you start the jump to begin the blip
+         * @param heightDifference the delta between the starting height and the blip height
+         * @return returns the offset from the {@link #tierMap} table added to the blip height inputted into the gui
+         */
+        public double getNearestTier(double height, double heightDifference){
+                tierOffset = tierMap.ceilingKey(heightDifference) == null ? 0 : tierMap.ceilingKey(heightDifference);
+                return height + tierOffset;
+        }
+
+        public boolean isBlipPossible(double predictedTierOffset, double nextTierOffset, double blipHeight){
+
+                double tierDifference = Math.abs((new BigDecimal(String.valueOf(nextTierOffset)).subtract(new BigDecimal(String.valueOf(predictedTierOffset))).doubleValue()));
+//                System.out.println(blipHeight - tierDifference);
+
+                if((blipHeight - tierDifference) <= 0){
+                        return true;
+                }
+                return false;
+        }
+
+        public double getNextTierOffset(double key){
+                //goes down on the map
+                return tierMap.higherKey(key);
+        }
+
+        public double getPreviousTierOffset(double key){
+                //goes up on the map
+                return tierMap.lowerKey(key);
+        }
+
+        public double getTierOffsetFloored(double heightDifference){
+                tierOffset = tierMap.floorKey(heightDifference) == null ? 0 : tierMap.floorKey(heightDifference);
+                return tierOffset;
         }
 }
 

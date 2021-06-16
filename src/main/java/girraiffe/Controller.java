@@ -39,7 +39,6 @@ public class Controller {
 
     @FXML
     private void initialize() {
-        //TODO update tier values to labels instead of console and get rid (?) of console.
         helper = new Helper();
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingYLevelInput);
@@ -54,14 +53,13 @@ public class Controller {
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
-    //remake this so that when the generate button is clicked all the math happens and have another button to save those offsets.
-
     @FXML
     private void generateBlipStatistics(ActionEvent e) {
         //isn't persistent across builds as I expected, will make a stack exchange post later
         var startingHeight = 0.0;
         var blipHeight = 0.0;
         int chain = chainSpinner.getValue();
+
         try{
         startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
         blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
@@ -70,13 +68,12 @@ public class Controller {
 
         //do we have to return something for OCSV to catch?
         calculateBlip(chain, startingHeight, blipHeight);
-
     }
 
     @FXML
     private void saveCSV(){
     System.out.println("Save csv");
-        //        //getting save dir
+               //getting save dir
 //        DirectoryChooser directoryChooser = new DirectoryChooser();
 //        directoryChooser.setInitialDirectory(
 //                new File(helper.PREFERENCES.get(helper.preferencesKeyArray[0], helper.DOCUMENTS_DIRECTORY)));
@@ -98,17 +95,33 @@ public class Controller {
 
         double heightDifference = 0;
         double jumpApex = 0;
-        double nearestTier = 0;
+        double nearestTierHeightOffset = 0;
+        double nextTierOffset = 0;
+        double nearestTierOffset = 0;
 
         for(int i = 0; i < chain; i++){
             heightDifference = startingHeight - blipHeight;
-            nearestTier = new BigDecimal(String.valueOf(tierHelper.getDifferenceFromTierAndStartHeight(startingHeight, -heightDifference)), new MathContext(7, RoundingMode.FLOOR)).doubleValue();
-            jumpApex = new BigDecimal(String.valueOf(tierHelper.getNewApex(startingHeight)), new MathContext(7, RoundingMode.FLOOR)).doubleValue();
+            nearestTierHeightOffset = new BigDecimal(String.valueOf(tierHelper.getNearestTier(startingHeight, -heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
+            jumpApex = new BigDecimal(String.valueOf(tierHelper.getNewApex(startingHeight)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
+            //pos checking
+            nearestTierOffset = new BigDecimal(String.valueOf(tierHelper.getTierOffset(-heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue(); //key from map
+            nextTierOffset = tierHelper.getPreviousTierOffset(nearestTierOffset);
 
-            startingHeight = nearestTier;
+
+
+//            tierHelper.isBlipPossible(nearestTierHeightOffset, );
+            startingHeight = nearestTierHeightOffset;
         }
 
-        nearestTierTextField.setText(String.valueOf(nearestTier));
+    // startingHeight - next tier?
+    //        System.out.println(blipHeight + tierHelper.getNextTierOffset(nearestTier));
+    //        System.out.println(blipHeight + tierHelper.getPreviousTierOffset(nearestTier));
+    //        System.out.println(blipHeight + tierHelper.getTierOffsetFloored(startingHeight -
+    // nearestTierHeightOffset = new
+    // BigDecimal(String.valueOf(tierHelper.getNearestTier(startingHeight, -heightDifference)), new
+    // MathContext(9, RoundingMode.FLOOR)).doubleValue()));
+        System.out.println(tierHelper.isBlipPossible(nearestTierOffset, nextTierOffset, nearestTierHeightOffset) ? "Blip is possible." : "Blip is not possible.");
+        nearestTierTextField.setText(String.valueOf(nearestTierHeightOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
     }
 
