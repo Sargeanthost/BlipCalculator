@@ -10,6 +10,8 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class Controller {
     private TierHelper tierHelper;
@@ -73,12 +75,17 @@ public class Controller {
     }
 
     @FXML
-    private void printOffsets() {
-        //        double offset = 0;
-        //        while(offset >= 0 ){
-        //            offset = tierHelper.getNextOffset(blipHeight);
-        //            System.out.println(blipTopHeight + offset);
-        //        }
+    private void printOffsets(ActionEvent e) {
+        e.consume();
+        System.out.println("\nOffsets: ");
+        //        .0 to .0125: td ceiling
+        //        .1875 to .2: td floor
+        //        .5 to .5125: bean + cake
+        //        .5625 to .575: bed + piston
+
+        //        String[] entranceArray = {"Trapdoor ceiling", "Trapdoor Floor", "Cocoa bean and
+        // cake", "Bed and piston head"};
+        tierHelper.getOffsetArrayStream().forEach(c -> System.out.println(lastBlipHeight + c));
     }
 
     private void calculateBlip(int chain, double startingHeight, final double blipTopHeight) {

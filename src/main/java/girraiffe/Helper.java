@@ -15,6 +15,7 @@ public class Helper {
     public final Preferences PREFERENCES = Preferences.userNodeForPackage(App.class);
     public final String[] preferencesKeyArray = {"CSV_DIRECTORY"};
 
+    //TODO prevent negatives
     private final DecimalFormat format = new DecimalFormat("#.0");
 
     public Helper() {
