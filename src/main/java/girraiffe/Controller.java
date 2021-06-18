@@ -10,8 +10,14 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+
+import static java.util.stream.Collectors.*;
 
 public class Controller {
     private TierHelper tierHelper;
@@ -85,7 +91,19 @@ public class Controller {
 
         //        String[] entranceArray = {"Trapdoor ceiling", "Trapdoor Floor", "Cocoa bean and
         // cake", "Bed and piston head"};
-        tierHelper.getOffsetArrayStream().forEach(c -> System.out.println(lastBlipHeight + c));
+        //        tierHelper.getOffsetArrayStream()
+        //                .forEach(d -> System.out.println(lastBlipHeight + d));
+        System.out.println("lbh: " + lastBlipHeight);
+
+        var eater = tierHelper.getOffsetArrayStream()
+                .filter(d -> lastBlipHeight + d > 0 &&
+                        (((lastBlipHeight + d) % 1 >=-.0001 && (lastBlipHeight + d) % 1<= .0126) ||
+                        ((lastBlipHeight + d) % 1 >=.1874 && (lastBlipHeight + d) % 1<= .2001) ||
+                        ((lastBlipHeight + d) % 1 >=.4999 && (lastBlipHeight + d) % 1<= .5126) ||
+                        ((lastBlipHeight + d) % 1 >=.5624 && (lastBlipHeight + d) % 1<= .5761)))
+                //will look at the case where lastBlipHeight + d is true, but then not append the lastBlipHeight along with d to the array, so a map is needed to do this for us, duh
+                .flatMap(d -> DoubleStream.of(lastBlipHeight + d));
+        eater.forEach(System.out::println);
     }
 
     private void calculateBlip(int chain, double startingHeight, final double blipTopHeight) {
@@ -132,6 +150,7 @@ public class Controller {
         jumpApexTextField.setText(String.valueOf(jumpApex));
 
         lastBlipHeight = nearestCombinedOffset;
+        System.out.println(lastBlipHeight);
     }
 
     public static class Console extends OutputStream {
