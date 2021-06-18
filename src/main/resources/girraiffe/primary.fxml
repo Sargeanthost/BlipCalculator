@@ -5,156 +5,130 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
-   <children>
-      <MenuBar fx:id="menuBar" layoutY="2.0" maxHeight="25.0" minHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu fx:id="menu" mnemonicParsing="false" text="File">
-            <items>
-                  <CheckMenuItem fx:id="alwaysOnTopCheckMenuItem" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <HBox layoutY="26.0" prefHeight="405.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-         <children>
-            <VBox prefHeight="375.0" prefWidth="333.0">
-               <children>
-                  <Label text="Starting Y Coord">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <font>
-                        <Font name="Tahoma" size="12.0" />
-                     </font>
-                  </Label>
-                  <HBox>
-                     <children>
-                        <TextField fx:id="startingYLevelInput" text="0" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <Label layoutX="10.0" layoutY="53.0" text="Blip Top Y Coord">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <font>
-                        <Font name="Tahoma" size="12.0" />
-                     </font>
-                  </Label>
-                  <HBox>
-                     <children>
-                        <TextField fx:id="blipHeightInput" text="0" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <Label layoutX="10.0" layoutY="70.0" text="Blip Bottom Y Coord">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <font>
-                        <Font name="Tahoma" size="12.0" />
-                     </font>
-                  </Label>
-                  <HBox layoutX="10.0" layoutY="105.0">
-                     <children>
-                        <TextField fx:id="blipBottomYLevelTextField" text="0" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <Label layoutX="10.0" layoutY="72.0" text="Chain">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </Label>
-                  <HBox layoutX="10.0" layoutY="109.0">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                     <children>
-                        <Spinner fx:id="chainSpinner" initialValue="1" max="31" min="1" />
-                     </children>
-                  </HBox>
-                  <Label text="Nearst Tier">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </Label>
-                  <HBox layoutX="10.0" layoutY="105.0">
-                     <children>
-                        <TextField fx:id="nearestTierTextField" editable="false" text="0" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <Label layoutX="10.0" layoutY="212.0" text="Jump Apex">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </Label>
-                  <HBox layoutX="10.0" layoutY="239.0">
-                     <children>
-                        <TextField fx:id="jumpApexTextField" editable="false" text="0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="278.0" prefWidth="436.0">
-               <children>
-                  <TextArea fx:id="outputTextArea" editable="false" focusTraversable="false" prefHeight="162.0" prefWidth="277.0" wrapText="true">
-                     <font>
-                        <Font name="Tahoma" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                  </TextArea>
-                  <VBox alignment="CENTER">
-                     <children>
-                        <Label alignment="CENTER" text="Calculate Blip">
-                           <font>
-                              <Font name="Tahoma" size="12.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <Button fx:id="calculateBlipButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#generateBlipStatistics" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Generate" textAlignment="CENTER">
-                           <font>
-                              <Font name="Tahoma" size="12.0" />
-                           </font>
-                        </Button>
-                        <Label alignment="CENTER" layoutX="113.0" layoutY="10.0" text="Save Calculated Offsets">
-                           <font>
-                              <Font name="Tahoma" size="12.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" top="25.0" />
-                           </padding>
-                        </Label>
-                        <Button fx:id="saveCSVButton" alignment="TOP_CENTER" layoutX="116.0" layoutY="45.0" mnemonicParsing="false" onAction="#saveCSV" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Save" textAlignment="CENTER">
-                           <font>
-                              <Font name="Tahoma" size="12.0" />
-                           </font>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
+   <MenuBar layoutY="2.0" maxHeight="25.0" minHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Menu mnemonicParsing="false" text="File">
+         <CheckMenuItem fx:id="alwaysOnTopCheckMenuItem" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top" />
+      </Menu>
+   </MenuBar>
+   <HBox layoutY="26.0" prefHeight="405.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <VBox prefHeight="381.0" prefWidth="580.0">
+         <Label text="Starting Height">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <font>
+               <Font name="Tahoma" size="12.0" />
+            </font>
+         </Label>
+         <HBox>
+            <padding>
+               <Insets left="10.0" />
+            </padding>
+            <TextField fx:id="startingHeightInput" text="0" />
+         </HBox>
+         <Label layoutX="10.0" layoutY="53.0" text="Blip Top Height">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <font>
+               <Font name="Tahoma" size="12.0" />
+            </font>
+         </Label>
+         <HBox>
+            <padding>
+               <Insets left="10.0" />
+            </padding>
+            <TextField fx:id="blipTopHeightInput" text="0" />
+         </HBox>
+         <Label layoutX="10.0" layoutY="70.0" text="Blip Bottom Height">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <font>
+               <Font name="Tahoma" size="12.0" />
+            </font>
+         </Label>
+         <HBox layoutX="10.0" layoutY="105.0">
+            <padding>
+               <Insets left="10.0" />
+            </padding>
+            <TextField fx:id="blipBottomHeightTextField" text="0" />
+         </HBox>
+         <Label layoutX="10.0" layoutY="72.0" text="Chain">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+         </Label>
+         <HBox layoutX="10.0" layoutY="109.0">
+            <padding>
+               <Insets left="10.0" />
+            </padding>
+            <Spinner fx:id="chainSpinner" initialValue="1" max="31" min="1" />
+         </HBox>
+         <Label text="Nearest Combined Offset">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+         </Label>
+         <HBox layoutX="10.0" layoutY="105.0">
+            <padding>
+               <Insets left="10.0" />
+            </padding>
+            <TextField fx:id="nearestCombinedOffsetTextField" editable="false" text="0" />
+         </HBox>
+         <Label layoutX="10.0" layoutY="212.0" text="Jump Apex">
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+         </Label>
+         <HBox layoutX="10.0" layoutY="239.0">
+            <padding>
+               <Insets bottom="10.0" left="10.0" />
+            </padding>
+            <TextField fx:id="jumpApexTextField" editable="false" text="0" />
+         </HBox>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="278.0" prefWidth="436.0">
+         <TextArea fx:id="outputTextArea" editable="false" focusTraversable="false" prefHeight="162.0" prefWidth="277.0" wrapText="true">
+            <font>
+               <Font name="Tahoma" size="12.0" />
+            </font>
+            <padding>
+               <Insets right="10.0" />
+            </padding>
+         </TextArea>
+         <VBox alignment="CENTER">
+            <padding>
+               <Insets top="10.0" />
+            </padding>
+            <Label alignment="CENTER" text="Calculate Blip">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#generateBlipStatistics" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Generate" textAlignment="CENTER">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER" layoutX="113.0" layoutY="10.0" text="Print Calculated Offsets">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" top="25.0" />
+               </padding>
+            </Label>
+            <Button alignment="TOP_CENTER" layoutX="116.0" layoutY="45.0" mnemonicParsing="false" onAction="#printOffsets" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Print" textAlignment="CENTER">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Button>
+         </VBox>
+      </VBox>
+   </HBox>
 </AnchorPane>

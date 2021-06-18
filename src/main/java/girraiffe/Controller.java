@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
@@ -13,114 +12,119 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Controller {
-    private Helper helper;
     private TierHelper tierHelper;
 
-    private double blipHeight = 0;
+    private double blipTopHeight = 0;
     private double startingHeight = 0;
-    private  double blipBottomYLevel = 0;
+    private double blipBottomHeight = 0;
 
-    @FXML
-    private CheckMenuItem alwaysOnTopCheckMenuItem;
+    private double lastBlipHeight = 0;
 
-    @FXML
-    private TextField startingYLevelInput;
+    @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
 
-    @FXML
-    private TextField blipHeightInput;
+    @FXML private TextField startingHeightInput;
 
-    @FXML
-    private TextField blipBottomYLevelTextField;
+    @FXML private TextField blipTopHeightInput;
 
-    @FXML
-    private TextArea outputTextArea;
+    @FXML private TextField blipBottomHeightTextField;
 
-    @FXML
-    private TextField jumpApexTextField;
+    @FXML private TextArea outputTextArea;
 
-    @FXML
-    private TextField nearestTierTextField;
+    @FXML private TextField jumpApexTextField;
 
-    @FXML
-    private Spinner<Integer> chainSpinner;
+    @FXML private TextField nearestCombinedOffsetTextField;
+
+    @FXML private Spinner<Integer> chainSpinner;
 
     @FXML
     private void initialize() {
-        helper = new Helper();
+        var helper = new Helper();
         tierHelper = new TierHelper();
-        helper.setNumericFormatter(startingYLevelInput);
-        helper.setNumericFormatter(blipHeightInput);
+        helper.setNumericFormatter(startingHeightInput);
+        helper.setNumericFormatter(blipTopHeightInput);
 
         PrintStream printStream = new PrintStream(new Console(outputTextArea));
         System.setErr(printStream);
         System.setOut(printStream);
-
     }
 
     @FXML
     private void isStageAlwaysOnTop(ActionEvent e) {
+        e.consume();
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
     @FXML
     private void generateBlipStatistics(ActionEvent e) {
-        //isn't persistent across builds as I expected, will make a stack exchange post later
+        e.consume();
+        // isn't persistent across builds as I expected, will make a stack exchange post later
 
         int chain = chainSpinner.getValue();
-        try{
-            startingHeight = Double.parseDouble(String.valueOf(startingYLevelInput.getText()));
-            blipHeight = Double.parseDouble(String.valueOf(blipHeightInput.getText()));
-            blipBottomYLevel = Double.parseDouble(String.valueOf(blipBottomYLevelTextField.getText()));
-        } catch (Exception ignore){
+        try {
+            startingHeight = Double.parseDouble(String.valueOf(startingHeightInput.getText()));
+            blipTopHeight = Double.parseDouble(String.valueOf(blipTopHeightInput.getText()));
+            blipBottomHeight =
+                    Double.parseDouble(String.valueOf(blipBottomHeightTextField.getText()));
+        } catch (Exception ignore) {
             System.out.println("Blip height and starting height not assigned");
         }
-        //do we have to return something for OCSV to catch?
-        calculateBlip(chain, startingHeight, blipHeight);
+
+        calculateBlip(chain, startingHeight, blipTopHeight);
     }
 
     @FXML
-    private void saveCSV(){
-    System.out.println("Save csv");
-               //getting save dir
-//        DirectoryChooser directoryChooser = new DirectoryChooser();
-//        directoryChooser.setInitialDirectory(
-//                new File(helper.PREFERENCES.get(helper.preferencesKeyArray[0], helper.DOCUMENTS_DIRECTORY)));
-//        File selectedDirectory = directoryChooser.showDialog(App.stage);
-//
-//        try {
-//            helper.PREFERENCES.put(helper.preferencesKeyArray[0], selectedDirectory.getAbsolutePath());
-//        } catch (Exception ignored) {
-//        }
-//
-//        try {
-//            helper.PREFERENCES.flush();
-//        } catch (BackingStoreException backingStoreException) {
-//            backingStoreException.printStackTrace();
-//        }
+    private void printOffsets() {
+        //        double offset = 0;
+        //        while(offset >= 0 ){
+        //            offset = tierHelper.getNextOffset(blipHeight);
+        //            System.out.println(blipTopHeight + offset);
+        //        }
     }
 
-    private void calculateBlip(int chain, double startingHeight, final double blipHeight) {
+    private void calculateBlip(int chain, double startingHeight, final double blipTopHeight) {
 
-        double heightDifference;
+        double heightDelta;
         double jumpApex = 0;
-        double nearestTierHeightOffset = 0;
-        double nextTierOffset = 0;
-        double nearestTierOffset = 0;
+        double nearestCombinedOffset = 0;
+        double nextOffset = 0;
+        double nearestOffset = 0;
 
-        for(int i = 0; i < chain; i++){
-            heightDifference = startingHeight - blipHeight;
-            nearestTierHeightOffset = new BigDecimal(String.valueOf(tierHelper.getNearestTier(startingHeight, -heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
-            jumpApex = new BigDecimal(String.valueOf(tierHelper.getNewApex(startingHeight)), new MathContext(9, RoundingMode.FLOOR)).doubleValue();
-            //poss checking
-            nearestTierOffset = new BigDecimal(String.valueOf(tierHelper.getTierOffset(-heightDifference)), new MathContext(9, RoundingMode.FLOOR)).doubleValue(); //key from map
-            nextTierOffset = tierHelper.getPreviousTierOffset(nearestTierOffset);
+        for (int i = 0; i < chain; i++) {
+            heightDelta = startingHeight - blipTopHeight;
+            nearestCombinedOffset =
+                    new BigDecimal(
+                                    String.valueOf(
+                                            tierHelper.getNearestOffset(
+                                                    startingHeight, -heightDelta)),
+                                    new MathContext(9, RoundingMode.FLOOR))
+                            .doubleValue();
+            jumpApex =
+                    new BigDecimal(
+                                    String.valueOf(tierHelper.getJumpApex(startingHeight)),
+                                    new MathContext(9, RoundingMode.FLOOR))
+                            .doubleValue();
+            // poss checking
+            nearestOffset =
+                    new BigDecimal(
+                                    String.valueOf(tierHelper.getOffset(-heightDelta)),
+                                    new MathContext(9, RoundingMode.FLOOR))
+                            .doubleValue(); // key from map
+            nextOffset = tierHelper.getNextOffset(nearestOffset);
 
-            startingHeight = nearestTierHeightOffset;
+            startingHeight = nearestCombinedOffset;
         }
 
-        System.out.println(tierHelper.isBlipPossible(nearestTierOffset, nextTierOffset, nearestTierHeightOffset, blipHeight, blipBottomYLevel) ? "Blip is possible." : "Blip is not possible.");
-        nearestTierTextField.setText(String.valueOf(nearestTierHeightOffset));
+        System.out.println(
+                tierHelper.isBlipPossible(
+                                nearestOffset,
+                                nearestCombinedOffset,
+                                blipBottomHeight)
+                        ? "Blip is possible."
+                        : "Blip is not possible.");
+        nearestCombinedOffsetTextField.setText(String.valueOf(nearestCombinedOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
+
+        lastBlipHeight = nearestCombinedOffset;
     }
 
     public static class Console extends OutputStream {
@@ -135,8 +139,7 @@ public class Controller {
         }
 
         public void write(int b) {
-            appendText(String.valueOf((char)b));
+            appendText(String.valueOf((char) b));
         }
     }
 }
-
