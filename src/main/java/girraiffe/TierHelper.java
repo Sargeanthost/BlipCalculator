@@ -14,17 +14,14 @@ public class TierHelper {
     //delta - the difference between two things
     
     private final NavigableMap<Double, Integer> downwardsTierOffsetMap;
-    private final NavigableMap<Double, Integer> upwardsTierOffsetMap;
     private double tierOffset = 0;
     private double[] offsetArray;
 
     public TierHelper() {
         /* TierOffset, Tier */
         downwardsTierOffsetMap = new TreeMap<>();
-        upwardsTierOffsetMap = new TreeMap<>();
 
         initDownwardsTreeMap();
-        initUpwardsTreeMap();
         initOffsetArray();
         // higher v
         // lower ^
@@ -56,7 +53,6 @@ public class TierHelper {
         return startingHeight + tierOffset + 1.2492;
     }
 
-    @SuppressWarnings("unused")
     /**
      * Gets the tier based of of the delta in height.
      *
@@ -103,9 +99,11 @@ public class TierHelper {
             double blipBottomHeight) {
         double tierDifference =
                 Math.abs(
-                        (new BigDecimal(String.valueOf(getNextOffset(predictedOffset)))
+                        (new BigDecimal(String.valueOf(getPreviousOffset(predictedOffset)))
                                 .subtract(new BigDecimal(String.valueOf(predictedOffset)))
                                 .doubleValue()));
+        System.out.println(predictedOffset);
+        System.out.println(new BigDecimal(String.valueOf(getNextOffset(predictedOffset))));
         System.out.println(
                 "\nMaximum Blip Height: "
                         + (blipTopHeight
@@ -116,7 +114,7 @@ public class TierHelper {
     }
 
     //TODO fix these docs
-    @SuppressWarnings("unused")
+
     /**
      * Gets the tier next  the one given.
      *
@@ -255,15 +253,6 @@ public class TierHelper {
         downwardsTierOffsetMap.put(-248.2252, -102);
         downwardsTierOffsetMap.put(-251.7029, -103);
         downwardsTierOffsetMap.put(-255.1895, -104);
-    }
-
-    private void initUpwardsTreeMap(){
-        upwardsTierOffsetMap.put(1.2492, 6);
-        upwardsTierOffsetMap.put(1.1661, 5);
-        upwardsTierOffsetMap.put(1.0013, 4);
-        upwardsTierOffsetMap.put(0.7532, 3);
-        upwardsTierOffsetMap.put(0.4200, 2);
-        upwardsTierOffsetMap.put(0.0,    1);
     }
 
     public void initOffsetArray(){
