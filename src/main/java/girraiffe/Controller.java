@@ -107,11 +107,9 @@ public class Controller {
             heightDelta = BigDecimal.valueOf(startingHeight).subtract(BigDecimal.valueOf(blipTopHeight));
             nearestCombinedOffset =
                     tierHelper.getNearestOffset(BigDecimal.valueOf(startingHeight), heightDelta.negate());
-            //plus starting height?
             jumpApex = tierHelper.getJumpApex(startingHeight);
             // poss checking
             nearestOffset = tierHelper.getOffset(heightDelta.negate()); // key from map
-
             startingHeight = nearestCombinedOffset.doubleValue();
         }
 

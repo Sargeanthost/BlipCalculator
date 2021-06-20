@@ -14,7 +14,7 @@ public class TierHelper {
     //delta - the difference between two things
     
     private final NavigableMap<Double, Integer> downwardsTierOffsetMap;
-    double offset = 0;
+    BigDecimal offset = BigDecimal.ZERO;
     private double[] offsetArray;
     public double minimumBottomBlipHeight;
 
@@ -41,10 +41,9 @@ public class TierHelper {
      * @return returns the offset from the table
      */
     public double getOffset(BigDecimal heightDelta) {
-        offset = downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()) == null
+        return downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()) == null
                 ? 0
                 : downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue());
-        return offset;
     }
 
     /**
@@ -55,7 +54,7 @@ public class TierHelper {
      */
     public BigDecimal getJumpApex(double startingHeight) {
         //TODO not working. 53 27 26 => 27.4723 *21.5109* 25.7343
-        return BigDecimal.valueOf(startingHeight).add(BigDecimal.valueOf(offset)).add(BigDecimal.valueOf(1.2492));
+        return BigDecimal.valueOf(startingHeight).add(offset).add(BigDecimal.valueOf(1.2492));
     }
 
     /**
@@ -81,11 +80,11 @@ public class TierHelper {
      *     height inputted into the gui
      */
     public BigDecimal getNearestOffset(BigDecimal blipTopHeight, BigDecimal heightDelta) {
-        BigDecimal tierOffset = BigDecimal.valueOf(
+         offset = BigDecimal.valueOf(
                 downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()) == null
                         ? 0
                         : downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()));
-        return blipTopHeight.add(tierOffset);
+        return blipTopHeight.add(offset);
     }
 
     /**
