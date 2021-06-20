@@ -37,6 +37,10 @@ public class Controller {
 
     @FXML private Spinner<Integer> chainSpinner;
 
+    @FXML private TextField minimumBottomBlipHeightTextField;
+
+    @FXML private TextField isBlipPossibleTextField;
+
     @FXML
     private void initialize() {
         var helper = new Helper();
@@ -61,10 +65,9 @@ public class Controller {
 
         int chain = chainSpinner.getValue();
         try {
-            startingHeight = Double.parseDouble(String.valueOf(startingHeightInput.getText()));
-            blipTopHeight = Double.parseDouble(String.valueOf(blipTopHeightInput.getText()));
-            blipBottomHeight =
-                    Double.parseDouble(String.valueOf(blipBottomHeightTextField.getText()));
+            startingHeight = Double.parseDouble(startingHeightInput.getText());
+            blipTopHeight = Double.parseDouble(blipTopHeightInput.getText());
+            blipBottomHeight = Double.parseDouble(blipBottomHeightTextField.getText());
         } catch (Exception ignore) {
             System.out.println("Blip height and starting height not assigned");
         }
@@ -89,53 +92,41 @@ public class Controller {
                         ((lastBlipHeight + d) % 1 >=.5624 && (lastBlipHeight + d) % 1<= .5761)))
                 // will look at the case where lastBlipHeight + d is true and filter on this predicate, but then not
                 // append the lastBlipHeight + d to the array, so a map is needed to do this for us
-                .flatMap(d -> DoubleStream.of(lastBlipHeight + d));
+                .flatMap(d -> DoubleStream.of(BigDecimal.valueOf(lastBlipHeight).add(BigDecimal.valueOf(d)).doubleValue()));
         eater.forEach(System.out::println);
     }
 
-    private void calculateBlip(int chain, double startingHeight, final double blipTopHeight) {
+    private void calculateBlip(int chain, double startingHeight, double blipTopHeight) {
 
-        double heightDelta;
-        double jumpApex = 0;
-        double nearestCombinedOffset = 0;
+        BigDecimal heightDelta;
+        BigDecimal jumpApex = BigDecimal.ZERO;
+        BigDecimal nearestCombinedOffset = BigDecimal.ZERO;
         double nearestOffset = 0;
 
         for (int i = 0; i < chain; i++) {
-            heightDelta = startingHeight - blipTopHeight;
+            heightDelta = BigDecimal.valueOf(startingHeight).subtract(BigDecimal.valueOf(blipTopHeight));
             nearestCombinedOffset =
-                    new BigDecimal(
-                                    String.valueOf(
-                                            tierHelper.getNearestOffset(
-                                                    startingHeight, -heightDelta)),
-                                    new MathContext(9, RoundingMode.FLOOR))
-                            .doubleValue();
-            jumpApex =
-                    new BigDecimal(
-                                    String.valueOf(tierHelper.getJumpApex(startingHeight)),
-                                    new MathContext(9, RoundingMode.FLOOR))
-                            .doubleValue();
+                    tierHelper.getNearestOffset(BigDecimal.valueOf(startingHeight), heightDelta.negate());
+            //plus starting height?
+            jumpApex = tierHelper.getJumpApex(startingHeight);
             // poss checking
-            nearestOffset =
-                    new BigDecimal(
-                                    String.valueOf(tierHelper.getOffset(-heightDelta)),
-                                    new MathContext(9, RoundingMode.FLOOR))
-                            .doubleValue(); // key from map
+            nearestOffset = tierHelper.getOffset(heightDelta.negate()); // key from map
 
-            startingHeight = nearestCombinedOffset;
+            startingHeight = nearestCombinedOffset.doubleValue();
         }
 
-        System.out.println(
+        isBlipPossibleTextField.setText(
                 tierHelper.isBlipPossible(
                                 nearestOffset,
-                                nearestCombinedOffset,
+                                nearestCombinedOffset.doubleValue(),
                                 blipBottomHeight)
-                        ? "Blip is possible."
-                        : "Blip is not possible.");
+                        ? "Yes"
+                        : "No");
         nearestCombinedOffsetTextField.setText(String.valueOf(nearestCombinedOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
+        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.minimumBottomBlipHeight));
 
-        lastBlipHeight = nearestCombinedOffset;
-        System.out.println(lastBlipHeight);
+        lastBlipHeight = nearestCombinedOffset.doubleValue();
     }
 
     public static class Console extends OutputStream {

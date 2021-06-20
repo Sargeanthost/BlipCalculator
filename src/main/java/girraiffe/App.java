@@ -16,7 +16,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         App.stage = stage;
         Parent root = new FXMLLoader((App.class.getResource("primary.fxml"))).load();
-        Scene scene = new Scene(root, 600, 405.0);
+        Scene scene = new Scene(root, 600, 290);
         stage.setResizable(false);
         stage.setTitle("Blip Calculator");
         stage.setScene(scene);

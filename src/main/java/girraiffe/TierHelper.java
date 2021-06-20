@@ -14,8 +14,9 @@ public class TierHelper {
     //delta - the difference between two things
     
     private final NavigableMap<Double, Integer> downwardsTierOffsetMap;
-    private double tierOffset = 0;
+    double offset = 0;
     private double[] offsetArray;
+    public double minimumBottomBlipHeight;
 
     public TierHelper() {
         /* TierOffset, Tier */
@@ -30,17 +31,20 @@ public class TierHelper {
     }
 
     /**
-     * Gets the tier offset from the {@link #downwardsTierOffsetMap} table
+     * Gets the offset from the {@link #downwardsTierOffsetMap} table
+     * <p>
+     *     139 -106 = 33
+     *     getOffset(33) => -32.7383
+     * </p>
      *
      * @param heightDelta the height difference for which to perform a tier lookup on
      * @return returns the offset from the table
      */
-    public double getOffset(double heightDelta) {
-        tierOffset =
-                downwardsTierOffsetMap.ceilingKey(heightDelta) == null
-                        ? 0
-                        : downwardsTierOffsetMap.ceilingKey(heightDelta);
-        return tierOffset;
+    public double getOffset(BigDecimal heightDelta) {
+        offset = downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()) == null
+                ? 0
+                : downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue());
+        return offset;
     }
 
     /**
@@ -49,8 +53,9 @@ public class TierHelper {
      * @param startingHeight the height from which to preform the jump calculation
      * @return returns the new jump apex
      */
-    public double getJumpApex(double startingHeight) {
-        return startingHeight + tierOffset + 1.2492;
+    public BigDecimal getJumpApex(double startingHeight) {
+        //TODO not working. 53 27 26 => 27.4723 *21.5109* 25.7343
+        return BigDecimal.valueOf(startingHeight).add(BigDecimal.valueOf(offset)).add(BigDecimal.valueOf(1.2492));
     }
 
     /**
@@ -60,27 +65,27 @@ public class TierHelper {
      *     correct sign
      * @return the tier. Note: will most likely be negative
      */
-    public int getTier(double heightDelta) {
-        double tierOffset = getOffset(heightDelta);
-        return downwardsTierOffsetMap.get(tierOffset) == null
+    public int getTier(BigDecimal heightDelta) {
+        var offset = getOffset(heightDelta);
+        return downwardsTierOffsetMap.get(offset) == null
                 ? 0
-                : downwardsTierOffsetMap.get(tierOffset);
+                : downwardsTierOffsetMap.get(offset);
     }
 
     /**
-     * Gets the nearest to the blip height
+     * Gets the nearest offset
      *
      * @param blipTopHeight the height at which you start the jump to begin the blip
      * @param heightDelta the delta between the starting height and the blip height
      * @return returns the offset from the {@link #downwardsTierOffsetMap} table added to the blip
      *     height inputted into the gui
      */
-    public double getNearestOffset(double blipTopHeight, double heightDelta) {
-        tierOffset =
-                downwardsTierOffsetMap.ceilingKey(heightDelta) == null
+    public BigDecimal getNearestOffset(BigDecimal blipTopHeight, BigDecimal heightDelta) {
+        BigDecimal tierOffset = BigDecimal.valueOf(
+                downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()) == null
                         ? 0
-                        : downwardsTierOffsetMap.ceilingKey(heightDelta);
-        return blipTopHeight + tierOffset;
+                        : downwardsTierOffsetMap.ceilingKey(heightDelta.doubleValue()));
+        return blipTopHeight.add(tierOffset);
     }
 
     /**
@@ -97,20 +102,17 @@ public class TierHelper {
             double predictedOffset,
             double blipTopHeight,
             double blipBottomHeight) {
-        double tierDifference =
-                Math.abs(
-                        (new BigDecimal(String.valueOf(getPreviousOffset(predictedOffset)))
-                                .subtract(new BigDecimal(String.valueOf(predictedOffset)))
-                                .doubleValue()));
-        System.out.println(predictedOffset);
-        System.out.println(new BigDecimal(String.valueOf(getNextOffset(predictedOffset))));
-        System.out.println(
-                "\nMaximum Blip Height: "
-                        + (blipTopHeight
-                                - tierDifference)); // any value lower than this will cause the blip
-                                                    // to fail
+        var offsetDelta =
+                BigDecimal.valueOf(Math.abs((
+                        BigDecimal.valueOf(getPreviousOffset(predictedOffset))
+                                .subtract(BigDecimal.valueOf(predictedOffset)))
+                                .doubleValue()
+                ));
+        minimumBottomBlipHeight = BigDecimal.valueOf(blipTopHeight).subtract(offsetDelta).doubleValue();
+        // any value lower than this will cause the blip to fail
 
-        return (blipTopHeight - tierDifference) <= blipBottomHeight;
+        return BigDecimal.valueOf(blipTopHeight).subtract(offsetDelta).compareTo(BigDecimal.valueOf(blipBottomHeight)) <= 0;
+        // <= blipBottomHeight;
     }
 
     //TODO fix these docs
@@ -124,9 +126,9 @@ public class TierHelper {
      * @param key offset to index on
      * @return returns the previous offset
      */
-    public double getNextOffset(double key) {
+    public BigDecimal getNextOffset(double key) {
         // goes down on the map
-        return downwardsTierOffsetMap.higherKey(key);
+        return BigDecimal.valueOf(downwardsTierOffsetMap.higherKey(key));
     }
 
     /**
