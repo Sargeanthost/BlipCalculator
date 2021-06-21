@@ -7,9 +7,6 @@ import javafx.scene.control.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.stream.DoubleStream;
 
 public class Controller {
@@ -47,6 +44,7 @@ public class Controller {
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingHeightInput);
         helper.setNumericFormatter(blipTopHeightInput);
+        helper.setNumericFormatter(blipBottomHeightTextField);
 
         PrintStream printStream = new PrintStream(new Console(outputTextArea));
         System.setErr(printStream);
@@ -96,33 +94,31 @@ public class Controller {
         offsetStream.forEach(System.out::println);
     }
 
-    private void calculateBlip(int chain, float startingHeight, float blipTopHeight) {
+    private void calculateBlip(int chain, float startingBlipHeight, float blipTopHeight) {
 
         float heightDelta;
         float jumpApex = 0;
         float nearestCombinedOffset = 0;
-        float nearestOffset = 0;
 
         for (int i = 0; i < chain; i++) {
-            heightDelta = startingHeight - blipTopHeight;
-            nearestCombinedOffset =
-                    tierHelper.getNearestOffset(startingHeight, -heightDelta);
-            jumpApex = tierHelper.getJumpApex(startingHeight);
-            // poss checking
-            nearestOffset = tierHelper.getOffset(-heightDelta); // key from map
-            startingHeight = nearestCombinedOffset;
+            heightDelta = startingBlipHeight - blipTopHeight;
+            tierHelper.calculateOffsets(heightDelta);
+            //check?
+
+            nearestCombinedOffset = startingBlipHeight + tierHelper.getOffset();
+            jumpApex = tierHelper.calculateJumpApex(nearestCombinedOffset);
+            startingBlipHeight = nearestCombinedOffset;
         }
 
         isBlipPossibleTextField.setText(
                 tierHelper.isBlipPossible(
-                                nearestOffset,
-                                nearestCombinedOffset,
+                                blipTopHeight,
                                 blipBottomHeight)
                         ? "Yes"
                         : "No");
         nearestCombinedOffsetTextField.setText(String.valueOf(nearestCombinedOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
-        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.minimumBottomBlipHeight));
+        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.getMinimumBottomBlipHeight()));
 
         lastBlipHeight = nearestCombinedOffset;
     }

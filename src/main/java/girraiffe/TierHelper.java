@@ -4,18 +4,10 @@ import java.util.*;
 import java.util.stream.DoubleStream;
 
 public class TierHelper {
-    //! naming conventions
-    
-    //combined- both offset and height
-    //height- the y coord
-    //offset - the tier mapping
-    //tier - namesake
-    //delta - the difference between two things
-
-    //do not do combinations in this class!
 
     private float offset = 0.0f;
     private float nextOffset = 0.0f;
+    private float minimumBottomBlipHeight = 0.0f;
 
     private double[] offsetArray;
 
@@ -23,62 +15,49 @@ public class TierHelper {
         initOffsetArray();
     }
 
-//    /**
-//     * Calculates if the blip is possible based off the given parameters. Note: a blip is possible
-//     * when the delta between the top and the bottom of the blip is less than the tier difference
-//     * between the nearest landing tier and the next tier down.
-//     *
-//     * @param predictedOffset if you were to blip this would be your blip height
-//     * @param blipTopHeight the Y level of th top part of the blip
-//     * @param blipBottomHeight the Y level of the bottom part of the blip
-//     * @return returns if the blip is possible
-//     */
-    //TODO
-//    public boolean isBlipPossible(
-//            float predictedOffset,
-//            float blipTopHeight,
-//            float blipBottomHeight) {
-//        var offsetDelta =
-//                Math.abs(
-//                        getPreviousOffset(predictedOffset) - predictedOffset
-//                );
-//        minimumBottomBlipHeight = blipTopHeight - offsetDelta;
-//        // any value lower than this will cause the blip to fail
-//
-//        return blipTopHeight - offsetDelta <= blipBottomHeight;
-//        // <= blipBottomHeight;
-//    }
-//
+    public boolean isBlipPossible(
+            float blipTopHeight,
+            float blipBottomHeight) {
+        var offsetDelta =
+                Math.abs(getNextOffset()- getOffset());
+        setMinimumBottomBlipHeight(blipTopHeight - offsetDelta);
+
+        //minimumbottomblipheight?
+        return blipTopHeight - offsetDelta <= getMinimumBottomBlipHeight();
+    }
 
 
-    //replace calculateBlip in controller
-    public float calculateOffsets(float heightDelta){
+    public void calculateOffsets(float heightDelta){
         var momentum = 0.42f;
         var nextOffset = momentum;
         var offset = 0.0f;
+        var ticks = 1;
 
-        if (heightDelta < 0 ){
-            System.out.println("height delta < 0 pls fix");
-            return 0.0f;
-        }
+        while(true){
+//          ticks have to be more than 12
+//          heightDelta > Math.abs(nextOffset)
 
-        while(heightDelta > Math.abs(nextOffset)){
-            offset += momentum;
-            momentum -= 0.08f;
-            momentum *= 0.98f;
-            if (Math.abs(momentum) >= 0.005D){
-                nextOffset += momentum;
-            } else {
-                momentum = 0;
+            if(ticks < 12 || heightDelta > Math.abs(nextOffset)){
+                //offsets are set correctly but it does one more loop than its supposed to
+                ++ticks;
+                offset += momentum;
+                momentum -= 0.08f;
+                momentum *= 0.98f;
+
+                if (Math.abs(momentum) >= 0.005D){
+                    nextOffset += momentum;
+                } else {
+                    momentum = 0;
+                }
+                continue;
             }
+            break;
         }
         setOffsets(offset, nextOffset);
-        return offset;
-        //-5.3446336 for 6.0f delta
     }
 
-    public float getJumpApex(double startingHeight) {
-        return (float)(startingHeight + 1.2491871);
+    public float calculateJumpApex(double startingBlipHeight) {
+        return (float)(startingBlipHeight + 1.2491871);
     }
 
     public float getOffset(){
@@ -89,9 +68,17 @@ public class TierHelper {
         return nextOffset;
     }
 
+    public float getMinimumBottomBlipHeight(){
+        return minimumBottomBlipHeight;
+    }
+
     private void setOffsets(float offset, float nextOffset){
         this.offset = offset;
         this.nextOffset = nextOffset;
+    }
+
+    private void setMinimumBottomBlipHeight(float minimumBottomBlipHeight){
+        this.minimumBottomBlipHeight = minimumBottomBlipHeight;
     }
 
     private void initOffsetArray(){
