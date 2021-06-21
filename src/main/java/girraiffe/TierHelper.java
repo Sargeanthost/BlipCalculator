@@ -14,7 +14,11 @@ public class TierHelper {
     //delta - the difference between two things
     
     private final NavigableMap<Float, Integer> downwardsTierOffsetMap;
-    float offset = 0;
+    //actual, not combined
+    private float offset = 0.0f;
+    private float nextOffset = 0.0f;
+    private float jumpApex = 0.0f;
+
     private double[] offsetArray;
     public float minimumBottomBlipHeight;
 
@@ -46,99 +50,138 @@ public class TierHelper {
                 : downwardsTierOffsetMap.ceilingKey(heightDelta);
     }
 
-    /**
-     * Implicitly calculates the new jump apex based off of the last blip calculation.
-     *
-     * @param startingHeight the height from which to preform the jump calculation
-     * @return returns the new jump apex
-     */
-    public float getJumpApex(float startingHeight) {
-        //TODO not working. 53 27 26 => 27.4723 *21.5109* 25.7343
-        return startingHeight + offset + 1.2492f;
+
+    public float getJumpApex() {
+        return jumpApex;
     }
 
-    /**
-     * Gets the tier based of of the delta in height.
-     *
-     * @param heightDelta the height distance to compute the tier. Make sure this has the
-     *     correct sign
-     * @return the tier. Note: will most likely be negative
-     */
-    public int getTier(float heightDelta) {
-        var offset = getOffset(heightDelta);
-        return downwardsTierOffsetMap.get(offset) == null
-                ? 0
-                : downwardsTierOffsetMap.get(offset);
+    private void setJumpApex(float startingHeight){
+        jumpApex = (float)(startingHeight + 1.2491871D);
     }
 
-    /**
-     * Gets the nearest offset
-     *
-     * @param blipTopHeight the height at which you start the jump to begin the blip
-     * @param heightDelta the delta between the starting height and the blip height
-     * @return returns the offset from the {@link #downwardsTierOffsetMap} table added to the blip
-     *     height inputted into the gui
-     */
-    public float getNearestOffset(float blipTopHeight, float heightDelta) {
-         offset = downwardsTierOffsetMap.ceilingKey(heightDelta) == null
-                        ? 0
-                        : downwardsTierOffsetMap.ceilingKey(heightDelta);
-        return blipTopHeight + offset;
+//    /**
+//     * Gets the tier based of of the delta in height.
+//     *
+//     * @param heightDelta the height distance to compute the tier. Make sure this has the
+//     *     correct sign
+//     * @return the tier. Note: will most likely be negative
+//     */
+//    public int getTier(float heightDelta) {
+//        var offset = getOffset(heightDelta);
+//        return downwardsTierOffsetMap.get(offset) == null
+//                ? 0
+//                : downwardsTierOffsetMap.get(offset);
+//    }
+
+//    /**
+//     * Gets the nearest offset
+//     *
+//     * @param blipTopHeight the height at which you start the jump to begin the blip
+//     * @param heightDelta the delta between the starting height and the blip height
+//     * @return returns the offset from the {@link #downwardsTierOffsetMap} table added to the blip
+//     *     height inputted into the gui
+//     */
+//    public float getNearestOffset(float blipTopHeight, float heightDelta) {
+//         offset = downwardsTierOffsetMap.ceilingKey(heightDelta) == null
+//                        ? 0
+//                        : downwardsTierOffsetMap.ceilingKey(heightDelta);
+//        return blipTopHeight + offset;
+//    }
+
+//    /**
+//     * Calculates if the blip is possible based off the given parameters. Note: a blip is possible
+//     * when the delta between the top and the bottom of the blip is less than the tier difference
+//     * between the nearest landing tier and the next tier down.
+//     *
+//     * @param predictedOffset if you were to blip this would be your blip height
+//     * @param blipTopHeight the Y level of th top part of the blip
+//     * @param blipBottomHeight the Y level of the bottom part of the blip
+//     * @return returns if the blip is possible
+//     */
+//    public boolean isBlipPossible(
+//            float predictedOffset,
+//            float blipTopHeight,
+//            float blipBottomHeight) {
+//        var offsetDelta =
+//                Math.abs(
+//                        getPreviousOffset(predictedOffset) - predictedOffset
+//                );
+//        minimumBottomBlipHeight = blipTopHeight - offsetDelta;
+//        // any value lower than this will cause the blip to fail
+//
+//        return blipTopHeight - offsetDelta <= blipBottomHeight;
+//        // <= blipBottomHeight;
+//    }
+//
+//    //TODO fix these docs
+//
+//    /**
+//     * Gets the tier next  the one given.
+//     *
+//     * flip
+//     * <p>E.G given -19.0299, this function will return -17.5238.
+//     *
+//     * @param key offset to index on
+//     * @return returns the previous offset
+//     */
+//    public float getNextOffset(float key) {
+//        // goes down on the map
+//        return downwardsTierOffsetMap.higherKey(key);
+//    }
+
+//    /**
+//     * Gets the previous tier below the given one
+//     *
+//     * <p>E.G. given -19.0299, this function will return -20.5843
+//     *
+//     * @param key offset to index on
+//     * @return returns the next offset
+//     */
+//    public float getPreviousOffset(float key) {
+//        // goes up on the map
+//        return downwardsTierOffsetMap.lowerKey(key);
+//    }
+
+    public float calculateOffsets(float heightDelta){
+        var momentum = 0.42f;
+        var nextOffset = momentum;
+        var offset = 0.0f;
+
+        if (heightDelta < 0 ){
+            System.out.println("height delta < 0 pls fix");
+            return 0.0f;
+        }
+
+        while(heightDelta > Math.abs(nextOffset)){
+            offset += momentum;
+            momentum -= 0.08f;
+            momentum *= 0.98f;
+            if (Math.abs(momentum) >= 0.005D){
+                nextOffset += momentum;
+            } else {
+                momentum = 0;
+            }
+        }
+        setOffsets(offset, nextOffset);
+        setJumpApex(offset);
+        return offset;
+        //-5.3446336 for 6.0f delta
     }
 
-    /**
-     * Calculates if the blip is possible based off the given parameters. Note: a blip is possible
-     * when the delta between the top and the bottom of the blip is less than the tier difference
-     * between the nearest landing tier and the next tier down.
-     *
-     * @param predictedOffset if you were to blip this would be your blip height
-     * @param blipTopHeight the Y level of th top part of the blip
-     * @param blipBottomHeight the Y level of the bottom part of the blip
-     * @return returns if the blip is possible
-     */
-    public boolean isBlipPossible(
-            float predictedOffset,
-            float blipTopHeight,
-            float blipBottomHeight) {
-        var offsetDelta =
-                Math.abs(
-                        getPreviousOffset(predictedOffset) - predictedOffset
-                );
-        minimumBottomBlipHeight = blipTopHeight - offsetDelta;
-        // any value lower than this will cause the blip to fail
-
-        return blipTopHeight - offsetDelta <= blipBottomHeight;
-        // <= blipBottomHeight;
+    private void setOffsets(float offset, float nextOffset){
+        this.offset = offset;
+        this.nextOffset = nextOffset;
     }
 
-    //TODO fix these docs
-
-    /**
-     * Gets the tier next  the one given.
-     *
-     * flip
-     * <p>E.G given -19.0299, this function will return -17.5238.
-     *
-     * @param key offset to index on
-     * @return returns the previous offset
-     */
-    public float getNextOffset(float key) {
-        // goes down on the map
-        return downwardsTierOffsetMap.higherKey(key);
+    public float getOffset(){
+        return offset;
     }
 
-    /**
-     * Gets the previous tier below the given one
-     *
-     * <p>E.G. given -19.0299, this function will return -20.5843
-     *
-     * @param key offset to index on
-     * @return returns the next offset
-     */
-    public float getPreviousOffset(float key) {
-        // goes up on the map
-        return downwardsTierOffsetMap.lowerKey(key);
+    public float getNextOffset(){
+        return nextOffset;
     }
+
+
 
     public void initDownwardsTreeMap(){
         downwardsTierOffsetMap.put(1.2492f, 5);

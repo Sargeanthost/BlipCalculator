@@ -15,9 +15,9 @@ import java.util.stream.DoubleStream;
 public class Controller {
     private TierHelper tierHelper;
 
-    private float blipTopHeight = 0;
+    private static float  blipTopHeight = 0;
     private float startingHeight = 0;
-    private float blipBottomHeight = 0;
+    private static float  blipBottomHeight = 0;
 
     private float lastBlipHeight = 0;
 
@@ -107,7 +107,7 @@ public class Controller {
             heightDelta = startingHeight - blipTopHeight;
             nearestCombinedOffset =
                     tierHelper.getNearestOffset(startingHeight, -heightDelta);
-            jumpApex = tierHelper.getJumpApex(startingHeight);
+            jumpApex = tierHelper.getJumpApex();
             // poss checking
             nearestOffset = tierHelper.getOffset(-heightDelta); // key from map
             startingHeight = nearestCombinedOffset;
@@ -125,6 +125,14 @@ public class Controller {
         minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.minimumBottomBlipHeight));
 
         lastBlipHeight = nearestCombinedOffset;
+    }
+
+    public static float getBlipBottomHeight(){
+        return blipBottomHeight;
+    }
+
+    public static float getBlipTopHeight(){
+        return blipTopHeight;
     }
 
     public static class Console extends OutputStream {
