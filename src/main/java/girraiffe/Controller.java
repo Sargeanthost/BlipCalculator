@@ -15,11 +15,11 @@ import java.util.stream.DoubleStream;
 public class Controller {
     private TierHelper tierHelper;
 
-    private double blipTopHeight = 0;
-    private double startingHeight = 0;
-    private double blipBottomHeight = 0;
+    private float blipTopHeight = 0;
+    private float startingHeight = 0;
+    private float blipBottomHeight = 0;
 
-    private double lastBlipHeight = 0;
+    private float lastBlipHeight = 0;
 
     @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
 
@@ -65,9 +65,9 @@ public class Controller {
 
         int chain = chainSpinner.getValue();
         try {
-            startingHeight = Double.parseDouble(startingHeightInput.getText());
-            blipTopHeight = Double.parseDouble(blipTopHeightInput.getText());
-            blipBottomHeight = Double.parseDouble(blipBottomHeightTextField.getText());
+            startingHeight = Float.parseFloat(startingHeightInput.getText());
+            blipTopHeight = Float.parseFloat(blipTopHeightInput.getText());
+            blipBottomHeight = Float.parseFloat(blipBottomHeightTextField.getText());
         } catch (Exception ignore) {
             System.out.println("Blip height and starting height not assigned");
         }
@@ -78,45 +78,45 @@ public class Controller {
     @FXML
     private void printOffsets(ActionEvent e) {
         e.consume();
-        System.out.println("\nOffsets: ");
+        System.out.println("\nOffsets (if any): ");
         //        .0 to .0125: td ceiling
         //        .1875 to .2: td floor
         //        .5 to .5125: cake + bean
         //        .5625 to .575: bed + piston
 
-        var eater = tierHelper.getOffsetArrayStream()
-                .filter(d -> lastBlipHeight + d > 0 &&
-                        (((lastBlipHeight + d) % 1 >=-.0001 && (lastBlipHeight + d) % 1<= .0126) ||
-                        ((lastBlipHeight + d) % 1 >=.1874 && (lastBlipHeight + d) % 1<= .2001) ||
-                        ((lastBlipHeight + d) % 1 >=.4999 && (lastBlipHeight + d) % 1<= .5126) ||
-                        ((lastBlipHeight + d) % 1 >=.5624 && (lastBlipHeight + d) % 1<= .5761)))
+        var offsetStream = tierHelper.getOffsetArrayStream()
+                .filter(d -> lastBlipHeight + (float)d > 0 &&
+                        (((lastBlipHeight + (float)d) % 1 > 0 && (lastBlipHeight + (float)d) % 1<  .0125) ||
+                        ((lastBlipHeight + (float)d) % 1 > .1875 && (lastBlipHeight + (float)d) % 1<  .2) ||
+                        ((lastBlipHeight + (float)d) % 1 > .5 && (lastBlipHeight + (float)d) % 1<  .5125) ||
+                        ((lastBlipHeight + (float)d) % 1 > .5625 && (lastBlipHeight + (float)d) % 1<  .575)))
                 // will look at the case where lastBlipHeight + d is true and filter on this predicate, but then not
                 // append the lastBlipHeight + d to the array, so a map is needed to do this for us
-                .flatMap(d -> DoubleStream.of(BigDecimal.valueOf(lastBlipHeight).add(BigDecimal.valueOf(d)).doubleValue()));
-        eater.forEach(System.out::println);
+                .flatMap(d -> DoubleStream.of(lastBlipHeight + (float)d));
+        offsetStream.forEach(System.out::println);
     }
 
-    private void calculateBlip(int chain, double startingHeight, double blipTopHeight) {
+    private void calculateBlip(int chain, float startingHeight, float blipTopHeight) {
 
-        BigDecimal heightDelta;
-        BigDecimal jumpApex = BigDecimal.ZERO;
-        BigDecimal nearestCombinedOffset = BigDecimal.ZERO;
-        double nearestOffset = 0;
+        float heightDelta;
+        float jumpApex = 0;
+        float nearestCombinedOffset = 0;
+        float nearestOffset = 0;
 
         for (int i = 0; i < chain; i++) {
-            heightDelta = BigDecimal.valueOf(startingHeight).subtract(BigDecimal.valueOf(blipTopHeight));
+            heightDelta = startingHeight - blipTopHeight;
             nearestCombinedOffset =
-                    tierHelper.getNearestOffset(BigDecimal.valueOf(startingHeight), heightDelta.negate());
+                    tierHelper.getNearestOffset(startingHeight, -heightDelta);
             jumpApex = tierHelper.getJumpApex(startingHeight);
             // poss checking
-            nearestOffset = tierHelper.getOffset(heightDelta.negate()); // key from map
-            startingHeight = nearestCombinedOffset.doubleValue();
+            nearestOffset = tierHelper.getOffset(-heightDelta); // key from map
+            startingHeight = nearestCombinedOffset;
         }
 
         isBlipPossibleTextField.setText(
                 tierHelper.isBlipPossible(
                                 nearestOffset,
-                                nearestCombinedOffset.doubleValue(),
+                                nearestCombinedOffset,
                                 blipBottomHeight)
                         ? "Yes"
                         : "No");
@@ -124,7 +124,7 @@ public class Controller {
         jumpApexTextField.setText(String.valueOf(jumpApex));
         minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.minimumBottomBlipHeight));
 
-        lastBlipHeight = nearestCombinedOffset.doubleValue();
+        lastBlipHeight = nearestCombinedOffset;
     }
 
     public static class Console extends OutputStream {
