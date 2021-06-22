@@ -112,7 +112,7 @@ public class Controller {
 
         isBlipPossibleTextField.setText(
                 tierHelper.isBlipPossible(
-                                blipTopHeight,
+                                nearestCombinedOffset,
                                 blipBottomHeight)
                         ? "Yes"
                         : "No");

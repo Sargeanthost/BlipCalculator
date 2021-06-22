@@ -16,14 +16,15 @@ public class TierHelper {
     }
 
     public boolean isBlipPossible(
-            float blipTopHeight,
+            float predictedBlipHeight,
             float blipBottomHeight) {
+        //needs to be the actual blip height, not the block at which the blip setup is at
         var offsetDelta =
                 Math.abs(getNextOffset()- getOffset());
-        setMinimumBottomBlipHeight(blipTopHeight - offsetDelta);
+        setMinimumBottomBlipHeight(predictedBlipHeight - offsetDelta);
 
         //minimumbottomblipheight?
-        return blipTopHeight - offsetDelta <= getMinimumBottomBlipHeight();
+        return predictedBlipHeight - offsetDelta <= blipBottomHeight;
     }
 
 
@@ -34,11 +35,8 @@ public class TierHelper {
         var ticks = 1;
 
         while(true){
-//          ticks have to be more than 12
-//          heightDelta > Math.abs(nextOffset)
 
             if(ticks < 12 || heightDelta > Math.abs(nextOffset)){
-                //offsets are set correctly but it does one more loop than its supposed to
                 ++ticks;
                 offset += momentum;
                 momentum -= 0.08f;
