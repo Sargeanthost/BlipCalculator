@@ -1,6 +1,6 @@
 package girraiffe;
 
-public class DumbMain {
+public class PseudoMain {
     public static void main(String[] args) {
         App.main(args);
     }

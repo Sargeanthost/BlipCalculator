@@ -15,7 +15,6 @@ public class Controller {
     private static float  blipTopHeight = 0;
     private float startingHeight = 0;
     private static float  blipBottomHeight = 0;
-
     private float lastBlipHeight = 0;
 
     @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
@@ -62,6 +61,7 @@ public class Controller {
         e.consume();
 
         int chain = chainSpinner.getValue();
+
         try {
             startingHeight = Float.parseFloat(startingHeightInput.getText());
             blipTopHeight = Float.parseFloat(blipTopHeightInput.getText());
