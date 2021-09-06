@@ -7,18 +7,14 @@ import javafx.scene.control.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.stream.DoubleStream;
 
 public class Controller {
     private TierHelper tierHelper;
 
-    private float blipTopHeight = 0;
+    private static float  blipTopHeight = 0;
     private float startingHeight = 0;
-    private float blipBottomHeight = 0;
-
+    private static float  blipBottomHeight = 0;
     private float lastBlipHeight = 0;
 
     @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
@@ -47,6 +43,7 @@ public class Controller {
         tierHelper = new TierHelper();
         helper.setNumericFormatter(startingHeightInput);
         helper.setNumericFormatter(blipTopHeightInput);
+        helper.setNumericFormatter(blipBottomHeightTextField);
 
         PrintStream printStream = new PrintStream(new Console(outputTextArea));
         System.setErr(printStream);
@@ -64,6 +61,7 @@ public class Controller {
         e.consume();
 
         int chain = chainSpinner.getValue();
+
         try {
             startingHeight = Float.parseFloat(startingHeightInput.getText());
             blipTopHeight = Float.parseFloat(blipTopHeightInput.getText());
@@ -96,35 +94,41 @@ public class Controller {
         offsetStream.forEach(System.out::println);
     }
 
-    private void calculateBlip(int chain, float startingHeight, float blipTopHeight) {
+    private void calculateBlip(int chain, float startingBlipHeight, float blipTopHeight) {
 
         float heightDelta;
         float jumpApex = 0;
         float nearestCombinedOffset = 0;
-        float nearestOffset = 0;
 
         for (int i = 0; i < chain; i++) {
-            heightDelta = startingHeight - blipTopHeight;
-            nearestCombinedOffset =
-                    tierHelper.getNearestOffset(startingHeight, -heightDelta);
-            jumpApex = tierHelper.getJumpApex(startingHeight);
-            // poss checking
-            nearestOffset = tierHelper.getOffset(-heightDelta); // key from map
-            startingHeight = nearestCombinedOffset;
+            heightDelta = startingBlipHeight - blipTopHeight;
+            tierHelper.calculateOffsets(heightDelta);
+            //check?
+
+            nearestCombinedOffset = startingBlipHeight + tierHelper.getOffset();
+            jumpApex = tierHelper.calculateJumpApex(nearestCombinedOffset);
+            startingBlipHeight = nearestCombinedOffset;
         }
 
         isBlipPossibleTextField.setText(
                 tierHelper.isBlipPossible(
-                                nearestOffset,
                                 nearestCombinedOffset,
                                 blipBottomHeight)
                         ? "Yes"
                         : "No");
         nearestCombinedOffsetTextField.setText(String.valueOf(nearestCombinedOffset));
         jumpApexTextField.setText(String.valueOf(jumpApex));
-        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.minimumBottomBlipHeight));
+        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.getMinimumBottomBlipHeight()));
 
         lastBlipHeight = nearestCombinedOffset;
+    }
+
+    public static float getBlipBottomHeight(){
+        return blipBottomHeight;
+    }
+
+    public static float getBlipTopHeight(){
+        return blipTopHeight;
     }
 
     public static class Console extends OutputStream {
