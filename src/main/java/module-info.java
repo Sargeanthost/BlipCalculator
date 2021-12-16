@@ -1,9 +1,8 @@
-module girraiffe {
+module girraiffe.blipcalculatornew {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.desktop;
     requires java.prefs;
-    requires javafx.graphics;
+    requires java.desktop;
 
     opens girraiffe to javafx.fxml;
     exports girraiffe;
