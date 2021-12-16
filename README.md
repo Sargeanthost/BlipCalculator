@@ -1,9 +1,10 @@
 # Blip Calculator
 
 ## What is the point of this tool?
+
 I grew tired of relying on other people finding blip entrances for me and wasting time.
 
-I also wanted to use JavaFX, so there's that.
+I also wanted to use JavaFX.
 
 ## Interface
 
