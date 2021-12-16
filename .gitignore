@@ -1,8 +1,3 @@
-.classpath
-.project
-/.idea/*
-/*.iml
-/target/
-/out/
-/.idea/
-/src/main/resources/META-INF/
+.idea/*
+*.iml
+target/
