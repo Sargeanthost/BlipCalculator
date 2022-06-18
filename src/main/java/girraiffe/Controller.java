@@ -23,6 +23,9 @@ public class Controller {
     private CheckMenuItem alwaysOnTopCheckMenuItem;
 
     @FXML
+    private CheckMenuItem is1_9MenuItem;
+
+    @FXML
     private TextField startingHeightInput;
 
     @FXML
@@ -48,6 +51,8 @@ public class Controller {
 
     @FXML
     private TextField isBlipPossibleTextField;
+
+    private boolean is1_9 = false;
 
     @FXML
     private void initialize() {
@@ -93,6 +98,12 @@ public class Controller {
         System.out.println();
     }
 
+    @FXML
+    void is1_9(ActionEvent event) {
+        event.consume();
+        is1_9 = is1_9MenuItem.isSelected();
+    }
+
     private void calculateBlip(int chain, float startingBlipHeight, float blipTopHeight) {
         float heightDelta;
         float jumpApex = 0;
@@ -100,7 +111,7 @@ public class Controller {
 
         for (int i = 0; i < chain; i++) {
             heightDelta = startingBlipHeight - blipTopHeight;
-            tierHelper.calculateOffsets(heightDelta);
+            tierHelper.calculateOffsets(heightDelta, is1_9);
             nearestCombinedOffset = startingBlipHeight + tierHelper.get_offset();
             jumpApex = tierHelper.calculateJumpApex(nearestCombinedOffset);
             startingBlipHeight = nearestCombinedOffset;
