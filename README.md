@@ -1,14 +1,17 @@
-# Blip Calculator
+# Parkour Tool
 
 ## What is the point of this tool?
 
-I grew tired of relying on other people finding blip entrances for me and wasting time.
-
-I also wanted to use JavaFX.
+Centralize parkour tools in one place.
 
 ## Interface
 
-![image](https://i.imgur.com/UcQMyy0.png)
+![image]()
+
+## Compile from source
+
+The project can be run from a terminal. Make sure `JAVA_HOME` is set to 11 or greater, and run `mvn clean javafx:run` in
+ the same directory. Alternatively in IntelliJ, open `Plugins > compiler > compiler:compile` and run with `Plugins > javafx > javafx:run`
 
 
 ## Future features
@@ -21,4 +24,10 @@ I also wanted to use JavaFX.
 
 ~~Have entrance co-ordinates print for starting heights above Y=255~~
 
+
+
 Add 1.9 support
+
+Add general Minecraft parkour functionality
+
+Correct blip calculation (1;1;1 => yes when should be no)
