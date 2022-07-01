@@ -6,13 +6,13 @@ Centralize parkour tools in one place.
 
 ## Interface
 
-![image](https://imgur.com/a/RSgQUcj "parkour tool interface")
+![Imgur](https://i.imgur.com/2MM5v5K.png)
 
 ## Compile from source
 
 The project can be run from a terminal. Make sure `JAVA_HOME` is set to 11 or greater, and run `mvn clean javafx:run` in
- the same directory. Alternatively in IntelliJ, open `Plugins > compiler > compiler:compile` and run with `Plugins > javafx > javafx:run`
-
+the same directory. Alternatively in IntelliJ, open `Plugins > compiler > compiler:compile` and run
+with `Plugins > javafx > javafx:run`.
 
 ## Future features
 
@@ -24,9 +24,7 @@ The project can be run from a terminal. Make sure `JAVA_HOME` is set to 11 or gr
 
 ~~Have entrance co-ordinates print for starting heights above Y=255~~
 
-
-
-Add 1.9 support
+~~Add 1.9 support~~ No longer working on
 
 Add general Minecraft parkour functionality
 

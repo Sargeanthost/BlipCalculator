@@ -3,66 +3,123 @@ package girraiffe;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class Controller {
-    private TierHelper tierHelper;
 
-    private static float blipTopHeight = 0;
-    private float startingHeight = 0;
-    private static float blipBottomHeight = 0;
+    @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
+
+    @FXML private TextField bcBlipBottomHeightTf;
+
+    @FXML private TextField bcBlipPossibleTf;
+
+    @FXML private TextField bcBlipTopHeightTf;
+
+    @FXML private Spinner<Integer> bcChainS;
+
+    @FXML private TextField bcJumpApexTf;
+
+    @FXML private TextField bcMinimumBottomBlipHeightTf;
+
+    @FXML private TextField bcNearestTierTf;
+
+    @FXML private TextArea bcOutputTa;
+
+    @FXML private TextField bcStartingHeightTf;
+
+    @FXML private TextField bscInitSpeedBackwardsTf;
+
+    @FXML private ComboBox<String> bscMmTypeCb;
+
+    @FXML private TextField bscNumJumpsTf;
+
+    @FXML private TextArea bscOutputTa;
+
+    @FXML private Spinner<Integer> bscSlownessS;
+
+    @FXML private Spinner<Integer> bscSwiftnessS;
+
+    @FXML private TextField jcBoundaryTf;
+
+    @FXML private CheckBox jcDelayedCb;
+
+    @FXML private CheckBox jcIceCb;
+
+    @FXML private TextField jcInitSpeedTf;
+
+    @FXML private ComboBox<String> jcMmTypeCb;
+
+    @FXML private TextArea jcOutputTa;
+
+    @FXML private CheckBox jcSlimeCb;
+
+    @FXML private Spinner<Integer> jcSlownessS;
+
+    @FXML private Spinner<Integer> jcSwiftnessS;
+
+    @FXML private TextField jcUpdaryTf;
+
+    @FXML private TextField jcYLimitTf;
+
+    @FXML private TextArea tcOutputTa;
+
+    @FXML private TextField tcStartingHeightTf;
+
+    @FXML private TabPane tabPane;
+
+    private TierHelper tierHelper;
+    private BlipCalculator blipCalculator;
     private float lastBlipHeight = 0;
 
     @FXML
-    private CheckMenuItem alwaysOnTopCheckMenuItem;
-
-    @FXML
-    private CheckMenuItem is1_9MenuItem;
-
-    @FXML
-    private TextField startingHeightInput;
-
-    @FXML
-    private TextField blipTopHeightInput;
-
-    @FXML
-    private TextField blipBottomHeightTextField;
-
-    @FXML
-    private TextArea outputTextArea;
-
-    @FXML
-    private TextField jumpApexTextField;
-
-    @FXML
-    private TextField nearestCombinedOffsetTextField;
-
-    @FXML
-    private Spinner<Integer> chainSpinner;
-
-    @FXML
-    private TextField minimumBottomBlipHeightTextField;
-
-    @FXML
-    private TextField isBlipPossibleTextField;
-
-    private boolean is1_9 = false;
-
-    @FXML
     private void initialize() {
-        var helper = new Helper();
         tierHelper = new TierHelper();
-        helper.setNumericFormatter(startingHeightInput);
-        helper.setNumericFormatter(blipTopHeightInput);
-        helper.setNumericFormatter(blipBottomHeightTextField);
+        blipCalculator = new BlipCalculator();
+        bscMmTypeCb
+                .getItems()
+                .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+        jcMmTypeCb
+                .getItems()
+                .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+        setNumericFormat();
+        setStandardOut(new PrintStream(new Console(bcOutputTa)));
+        tabPane.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (observableValue, oldTab, newTab) -> {
+                            switch (newTab.getText()) {
+                                case "Tier Calculator":
+                                    setStandardOut(new PrintStream(new Console(tcOutputTa)));
+                                    break;
+                                case "Backwards Speed Calculator":
+                                    setStandardOut(new PrintStream(new Console(bscOutputTa)));
+                                    break;
+                                case "Jump Calculator":
+                                    setStandardOut(new PrintStream(new Console(jcOutputTa)));
+                                    break;
+                                default:
+                                    setStandardOut(new PrintStream(new Console(bcOutputTa)));
+                            }
+                        });
+    }
 
-        PrintStream printStream = new PrintStream(new Console(outputTextArea));
+    private void setNumericFormat() {
+        Helper.setNumericFormatter(bcStartingHeightTf);
+        Helper.setNumericFormatter(bcBlipTopHeightTf);
+        Helper.setNumericFormatter(bcBlipBottomHeightTf);
+        Helper.setNumericFormatter(tcStartingHeightTf);
+        Helper.setNumericFormatter(bscNumJumpsTf);
+        Helper.setNumericFormatter(bscInitSpeedBackwardsTf);
+        Helper.setNumericFormatter(jcInitSpeedTf);
+        Helper.setNumericFormatter(jcYLimitTf);
+        Helper.setNumericFormatter(jcUpdaryTf);
+        Helper.setNumericFormatter(jcBoundaryTf);
+    }
+
+    public void setStandardOut(PrintStream printStream) {
         System.setErr(printStream);
         System.setOut(printStream);
     }
@@ -73,57 +130,45 @@ public class Controller {
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
+    public void setLastBlipHeight(float lastBlipHeight) {
+        this.lastBlipHeight = lastBlipHeight;
+    }
+
+    public void setBlipCalculatorOutput(
+            String blipPossibleTf,
+            String nearestTierTf,
+            String jumpApexTf,
+            String minimumBottomBlipHeightTf) {
+        bcBlipPossibleTf.setText(blipPossibleTf);
+        bcNearestTierTf.setText(nearestTierTf);
+        bcJumpApexTf.setText(jumpApexTf);
+        bcMinimumBottomBlipHeightTf.setText(minimumBottomBlipHeightTf);
+    }
+
     @FXML
-    private void generateBlipStatistics(ActionEvent e) {
+    private void bcGenerateBlipStatistics(ActionEvent e) {
         e.consume();
-
-        int chain = chainSpinner.getValue();
-
         try {
-            startingHeight = Float.parseFloat(startingHeightInput.getText());
-            blipTopHeight = Float.parseFloat(blipTopHeightInput.getText());
-            blipBottomHeight = Float.parseFloat(blipBottomHeightTextField.getText());
+            blipCalculator.calculateBlip(
+                    bcChainS.getValue(),
+                    Float.parseFloat(bcStartingHeightTf.getText()),
+                    Float.parseFloat(bcBlipTopHeightTf.getText()),
+                    Float.parseFloat(bcBlipBottomHeightTf.getText()),
+                    this);
         } catch (Exception ignore) {
             System.out.println("Blip height and starting height not assigned");
         }
-
-        calculateBlip(chain, startingHeight, blipTopHeight);
     }
 
     @FXML
-    private void printOffsets(ActionEvent e) {
+    private void bcPrintOffsets(ActionEvent e) {
         e.consume();
         System.out.println("Offsets (if any): ");
-        tierHelper.newGenerateOffset(lastBlipHeight).stream().map(tierHelper::entranceGenerator).filter(s -> !s.equals("")).forEach(System.out::println);
+        tierHelper.newGenerateOffset(lastBlipHeight).stream()
+                .map(tierHelper::entranceGenerator)
+                .filter(s -> !s.equals(""))
+                .forEach(System.out::println);
         System.out.println();
-    }
-
-    @FXML
-    void is1_9(ActionEvent event) {
-        event.consume();
-        is1_9 = is1_9MenuItem.isSelected();
-    }
-
-    private void calculateBlip(int chain, float startingBlipHeight, float blipTopHeight) {
-        float heightDelta;
-        float jumpApex = 0;
-        float nearestCombinedOffset = 0;
-
-        for (int i = 0; i < chain; i++) {
-            heightDelta = startingBlipHeight - blipTopHeight;
-            tierHelper.calculateOffsets(heightDelta, is1_9);
-            nearestCombinedOffset = startingBlipHeight + tierHelper.get_offset();
-            jumpApex = tierHelper.calculateJumpApex(nearestCombinedOffset);
-            startingBlipHeight = nearestCombinedOffset;
-        }
-
-        isBlipPossibleTextField.setText(
-                tierHelper.isBlipPossible(nearestCombinedOffset, blipBottomHeight) ? "Yes" : "No");
-        nearestCombinedOffsetTextField.setText(String.valueOf(nearestCombinedOffset));
-        jumpApexTextField.setText(String.valueOf(jumpApex));
-        minimumBottomBlipHeightTextField.setText(String.valueOf(tierHelper.getMinimumBottomBlipHeight()));
-
-        lastBlipHeight = nearestCombinedOffset;
     }
 
     public static class Console extends OutputStream {

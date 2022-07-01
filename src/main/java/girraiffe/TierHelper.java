@@ -15,10 +15,10 @@ public class TierHelper {
         return predictedBlipHeight - offsetDelta <= blipBottomHeight;
     }
 
-    public void calculateOffsets(float heightDelta, boolean is1_9) {
+    public void calculateOffsets(float heightDelta) {
         //values obtained from https://www.mcpk.wiki/wiki/Tiers
         final double MM_CUTOFF_1_8 = 0.005;
-        final double MM_CUTOFF_1_9 = 0.003;
+
         var momentum = 0.42f;
         var nextOffset = momentum;
         var offset = 0.0f;
@@ -31,7 +31,7 @@ public class TierHelper {
                 momentum -= 0.08f;
                 momentum *= 0.98f;
 
-                if (Math.abs(momentum) >= (is1_9 ? MM_CUTOFF_1_9 : MM_CUTOFF_1_8)) {
+                if (Math.abs(momentum) >= MM_CUTOFF_1_8) {
                     nextOffset += momentum;
                 } else {
                     momentum = 0;
