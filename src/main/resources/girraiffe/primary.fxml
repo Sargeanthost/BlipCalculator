@@ -151,32 +151,12 @@
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextArea>
-                  <VBox alignment="CENTER">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                     <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
-                        <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
-                           <HBox prefHeight="100.0" prefWidth="200.0">
-                              <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
-                                      onAction="#bcPrintOffsets" prefWidth="120.0"
-                                      style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                      text="Calculate Offsets" textAlignment="CENTER">
-                              </Button>
-                           </HBox>
-                           <HBox prefHeight="100.0" prefWidth="200.0">
-                              <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
-                                      mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
-                                      style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                      text="Calculate Blip" textAlignment="CENTER">
-                              </Button>
-                           </HBox>
-                        </VBox>
-                        <VBox.margin>
-                           <Insets right="10.0" />
-                        </VBox.margin>
-                     </HBox>
-                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" onAction="#bcCalculateAndPrint" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
+                  </HBox>
                </VBox>
             </HBox>
          </AnchorPane>
@@ -225,29 +205,11 @@
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextArea>
-                  <VBox alignment="CENTER">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
                   <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
                      <VBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                      </VBox.margin>
-                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
-                                   onAction="#bcPrintOffsets" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Offsets" textAlignment="CENTER"/>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
-                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Blip" textAlignment="CENTER"/>
-                        </HBox>
-                     </VBox>
+                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" onAction="#tcCalculateAndPrint" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
                   </HBox>
                </VBox>
             </HBox>
@@ -363,29 +325,11 @@
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextArea>
-                  <VBox alignment="CENTER">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
                   <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
                      <VBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                      </VBox.margin>
-                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
-                                   onAction="#bcPrintOffsets" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Offsets" textAlignment="CENTER"/>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
-                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Blip" textAlignment="CENTER"/>
-                        </HBox>
-                     </VBox>
+                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
                   </HBox>
                </VBox>
             </HBox>
@@ -540,29 +484,11 @@
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextArea>
-                  <VBox alignment="CENTER">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
                   <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
                      <VBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                      </VBox.margin>
-                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
-                                   onAction="#bcPrintOffsets" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Offsets" textAlignment="CENTER"/>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
-                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
-                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
-                                   text="Calculate Blip" textAlignment="CENTER"/>
-                        </HBox>
-                     </VBox>
+                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
                   </HBox>
                </VBox>
             </HBox>

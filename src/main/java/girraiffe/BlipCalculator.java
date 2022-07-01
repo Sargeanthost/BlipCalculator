@@ -32,15 +32,16 @@ public class BlipCalculator {
                 String.valueOf(nearestCombinedOffset),
                 String.valueOf(jumpApex),
                 String.valueOf(tierHelper.getMinimumBottomBlipHeight()));
-        controller.setLastBlipHeight(nearestCombinedOffset);
-        //        bcBlipPossibleTf.setText(
-        //                tierHelper.isBlipPossible(nearestCombinedOffset, blipBottomHeight) ? "Yes"
-        // : "No");
-        //        bcNearestTierTf.setText(String.valueOf(nearestCombinedOffset));
-        //        bcJumpApexTf.setText(String.valueOf(jumpApex));
-        //
-        // bcMinBottomBlipHeightTf.setText(String.valueOf(tierHelper.getMinimumBottomBlipHeight()));
 
-        //        lastBlipHeight = nearestCombinedOffset;
+        printOffsets(nearestCombinedOffset);
+    }
+
+    private void printOffsets(float lastBlipHeight) {
+        System.out.println("Offsets (if any): ");
+        tierHelper.offsetList(lastBlipHeight, true).stream()
+                .map(tierHelper::entranceGenerator)
+                .filter(s -> !s.equals(""))
+                .forEach(System.out::println);
+        System.out.println();
     }
 }

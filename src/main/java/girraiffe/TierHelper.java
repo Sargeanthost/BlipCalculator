@@ -16,7 +16,7 @@ public class TierHelper {
     }
 
     public void calculateOffsets(float heightDelta) {
-        //values obtained from https://www.mcpk.wiki/wiki/Tiers
+        // values obtained from https://www.mcpk.wiki/wiki/Tiers
         final double MM_CUTOFF_1_8 = 0.005;
 
         var momentum = 0.42f;
@@ -43,13 +43,16 @@ public class TierHelper {
         setOffsets(offset, nextOffset);
     }
 
-    public List<Float> newGenerateOffset(float startingHeight) {
+    // make so takes in bool of jump or no jump. jump is current behaviour
+    public List<Float> offsetList(float startingHeight, boolean hasJumped) {
         final double MM_CUTOFF_1_8 = 0.005;
-        final double MM_CUTOFF_1_9 = 0.003;
-        var momentum = 0.42f;
-        var nextOffset = momentum;
-        var offset = 0.0f;
-        var ticks = 1;
+        float momentum = 0.42f;
+        if (!hasJumped) {
+            momentum = 0.0f;
+        }
+        float nextOffset = momentum;
+        float offset = 0.0f;
+        int ticks = 1;
         List<Float> newOffsetArray = new ArrayList<>();
 
         while (true) {
@@ -59,13 +62,14 @@ public class TierHelper {
                 momentum -= 0.08f;
                 momentum *= 0.98f;
 
-                //1.8 value for mm cutoff
                 if (Math.abs(momentum) >= MM_CUTOFF_1_8) {
                     nextOffset += momentum;
                 } else {
                     momentum = 0;
                 }
-                newOffsetArray.add(startingHeight + offset);
+                if (offset != 0.0f) {
+                    newOffsetArray.add(startingHeight + offset);
+                }
                 continue;
             }
             break;
@@ -73,19 +77,19 @@ public class TierHelper {
         return newOffsetArray;
     }
 
-    public String entranceGenerator(float startingHeight) {
-        if (startingHeight > 0) {
-            if (startingHeight % 1 < .0125) {
-                return startingHeight + " - td ceiling";
-            } else if (startingHeight % 1 > .1875 && startingHeight % 1 < .2) {
-                return startingHeight + " - td floor";
-            } else if (startingHeight % 1 > .5 && startingHeight % 1 < .5125) {
-                return startingHeight + " - cake + bean";
-            } else if (startingHeight % 1 > .5625 && startingHeight % 1 < .575) {
-                return startingHeight + " - bed + piston";
+    public String entranceGenerator(float height) {
+        if (height > 0) {
+            if (height % 1 < .0125) {
+                return height + " - td ceiling";
+            } else if (height % 1 > .1875 && height % 1 < .2) {
+                return height + " - td floor";
+            } else if (height % 1 > .5 && height % 1 < .5125) {
+                return height + " - cake + bean";
+            } else if (height % 1 > .5625 && height % 1 < .575) {
+                return height + " - bed + piston";
             }
         }
-      return "";
+        return "";
     }
 
     public float calculateJumpApex(double startingBlipHeight) {

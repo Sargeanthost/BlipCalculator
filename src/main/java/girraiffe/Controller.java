@@ -70,14 +70,14 @@ public class Controller {
 
     @FXML private TabPane tabPane;
 
-    private TierHelper tierHelper;
     private BlipCalculator blipCalculator;
-    private float lastBlipHeight = 0;
+    private TierCalculator tierCalculator;
 
     @FXML
     private void initialize() {
-        tierHelper = new TierHelper();
         blipCalculator = new BlipCalculator();
+        tierCalculator = new TierCalculator();
+        // .98  1  1.000048  1.00306323  1.08802
         bscMmTypeCb
                 .getItems()
                 .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
@@ -86,6 +86,7 @@ public class Controller {
                 .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
         setNumericFormat();
         setStandardOut(new PrintStream(new Console(bcOutputTa)));
+        // changes stdout when tab *changes*
         tabPane.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(
@@ -119,19 +120,15 @@ public class Controller {
         Helper.setNumericFormatter(jcBoundaryTf);
     }
 
-    public void setStandardOut(PrintStream printStream) {
-        System.setErr(printStream);
-        System.setOut(printStream);
-    }
-
     @FXML
     private void isStageAlwaysOnTop(ActionEvent e) {
         e.consume();
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
-    public void setLastBlipHeight(float lastBlipHeight) {
-        this.lastBlipHeight = lastBlipHeight;
+    public void setStandardOut(PrintStream printStream) {
+        System.setErr(printStream);
+        System.setOut(printStream);
     }
 
     public void setBlipCalculatorOutput(
@@ -146,7 +143,7 @@ public class Controller {
     }
 
     @FXML
-    private void bcGenerateBlipStatistics(ActionEvent e) {
+    private void bcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
             blipCalculator.calculateBlip(
@@ -156,19 +153,19 @@ public class Controller {
                     Float.parseFloat(bcBlipBottomHeightTf.getText()),
                     this);
         } catch (Exception ignore) {
-            System.out.println("Blip height and starting height not assigned");
+            System.out.println("Blip height and starting height not assigned!");
         }
     }
 
     @FXML
-    private void bcPrintOffsets(ActionEvent e) {
+    private void tcCalculateAndPrint(ActionEvent e){
         e.consume();
-        System.out.println("Offsets (if any): ");
-        tierHelper.newGenerateOffset(lastBlipHeight).stream()
-                .map(tierHelper::entranceGenerator)
-                .filter(s -> !s.equals(""))
-                .forEach(System.out::println);
-        System.out.println();
+        try {
+            System.out.println(Float.parseFloat(tcStartingHeightTf.getText()));
+            tierCalculator.calculateTier(Float.parseFloat(tcStartingHeightTf.getText()));
+        } catch (Exception ignore){
+            System.out.println("Starting height not assigned!");
+        }
     }
 
     public static class Console extends OutputStream {
