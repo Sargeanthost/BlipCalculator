@@ -15,10 +15,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
+        //https://stackoverflow.com/a/10122335
         Parent root = new FXMLLoader((App.class.getResource("primary.fxml"))).load();
-        Scene scene = new Scene(root, 600, 290);
+        Scene scene = new Scene(root, 600, 320);
         stage.setResizable(false);
-        stage.setTitle("Blip Calculator");
+        stage.setTitle("Parkour Tool");
         stage.setScene(scene);
         stage.show();
     }

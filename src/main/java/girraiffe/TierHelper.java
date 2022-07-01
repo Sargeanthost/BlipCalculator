@@ -18,7 +18,7 @@ public class TierHelper {
     public void calculateOffsets(float heightDelta) {
         //values obtained from https://www.mcpk.wiki/wiki/Tiers
         final double MM_CUTOFF_1_8 = 0.005;
-        final double MM_CUTOFF_1_9 = 0.003;
+
         var momentum = 0.42f;
         var nextOffset = momentum;
         var offset = 0.0f;
@@ -73,6 +73,21 @@ public class TierHelper {
         return newOffsetArray;
     }
 
+    public String entranceGenerator(float startingHeight) {
+        if (startingHeight > 0) {
+            if (startingHeight % 1 < .0125) {
+                return startingHeight + " - td ceiling";
+            } else if (startingHeight % 1 > .1875 && startingHeight % 1 < .2) {
+                return startingHeight + " - td floor";
+            } else if (startingHeight % 1 > .5 && startingHeight % 1 < .5125) {
+                return startingHeight + " - cake + bean";
+            } else if (startingHeight % 1 > .5625 && startingHeight % 1 < .575) {
+                return startingHeight + " - bed + piston";
+            }
+        }
+      return "";
+    }
+
     public float calculateJumpApex(double startingBlipHeight) {
         return (float) (startingBlipHeight + 1.2491871);
     }
@@ -87,22 +102,6 @@ public class TierHelper {
 
     public float getMinimumBottomBlipHeight() {
         return minimumBottomBlipHeight;
-    }
-
-    public String entranceGenerator(float startingHeight) {
-        if (startingHeight > 0) {
-            if (startingHeight % 1 > 0 && startingHeight % 1 < .0125) {
-                return startingHeight + " - td ceiling";
-            } else if (startingHeight % 1 > .1875 && startingHeight % 1 < .2) {
-                return startingHeight + " - td floor";
-            } else if (startingHeight % 1 > .5 && startingHeight % 1 < .5125) {
-                return startingHeight + " - cake + bean";
-            } else if (startingHeight % 1 > .5625 && startingHeight % 1 < .575) {
-                return startingHeight + " - bed + piston";
-            }
-        }
-
-      return "";
     }
 
     private void setOffsets(float offset, float nextOffset) {

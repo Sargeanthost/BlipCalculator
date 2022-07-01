@@ -1,176 +1,572 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
    <MenuBar layoutY="2.0" maxHeight="25.0" minHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Menu mnemonicParsing="false" text="Options">
          <CheckMenuItem fx:id="alwaysOnTopCheckMenuItem" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top" />
       </Menu>
    </MenuBar>
-   <HBox layoutY="26.0" prefHeight="405.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-      <VBox prefWidth="200.0">
-         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-            <Label text="Starting Height">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-               <font>
-                  <Font name="Tahoma" size="12.0"/>
-               </font>
-            </Label>
-            <HBox>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="startingHeightInput" text="0"/>
-            </HBox>
-            <Label text="Blip Top Height">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-               <font>
-                  <Font name="Tahoma" size="12.0"/>
-               </font>
-            </Label>
-            <HBox>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="blipTopHeightInput" text="0"/>
-            </HBox>
-            <Label text="Blip Bottom Height">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-               <font>
-                  <Font name="Tahoma" size="12.0"/>
-               </font>
-            </Label>
-            <HBox>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="blipBottomHeightTextField" text="0"/>
-            </HBox>
-            <Label text="Chain">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-            </Label>
-            <HBox>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <Spinner fx:id="chainSpinner" initialValue="1" max="29" min="1"/>
-            </HBox>
-         </VBox>
-      </VBox>
-      <VBox prefHeight="382.0" prefWidth="200.0">
-         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-            <Label text="Nearest Combined Offset">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-            </Label>
-            <HBox>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="nearestCombinedOffsetTextField" editable="false" focusTraversable="false" text="0"/>
-            </HBox>
-            <Label text="Jump Apex">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-            </Label>
-            <HBox>
-               <TextField fx:id="jumpApexTextField" editable="false" focusTraversable="false" text="0"/>
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-            </HBox>
-            <Label layoutX="10.0" layoutY="10.0" text="Minimum Bottom Blip Height">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-            </Label>
-            <HBox layoutX="10.0" layoutY="48.0">
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="minimumBottomBlipHeightTextField" editable="false" focusTraversable="false"
-                          text="0"/>
-            </HBox>
-            <Label layoutX="10.0" layoutY="136.0" text="Is Blip Possible">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-               </padding>
-            </Label>
-            <HBox layoutX="10.0" layoutY="174.0">
-               <padding>
-                  <Insets left="10.0"/>
-               </padding>
-               <TextField fx:id="isBlipPossibleTextField" editable="false" focusTraversable="false"/>
-            </HBox>
-         </VBox>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="382.0" prefWidth="200.0">
-         <TextArea fx:id="outputTextArea" editable="false" focusTraversable="false" prefHeight="162.0" prefWidth="277.0" wrapText="true">
-            <font>
-               <Font name="Tahoma" size="12.0" />
-            </font>
-            <VBox.margin>
-               <Insets right="10.0" top="10.0" />
-            </VBox.margin>
-         </TextArea>
-         <VBox alignment="CENTER">
-            <padding>
-               <Insets top="10.0" />
-            </padding>
-            <HBox alignment="TOP_CENTER">
-               <VBox alignment="TOP_CENTER" prefHeight="58.0" prefWidth="95.0">
-                  <Label alignment="CENTER" prefHeight="35.0" prefWidth="100.0" text="Calculate Blip">
-                     <font>
-                        <Font name="Tahoma" size="12.0"/>
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" top="10.0"/>
-                     </padding>
-                  </Label>
-                  <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#generateBlipStatistics"
-                          style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Print"
-                          textAlignment="CENTER">
-                     <font>
-                        <Font name="Tahoma" size="12.0"/>
-                     </font>
-                  </Button>
+   <TabPane fx:id="tabPane" layoutY="25.0" prefHeight="295.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <Tab closable="false" text="Blip Calculator">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <HBox prefHeight="266.0" prefWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <VBox prefWidth="200.0">
+                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <Label text="Starting Height">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Where you start the jump" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcStartingHeightTf" text="0" />
+                     </HBox>
+                     <Label text="Blip Top Height">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Top part of the blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcBlipTopHeightTf" text="0" />
+                     </HBox>
+                     <Label text="Blip Bottom Height">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="The bottom part of the blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcBlipBottomHeightTf" text="0" />
+                     </HBox>
+                     <Label text="Chain">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="How many times you chain the blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <Spinner fx:id="bcChainS" initialValue="1" max="29" min="1" />
+                     </HBox>
+                  </VBox>
                </VBox>
-               <VBox alignment="TOP_CENTER" prefHeight="58.0" prefWidth="116.0">
-                  <padding>
-                     <Insets right="10.0"/>
-                  </padding>
-                  <Label alignment="CENTER" text="Calculate Offsets">
-                     <font>
-                        <Font name="Tahoma" size="12.0"/>
-                     </font>
+               <VBox prefHeight="265.0" prefWidth="200.0">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <Label text="Nearest Tier">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="The tier for the top of the blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcNearestTierTf" disable="true" editable="false" focusTraversable="false" text="0" />
+                     </HBox>
+                     <Label text="Jump Apex">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="the highest Y coordinate you reach during the blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <TextField fx:id="bcJumpApexTf" disable="true" editable="false" focusTraversable="false" text="0" />
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                     </HBox>
+                     <Label layoutX="10.0" layoutY="10.0" text="Minimum Bottom Blip Height">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="The lowest Y coordinate such that you can still blip" />
+                        </tooltip>
+                     </Label>
+                     <HBox layoutX="10.0" layoutY="48.0">
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcMinimumBottomBlipHeightTf" disable="true" editable="false" focusTraversable="false" text="0" />
+                     </HBox>
+                     <Label layoutX="10.0" layoutY="136.0" text="Is Blip Possible?">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </Label>
+                     <HBox layoutX="10.0" layoutY="174.0">
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bcBlipPossibleTf" disable="true" editable="false" focusTraversable="false" promptText="-" />
+                     </HBox>
+                  </VBox>
+               </VBox>
+               <VBox alignment="TOP_CENTER" prefHeight="382.0" prefWidth="200.0">
+                  <TextArea fx:id="bcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <VBox alignment="CENTER">
                      <padding>
-                        <Insets bottom="10.0" left="10.0" top="10.0"/>
+                        <Insets top="10.0" />
                      </padding>
-                  </Label>
-                  <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#printOffsets"
-                          style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Print"
-                          textAlignment="CENTER">
-                     <font>
-                        <Font name="Tahoma" size="12.0"/>
-                     </font>
-                  </Button>
+                     <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                        <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
+                                      onAction="#bcPrintOffsets" prefWidth="120.0"
+                                      style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                      text="Calculate Offsets" textAlignment="CENTER">
+                              </Button>
+                           </HBox>
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
+                                      mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
+                                      style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                      text="Calculate Blip" textAlignment="CENTER">
+                              </Button>
+                           </HBox>
+                        </VBox>
+                        <VBox.margin>
+                           <Insets right="10.0" />
+                        </VBox.margin>
+                     </HBox>
+                  </VBox>
                </VBox>
             </HBox>
-         </VBox>
-      </VBox>
-   </HBox>
+         </AnchorPane>
+      </Tab>
+      <Tab closable="false" text="Tier Calculator">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <HBox prefHeight="266.0" prefWidth="600.0">
+               <VBox prefHeight="266.0" prefWidth="400.0">
+                  <VBox prefWidth="200.0">
+                     <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                        <Label text="Starting Height">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="The Y coordinate from which to calculate the offsets for entrances" />
+                           </tooltip>
+                        </Label>
+                        <HBox>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <TextField fx:id="tcStartingHeightTf" text="0" />
+                        </HBox>
+                        <HBox>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </VBox>
+                  </VBox>
+               </VBox>
+               <VBox prefHeight="267.0" prefWidth="200.0">
+                  <TextArea fx:id="tcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <VBox alignment="CENTER">
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                     <VBox.margin>
+                        <Insets right="10.0"/>
+                     </VBox.margin>
+                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
+                                   onAction="#bcPrintOffsets" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Offsets" textAlignment="CENTER"/>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
+                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Blip" textAlignment="CENTER"/>
+                        </HBox>
+                     </VBox>
+                  </HBox>
+               </VBox>
+            </HBox>
+         </AnchorPane>
+      </Tab>
+      <Tab closable="false" text="Backwards Speed Calculator">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <HBox prefHeight="266.0" prefWidth="600.0">
+               <VBox prefHeight="265.0" prefWidth="200.0">
+                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <Label text="Number of Jumps">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="How many times you press space going backwards" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bscNumJumpsTf" text="0" />
+                     </HBox>
+                     <Label text="Initial Speed Backwards">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Your initial speed backwards. Typically less than .2." />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="bscInitSpeedBackwardsTf" text="0" />
+                     </HBox>
+                     <Label text="Swiftness">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Level of swiftness potion" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                     </HBox>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <Spinner fx:id="bscSwiftnessS" initialValue="1" max="2" min="1" />
+                     </HBox>
+                     <Label text="Slowness">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Level of slowness potion." />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <Spinner fx:id="bscSlownessS" initialValue="1" max="4" min="1" />
+                     </HBox>
+                  </VBox>
+               </VBox>
+               <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="200.0">
+                  <Label text="Momentum Type">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Momentum type." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <ComboBox fx:id="bscMmTypeCb" prefWidth="149.0" promptText="Choose Momentum" />
+                  </HBox>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+               </VBox>
+               <VBox prefHeight="267.0" prefWidth="200.0">
+                  <TextArea fx:id="bscOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <VBox alignment="CENTER">
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                     <VBox.margin>
+                        <Insets right="10.0"/>
+                     </VBox.margin>
+                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
+                                   onAction="#bcPrintOffsets" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Offsets" textAlignment="CENTER"/>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
+                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Blip" textAlignment="CENTER"/>
+                        </HBox>
+                     </VBox>
+                  </HBox>
+               </VBox>
+            </HBox>
+         </AnchorPane>
+      </Tab>
+      <Tab closable="false" text="Jump Calculator">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <HBox prefHeight="266.0" prefWidth="600.0">
+               <VBox prefHeight="266.0" prefWidth="200.0">
+                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <Label text="Initial Speed">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Your initial speed backwards. Can be calculated with BSC tab." />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="jcInitSpeedTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                     </HBox>
+                     <Label text="Y Limit">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Y level up until where you want to check" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="jcYLimitTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                     </HBox>
+                     <Label text="Swiftness">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Level of swiftness potion" />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <Spinner fx:id="jcSwiftnessS" initialValue="1" max="2" min="1" prefHeight="25.0" prefWidth="149.0" />
+                     </HBox>
+                     <Label text="Slowness">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Level of slowness potion." />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <Spinner fx:id="jcSlownessS" initialValue="1" max="4" min="1" prefHeight="25.0" prefWidth="149.0" />
+                     </HBox>
+                  </VBox>
+               </VBox>
+               <VBox prefHeight="266.0" prefWidth="200.0">
+                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <Label text="Momentum Type">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Momentum type." />
+                        </tooltip>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <ComboBox fx:id="jcMmTypeCb" prefWidth="149.0" promptText="Choose Momentum" />
+                     </HBox>
+                     <Label text="Updary">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="jcUpdaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                     </HBox>
+                     <Label text="Boundary">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </Label>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <TextField fx:id="jcBoundaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                     </HBox>
+                     <HBox>
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" top="10.0" />
+                        </padding>
+                        <CheckBox fx:id="jcDelayedCb" mnemonicParsing="false" text="Delayed?">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="Check if you run a tick before jumping." />
+                           </tooltip>
+                        </CheckBox>
+                        <CheckBox fx:id="jcIceCb" mnemonicParsing="false" text="On Ice?">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="Check if you run on ice." />
+                           </tooltip>
+                        </CheckBox>
+                     </HBox>
+                     <HBox>
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <CheckBox fx:id="jcSlimeCb" mnemonicParsing="false" text="On Slime?">
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="Check if you run on slime." />
+                           </tooltip>
+                        </CheckBox>
+                     </HBox>
+                  </VBox>
+               </VBox>
+               <VBox alignment="TOP_CENTER" prefHeight="382.0" prefWidth="200.0">
+                  <TextArea fx:id="jcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <VBox alignment="CENTER">
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                     <VBox.margin>
+                        <Insets right="10.0"/>
+                     </VBox.margin>
+                     <VBox alignment="CENTER" prefHeight="65.0" prefWidth="90.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" minWidth="120.0" mnemonicParsing="false"
+                                   onAction="#bcPrintOffsets" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Offsets" textAlignment="CENTER"/>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <Button alignment="TOP_CENTER" contentDisplay="CENTER" minWidth="120.0"
+                                   mnemonicParsing="false" onAction="#bcGenerateBlipStatistics" prefWidth="120.0"
+                                   style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;"
+                                   text="Calculate Blip" textAlignment="CENTER"/>
+                        </HBox>
+                     </VBox>
+                  </HBox>
+               </VBox>
+            </HBox>
+         </AnchorPane>
+      </Tab>
+   </TabPane>
 </AnchorPane>
