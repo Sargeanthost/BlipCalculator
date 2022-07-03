@@ -39,7 +39,7 @@ public class BlipCalculator {
     private void printOffsets(float lastBlipHeight) {
         System.out.println("Offsets (if any): ");
         tierHelper.offsetList(lastBlipHeight, true).stream()
-                .map(tierHelper::entranceGenerator)
+                .map(height -> tierHelper.entranceGenerator(height, true))
                 .filter(s -> !s.equals(""))
                 .forEach(System.out::println);
         System.out.println();

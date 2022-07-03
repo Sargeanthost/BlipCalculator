@@ -77,7 +77,7 @@ public class TierHelper {
         return newOffsetArray;
     }
 
-    public String entranceGenerator(float height) {
+    public String entranceGenerator(float height, boolean exclusive) {
         if (height > 0) {
             if (height % 1 < .0125) {
                 return height + " - td ceiling";
@@ -89,7 +89,7 @@ public class TierHelper {
                 return height + " - bed + piston";
             }
         }
-        return "";
+        return exclusive ? "" : String.valueOf(height);
     }
 
     public float calculateJumpApex(double startingBlipHeight) {

@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -68,6 +69,8 @@ public class Controller {
 
     @FXML private TextField tcStartingHeightTf;
 
+    @FXML private CheckBox tcIsJump;
+
     @FXML private TabPane tabPane;
 
     private BlipCalculator blipCalculator;
@@ -86,7 +89,7 @@ public class Controller {
                 .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
         setNumericFormat();
         setStandardOut(new PrintStream(new Console(bcOutputTa)));
-        // changes stdout when tab *changes*
+        // Changes stdout when tab *changes*
         tabPane.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(
@@ -126,20 +129,12 @@ public class Controller {
         App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
     }
 
-    public void setStandardOut(PrintStream printStream) {
-        System.setErr(printStream);
-        System.setOut(printStream);
-    }
-
-    public void setBlipCalculatorOutput(
-            String blipPossibleTf,
-            String nearestTierTf,
-            String jumpApexTf,
-            String minimumBottomBlipHeightTf) {
-        bcBlipPossibleTf.setText(blipPossibleTf);
-        bcNearestTierTf.setText(nearestTierTf);
-        bcJumpApexTf.setText(jumpApexTf);
-        bcMinimumBottomBlipHeightTf.setText(minimumBottomBlipHeightTf);
+    @FXML
+    private void clearOutput(ActionEvent e){
+        for (Tab tab : tabPane.getTabs()){
+            System.out.println(tab.getText());
+            System.out.println(tab.getContent().getParent().getChildrenUnmodifiable().get(0).getParent().getChildrenUnmodifiable().get(0));
+        }
     }
 
     @FXML
@@ -153,19 +148,36 @@ public class Controller {
                     Float.parseFloat(bcBlipBottomHeightTf.getText()),
                     this);
         } catch (Exception ignore) {
-            System.out.println("Blip height and starting height not assigned!");
+            System.out.println(
+                    "Starting height, blip top height, or blip bottom height has not been assigned!");
         }
     }
 
     @FXML
-    private void tcCalculateAndPrint(ActionEvent e){
+    private void tcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
-            System.out.println(Float.parseFloat(tcStartingHeightTf.getText()));
-            tierCalculator.calculateTier(Float.parseFloat(tcStartingHeightTf.getText()));
-        } catch (Exception ignore){
-            System.out.println("Starting height not assigned!");
+            //            System.out.println(Float.parseFloat(tcStartingHeightTf.getText()));
+            tierCalculator.calculateTier(Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
+        } catch (Exception ignore) {
+            System.out.println("Starting height has not been assigned!");
         }
+    }
+
+    public void setBlipCalculatorOutput(
+            String blipPossibleTf,
+            String nearestTierTf,
+            String jumpApexTf,
+            String minimumBottomBlipHeightTf) {
+        bcBlipPossibleTf.setText(blipPossibleTf);
+        bcNearestTierTf.setText(nearestTierTf);
+        bcJumpApexTf.setText(jumpApexTf);
+        bcMinimumBottomBlipHeightTf.setText(minimumBottomBlipHeightTf);
+    }
+
+    public void setStandardOut(PrintStream printStream) {
+        System.setErr(printStream);
+        System.setOut(printStream);
     }
 
     public static class Console extends OutputStream {
