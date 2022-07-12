@@ -5,13 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class Controller {
 
-    @FXML private CheckMenuItem alwaysOnTopCheckMenuItem;
+    @FXML private CheckMenuItem alwaysOnTopCmi;
+
+    @FXML private MenuItem clearOutputMi;
 
     @FXML private TextField bcBlipBottomHeightTf;
 
@@ -126,14 +127,22 @@ public class Controller {
     @FXML
     private void isStageAlwaysOnTop(ActionEvent e) {
         e.consume();
-        App.stage.setAlwaysOnTop(alwaysOnTopCheckMenuItem.isSelected());
+        App.stage.setAlwaysOnTop(alwaysOnTopCmi.isSelected());
     }
 
     @FXML
-    private void clearOutput(ActionEvent e){
-        for (Tab tab : tabPane.getTabs()){
+    private void clearOutput(ActionEvent e) {
+        e.consume();
+        for (Tab tab : tabPane.getTabs()) {
             System.out.println(tab.getText());
-            System.out.println(tab.getContent().getParent().getChildrenUnmodifiable().get(0).getParent().getChildrenUnmodifiable().get(0));
+            System.out.println(
+                    tab.getContent()
+                            .getParent()
+                            .getChildrenUnmodifiable()
+                            .get(0)
+                            .getParent()
+                            .getChildrenUnmodifiable()
+                            .get(0));
         }
     }
 
@@ -141,11 +150,13 @@ public class Controller {
     private void bcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
+            float topHeight = Float.parseFloat(bcBlipTopHeightTf.getText());
+            float bottomHeight = Float.parseFloat(bcBlipBottomHeightTf.getText());
             blipCalculator.calculateBlip(
                     bcChainS.getValue(),
                     Float.parseFloat(bcStartingHeightTf.getText()),
-                    Float.parseFloat(bcBlipTopHeightTf.getText()),
-                    Float.parseFloat(bcBlipBottomHeightTf.getText()),
+                    topHeight,
+                    bottomHeight,
                     this);
         } catch (Exception ignore) {
             System.out.println(
@@ -157,8 +168,8 @@ public class Controller {
     private void tcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
-            //            System.out.println(Float.parseFloat(tcStartingHeightTf.getText()));
-            tierCalculator.calculateTier(Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
+            tierCalculator.calculateAndOutputTier(
+                    Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
         } catch (Exception ignore) {
             System.out.println("Starting height has not been assigned!");
         }

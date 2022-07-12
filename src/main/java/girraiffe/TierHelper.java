@@ -4,28 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TierHelper {
-    private float _offset = 0.0f;
-    private float nextOffset = 0.0f;
+    private float position = 0.0f;
+    private float nextPosition = 0.0f;
     private float minimumBottomBlipHeight = 0.0f;
 
-    public boolean isBlipPossible(float predictedBlipHeight, float blipBottomHeight) {
-        var offsetDelta = Math.abs(getNextOffset() - get_offset());
-        setMinimumBottomBlipHeight(predictedBlipHeight - offsetDelta);
-
-        return predictedBlipHeight - offsetDelta <= blipBottomHeight;
+    public boolean isBlipPossible(
+            float blipTopHeight, float blipBottomHeight, float position, float nextPosition) {
+        if (blipBottomHeight >= blipTopHeight || position < blipTopHeight) {
+            return false;
+        }
+        if (position > blipTopHeight && nextPosition < blipBottomHeight) {
+            return true;
+        }
+        System.out.println("Unexpected blip condition");
+        return true;
     }
 
-    public void calculateOffsets(float heightDelta) {
-        // values obtained from https://www.mcpk.wiki/wiki/Tiers
+    public void calculateOffsets(float blipBottomHeight, float startingHeight) {
+        // https://www.mcpk.wiki/wiki/Tiers
         final double MM_CUTOFF_1_8 = 0.005;
-
-        var momentum = 0.42f;
-        var nextOffset = momentum;
-        var offset = 0.0f;
-        var ticks = 1;
+        int ticks = 1;
+        float momentum = 0.42f;
+        float nextOffset = momentum;
+        float offset = 0.0f;
+        float position = startingHeight;
+        float positionNextTick = position; // not good for first tick
 
         while (true) {
-            if (ticks < 12 || heightDelta > Math.abs(nextOffset)) {
+            if (ticks < 7 || !(positionNextTick < blipBottomHeight)) {
                 ++ticks;
                 offset += momentum;
                 momentum -= 0.08f;
@@ -36,20 +42,19 @@ public class TierHelper {
                 } else {
                     momentum = 0;
                 }
+                position = startingHeight + offset;
+                positionNextTick = startingHeight + nextOffset;
                 continue;
             }
             break;
         }
-        setOffsets(offset, nextOffset);
+        setMinimumBottomBlipHeight(positionNextTick);
+        setPositions(position, positionNextTick);
     }
 
-    // make so takes in bool of jump or no jump. jump is current behaviour
     public List<Float> offsetList(float startingHeight, boolean hasJumped) {
         final double MM_CUTOFF_1_8 = 0.005;
-        float momentum = 0.42f;
-        if (!hasJumped) {
-            momentum = 0.0f;
-        }
+        float momentum = hasJumped ? 0.42f : 0.0f;
         float nextOffset = momentum;
         float offset = 0.0f;
         int ticks = 1;
@@ -68,6 +73,7 @@ public class TierHelper {
                     momentum = 0;
                 }
                 if (offset != 0.0f) {
+                    // prevents the first number being added twice
                     newOffsetArray.add(startingHeight + offset);
                 }
                 continue;
@@ -96,24 +102,24 @@ public class TierHelper {
         return (float) (startingBlipHeight + 1.2491871);
     }
 
-    public float get_offset() {
-        return _offset;
+    public float getPosition() {
+        return position;
     }
 
-    public float getNextOffset() {
-        return nextOffset;
+    public float getNextPosition() {
+        return nextPosition;
     }
 
     public float getMinimumBottomBlipHeight() {
         return minimumBottomBlipHeight;
     }
 
-    private void setOffsets(float offset, float nextOffset) {
-        this._offset = offset;
-        this.nextOffset = nextOffset;
-    }
-
     private void setMinimumBottomBlipHeight(float minimumBottomBlipHeight) {
         this.minimumBottomBlipHeight = minimumBottomBlipHeight;
+    }
+
+    private void setPositions(float position, float nextPosition) {
+        this.position = position;
+        this.nextPosition = nextPosition;
     }
 }

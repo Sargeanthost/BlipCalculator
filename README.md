@@ -10,22 +10,26 @@ Centralize parkour tools in one place.
 
 ## Compile from source
 
-The project can be run from a terminal. Make sure `JAVA_HOME` is set to 11 or greater, and run `mvn clean javafx:run` in
-the same directory. Alternatively in IntelliJ, open `Plugins > compiler > compiler:compile` and run
+Make sure the `JAVA_HOME` environment variable is set to version 11 or greater. In IntelliJ, open the Maven tab 
+(default is the right side of the editor) and navigate to `Plugins > compiler > compiler:compile` and run
 with `Plugins > javafx > javafx:run`.
 
 ## Future features
 
-~~Print the co-ordinates for entrances after a blip is completed~~
+### In progress
 
-~~Have a blip-chain feature~~
+* Add general Minecraft parkour functionality
+* Add jump check box for blip calculator
+* Prevent "Offsets: " from being printed when blip is not possible
 
-~~Have a label to say if the blip you are attempting is possible or not~~
+### Completed
 
-~~Have entrance co-ordinates print for starting heights above Y=255~~
+* Have a blip-chain feature
+* Have a label to say if the blip you are attempting is possible or not
+* Have entrance co-ordinates print for all coordinates 
+* Correct blip calculation (1;1;1 => yes when should be no, doesn't work for starting heights a less than blip bottom
+  height)
 
-~~Add 1.9 support~~ No longer working on
+### Dropped
 
-Add general Minecraft parkour functionality
-
-Correct blip calculation (1;1;1 => yes when should be no)
+* Add 1.9 support
