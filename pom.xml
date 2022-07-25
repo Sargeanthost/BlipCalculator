@@ -41,9 +41,54 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
+                    <!--                    <compress>2</compress>-->
+                    <!--                    <noHeaderFiles>true</noHeaderFiles>-->
+                    <!--                    <stripDebug>true</stripDebug>-->
+                    <!--                    <noManPages>true</noManPages>-->
+                    <!--                    <launcher>ParkourTool</launcher>-->
                     <mainClass>girraiffe.App</mainClass>
+                    <!--                    <jlinkImageName>ParkourTool</jlinkImageName>-->
+                    <!--                    <jlinkZipName>ParkourTool</jlinkZipName>-->
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.5.2</version>
+                <configuration>
+<!--                    https://dev.to/cherrychain/javafx-jlink-and-jpackage-h9-->
+                    <name>ParkourTool</name>
+                    <appVersion>0.0.1</appVersion>
+                    <vendor>girraiffe</vendor>
+                    <destination>target/exe</destination>
+                    <module>girraiffe.parkourTool/girraiffe.App</module>
+                    <runtimeImage>target/ParkourTool</runtimeImage>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.3.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <shadedArtifactAttached>true</shadedArtifactAttached>-->
+<!--                            <transformers>-->
+<!--                                <transformer implementation=-->
+<!--                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                    <mainClass>girraiffe.App</mainClass>-->
+<!--                                </transformer>-->
+<!--                            </transformers>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>

@@ -53,7 +53,7 @@ public class TierHelper {
     }
 
     public List<Float> offsetList(float startingHeight, boolean hasJumped) {
-        final double MM_CUTOFF_1_8 = 0.005;
+        final double MM_CUTOFF_1_8 = 0.0054945055; //.005/.91 for air, /.98 for ground
         float momentum = hasJumped ? 0.42f : 0.0f;
         float nextOffset = momentum;
         float offset = 0.0f;
@@ -83,7 +83,17 @@ public class TierHelper {
         return newOffsetArray;
     }
 
+    /**
+     * Checks if there is a small entrance possible for the given height. Doesn't check negative
+     * numbers as that's impossible in minecraft
+     *
+     * @param height the height to check
+     * @param exclusive weather or not to print the height even though an entrance wasn't found
+     * @return returns either the given height concatenated with the entrance, or the entrance if
+     *     exclusive is set to false
+     */
     public String entranceGenerator(float height, boolean exclusive) {
+        // TODO add normal 2 block entrance, this happens at lower tiers.
         if (height > 0) {
             if (height % 1 < .0125) {
                 return height + " - td ceiling";

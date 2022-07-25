@@ -15,12 +15,16 @@ Make sure the `JAVA_HOME` environment variable is set to version 11 or greater. 
 with `Plugins > javafx > javafx:run`.
 
 ## Future features
+* Node based gui for plug and play capability 
+* Inverse jump solver
+* Jump solver
 
 ### In progress
 
 * Add general Minecraft parkour functionality
 * Add jump check box for blip calculator
 * Prevent "Offsets: " from being printed when blip is not possible
+* Add slime calculator
 
 ### Completed
 

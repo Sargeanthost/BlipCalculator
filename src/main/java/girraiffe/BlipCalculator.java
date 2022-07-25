@@ -8,7 +8,7 @@ public class BlipCalculator {
     }
 
     /**
-     * Calculates blip when jumping from {@code startingHeight}
+     * Calculates blip when jumping from {@code startingHeight} and has the sideeffect of calling a print to the output.
      *
      * @param chain how many times to chain the blip
      * @param startingHeight the starting height before you jump into a blip
@@ -64,6 +64,7 @@ public class BlipCalculator {
     }
 
     private void printOffsets(float lastBlipHeight) {
+        //TODO dont print offsets when lastblipheight doesnt contain anything
         System.out.println("Offsets: ");
         tierHelper.offsetList(lastBlipHeight, true).stream()
                 .map(height -> tierHelper.entranceGenerator(height, true))

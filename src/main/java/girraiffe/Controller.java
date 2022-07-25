@@ -3,125 +3,138 @@ package girraiffe;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TabPane;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class Controller {
 
+    //menu
     @FXML private CheckMenuItem alwaysOnTopCmi;
-
     @FXML private MenuItem clearOutputMi;
-
+    //blip calculator
     @FXML private TextField bcBlipBottomHeightTf;
-
     @FXML private TextField bcBlipPossibleTf;
-
     @FXML private TextField bcBlipTopHeightTf;
-
     @FXML private Spinner<Integer> bcChainS;
-
     @FXML private TextField bcJumpApexTf;
-
     @FXML private TextField bcMinimumBottomBlipHeightTf;
-
     @FXML private TextField bcNearestTierTf;
-
     @FXML private TextArea bcOutputTa;
-
     @FXML private TextField bcStartingHeightTf;
-
+    //backwards speeds calculator
     @FXML private TextField bscInitSpeedBackwardsTf;
-
     @FXML private ComboBox<String> bscMmTypeCb;
-
     @FXML private TextField bscNumJumpsTf;
-
     @FXML private TextArea bscOutputTa;
-
     @FXML private Spinner<Integer> bscSlownessS;
-
+    @FXML private TextField bscJumpAngleTf;
     @FXML private Spinner<Integer> bscSwiftnessS;
-
+    @FXML private ComboBox<String> bscJumpTypeCb;
+    @FXML private ComboBox<String> bscStrafeCb;
+    //jump calculator
     @FXML private TextField jcBoundaryTf;
-
     @FXML private CheckBox jcDelayedCb;
-
     @FXML private CheckBox jcIceCb;
-
     @FXML private TextField jcInitSpeedTf;
-
     @FXML private ComboBox<String> jcMmTypeCb;
-
     @FXML private TextArea jcOutputTa;
-
     @FXML private CheckBox jcSlimeCb;
-
     @FXML private Spinner<Integer> jcSlownessS;
-
     @FXML private Spinner<Integer> jcSwiftnessS;
-
     @FXML private TextField jcUpdaryTf;
-
     @FXML private TextField jcYLimitTf;
-
+    //tier calculator
     @FXML private TextArea tcOutputTa;
-
     @FXML private TextField tcStartingHeightTf;
-
     @FXML private CheckBox tcIsJump;
-
+    //global
     @FXML private TabPane tabPane;
-
     private BlipCalculator blipCalculator;
     private TierCalculator tierCalculator;
+    private Console bcConsole;
+    private Console tcConsole;
+    private Console bscConsole;
+    private Console jcConsole;
 
     @FXML
     private void initialize() {
+        //call these inside calculate function
         blipCalculator = new BlipCalculator();
         tierCalculator = new TierCalculator();
-        // .98  1  1.000048  1.00306323  1.08802
-        bscMmTypeCb
-                .getItems()
-                .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
-        jcMmTypeCb
-                .getItems()
-                .addAll("No Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+        bcConsole = new Console(bcOutputTa);
+        tcConsole = new Console(tcOutputTa);
+        bscConsole = new Console(bscOutputTa);
+        jcConsole = new Console(jcOutputTa);
+
+        setComboBoxes();
         setNumericFormat();
-        setStandardOut(new PrintStream(new Console(bcOutputTa)));
-        // Changes stdout when tab *changes*
+        initOutputPaneListener();
+    }
+
+    private void initOutputPaneListener() {
+        //comment out to get sout to terminal
+        setStandardOut(new PrintStream(bcConsole));
         tabPane.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(
                         (observableValue, oldTab, newTab) -> {
                             switch (newTab.getText()) {
                                 case "Tier Calculator":
-                                    setStandardOut(new PrintStream(new Console(tcOutputTa)));
+                                    setStandardOut(new PrintStream(tcConsole));
                                     break;
                                 case "Backwards Speed Calculator":
-                                    setStandardOut(new PrintStream(new Console(bscOutputTa)));
+                                    setStandardOut(new PrintStream(bscConsole));
                                     break;
                                 case "Jump Calculator":
-                                    setStandardOut(new PrintStream(new Console(jcOutputTa)));
+                                    setStandardOut(new PrintStream(jcConsole));
                                     break;
                                 default:
-                                    setStandardOut(new PrintStream(new Console(bcOutputTa)));
+                                    setStandardOut(new PrintStream(bcConsole));
                             }
                         });
     }
 
+    private void setComboBoxes() {
+        // .98  1  1.000048  1.00306323  1.08802
+        bscMmTypeCb
+                .getItems()
+                .addAll("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+        bscMmTypeCb.getSelectionModel().selectFirst();
+        bscStrafeCb
+                .getItems()
+                .addAll("No", "Yes");
+        bscStrafeCb.getSelectionModel().selectFirst();
+        //check for strafe on each of these
+        bscJumpTypeCb
+                .getItems()
+                .addAll("Jam", "Fmm", "Pessi");
+        bscJumpTypeCb.getSelectionModel().selectFirst();
+        jcMmTypeCb
+                .getItems()
+                .addAll("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+        jcMmTypeCb.getSelectionModel().selectFirst();
+    }
+
     private void setNumericFormat() {
-        Helper.setNumericFormatter(bcStartingHeightTf);
-        Helper.setNumericFormatter(bcBlipTopHeightTf);
-        Helper.setNumericFormatter(bcBlipBottomHeightTf);
-        Helper.setNumericFormatter(tcStartingHeightTf);
-        Helper.setNumericFormatter(bscNumJumpsTf);
-        Helper.setNumericFormatter(bscInitSpeedBackwardsTf);
-        Helper.setNumericFormatter(jcInitSpeedTf);
-        Helper.setNumericFormatter(jcYLimitTf);
-        Helper.setNumericFormatter(jcUpdaryTf);
-        Helper.setNumericFormatter(jcBoundaryTf);
+        Helper.setDecimalNumericFormatter(bcStartingHeightTf);
+        Helper.setDecimalNumericFormatter(bcBlipTopHeightTf);
+        Helper.setDecimalNumericFormatter(bcBlipBottomHeightTf);
+        Helper.setDecimalNumericFormatter(tcStartingHeightTf);
+        Helper.setDecimalNumericFormatter(bscNumJumpsTf);
+        Helper.setDecimalNumericFormatter(bscInitSpeedBackwardsTf);
+        Helper.setDecimalNumericFormatter(jcInitSpeedTf);
+        Helper.setDecimalNumericFormatter(jcYLimitTf);
+        Helper.setDecimalNumericFormatter(jcUpdaryTf);
+        Helper.setDecimalNumericFormatter(jcBoundaryTf);
     }
 
     @FXML
@@ -132,18 +145,12 @@ public class Controller {
 
     @FXML
     private void clearOutput(ActionEvent e) {
-        e.consume();
-        for (Tab tab : tabPane.getTabs()) {
-            System.out.println(tab.getText());
-            System.out.println(
-                    tab.getContent()
-                            .getParent()
-                            .getChildrenUnmodifiable()
-                            .get(0)
-                            .getParent()
-                            .getChildrenUnmodifiable()
-                            .get(0));
-        }
+        //cant think of another way without reflection hell, and cant target current textarea so have to just clear them all
+        bcConsole.console.clear();
+        tcConsole.console.clear();
+        bscConsole.console.clear();
+        jcConsole.console.clear();
+
     }
 
     @FXML
@@ -172,6 +179,25 @@ public class Controller {
                     Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
         } catch (Exception ignore) {
             System.out.println("Starting height has not been assigned!");
+        }
+    }
+
+    @FXML
+    private void bscCalculateAndPrint(ActionEvent e){
+        e.consume();
+        try{
+            BackwardsSpeedCalculator bsc = new BackwardsSpeedCalculator(
+                    Integer.parseInt(bscNumJumpsTf.getText()),
+                    bscSwiftnessS.getValue(),
+                    bscSlownessS.getValue(),
+                    Float.parseFloat(bscInitSpeedBackwardsTf.getText()),
+                    Float.parseFloat(bscJumpAngleTf.getText()),
+                    bscMmTypeCb.getValue(),
+                    bscJumpTypeCb.getValue(),
+                    Boolean.valueOf(bscStrafeCb.getValue())
+            );
+        } catch (Exception ignore){
+            System.out.println("One of the variables has not been assigned!");
         }
     }
 

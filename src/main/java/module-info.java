@@ -1,4 +1,4 @@
-module girraiffe.blipcalculatornew {
+module girraiffe.parkourTool {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.prefs;
