@@ -170,6 +170,9 @@
                </VBox>
             </HBox>
          </AnchorPane>
+         <tooltip>
+            <Tooltip text="Calculates if a blip is possible and prints the entrances for the blip" />
+         </tooltip>
       </Tab>
       <Tab closable="false" text="Tier Calculator">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -222,76 +225,113 @@
                </VBox>
             </HBox>
          </AnchorPane>
+         <tooltip>
+            <Tooltip text="Prints each tier offset and the entrance if one exists" />
+         </tooltip>
       </Tab>
-      <Tab closable="false" text="Backwards Speed Calculator">
+      <Tab closable="false" text="Backwards Speed Block Calculator">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <HBox prefHeight="266.0" prefWidth="600.0">
-               <VBox prefHeight="265.0" prefWidth="200.0">
-                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                     <Label text="Number of Jumps">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
+               <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="133.0">
+                  <Label text="Number of Jumps">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="How many times you press space going backwards" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="bscNumJumpsTf" prefWidth="120.0" text="1">
                         <tooltip>
-                           <Tooltip text="How many times you press space going backwards" />
+                           <Tooltip text="Number of jumps after doing bwmm (going forward)" />
                         </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="bscNumJumpsTf" text="1" />
-                     </HBox>
-                     <Label text="Initial Speed Backwards">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
+                     </TextField>
+                  </HBox>
+                  <Label text="Backwards Speed">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Your initial speed backwards. Typically less than .2." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="bscInitSpeedBackwardsTf" prefWidth="120.0" text="0">
                         <tooltip>
-                           <Tooltip text="Your initial speed backwards. Typically less than .2." />
+                           <Tooltip text="Speed vector the tick before you jump after preforming bwmm" />
                         </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="bscInitSpeedBackwardsTf" text="0" />
-                     </HBox>
-                     <Label text="Swiftness">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
+                     </TextField>
+                  </HBox>
+                  <Label text="Swiftness">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Level of swiftness potion" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <Spinner fx:id="bscSwiftnessS" initialValue="0" max="2" min="0">
                         <tooltip>
-                           <Tooltip text="Level of swiftness potion" />
+                           <Tooltip text="Potion of swiftness level" />
                         </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                     </HBox>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <Spinner fx:id="bscSwiftnessS" initialValue="1" max="2" min="1" />
-                     </HBox>
-                     <Label text="Slowness">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
+                     </Spinner>
+                  </HBox>
+                  <Label text="Slowness">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Level of slowness potion." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <Spinner fx:id="bscSlownessS" initialValue="0" max="4" min="0">
                         <tooltip>
-                           <Tooltip text="Level of slowness potion." />
+                           <Tooltip text="Potion of slowness level" />
                         </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <Spinner fx:id="bscSlownessS" initialValue="1" max="4" min="1" />
-                     </HBox>
-                  </VBox>
+                     </Spinner>
+                  </HBox>
                </VBox>
-               <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="200.0">
+               <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="133.0">
+                  <Label text="Tier Momentum">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="How many times you press space going backwards" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <children>
+                        <Spinner fx:id="bscTierMmS" initialValue="0" max="7" min="-256" prefWidth="120.0">
+                           <tooltip>
+                              <Tooltip text="The tier you are jumping on e.g.  slab is + 3" />
+                           </tooltip>
+                        </Spinner>
+                     </children>
+                  </HBox>
                   <Label text="Jump Angle">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -305,7 +345,11 @@
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <TextField fx:id="bscJumpAngleTf" text="0" />
+                        <TextField fx:id="bscJumpAngleTf" prefWidth="120.0" text="0">
+                           <tooltip>
+                              <Tooltip text="The angle you jump forward at???????" />
+                           </tooltip>
+                        </TextField>
                      </children>
                   </HBox>
                   <Label text="Momentum Type">
@@ -320,45 +364,11 @@
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                     <ComboBox fx:id="bscMmTypeCb" prefWidth="149.0" promptText="Choose Momentum" />
-                  </HBox>
-                  <HBox>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <Label layoutX="10.0" layoutY="10.0" text="Jump Type">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <tooltip>
-                        <Tooltip text="Momentum type." />
-                     </tooltip>
-                  </Label>
-                  <HBox layoutX="10.0" layoutY="47.0">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
                      <children>
-                        <ComboBox fx:id="bscJumpTypeCb" prefWidth="149.0" promptText="Choose Jump" />
+                        <ComboBox fx:id="bscMmTypeCb" prefWidth="120.0" promptText="Choose Momentum" />
                      </children>
                   </HBox>
-                  <Label layoutX="10.0" layoutY="72.0" text="Strafing on jump">
+                  <Label text="Jump Type">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -366,16 +376,36 @@
                         <Tooltip text="Momentum type." />
                      </tooltip>
                   </Label>
-                  <HBox layoutX="10.0" layoutY="109.0">
+                  <HBox>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <ComboBox fx:id="bscStrafeCb" prefWidth="149.0" promptText="Choose State" />
+                        <ComboBox fx:id="bscJumpTypeCb" prefWidth="120.0" promptText="Choose Jump" />
                      </children>
                   </HBox>
                </VBox>
-               <VBox prefHeight="267.0" prefWidth="200.0">
+               <VBox layoutX="210.0" layoutY="10.0" maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="134.0">
+                  <children>
+                     <Label layoutX="10.0" layoutY="72.0" text="Strafing on jump">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <tooltip>
+                           <Tooltip text="Momentum type." />
+                        </tooltip>
+                     </Label>
+                     <HBox layoutX="10.0" layoutY="109.0">
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <children>
+                           <ComboBox fx:id="bscStrafeCb" prefWidth="120.0" promptText="Choose State" />
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+               <VBox prefHeight="265.0" prefWidth="200.0">
                   <TextArea fx:id="bscOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
@@ -390,6 +420,9 @@
                </VBox>
             </HBox>
          </AnchorPane>
+         <tooltip>
+            <Tooltip text="Calculates the blocks needed for a specific backwards speed" />
+         </tooltip>
       </Tab>
       <Tab closable="false" text="Jump Calculator">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -436,7 +469,7 @@
                         <padding>
                            <Insets left="10.0" />
                         </padding>
-                        <Spinner fx:id="jcSwiftnessS" initialValue="1" max="2" min="1" prefHeight="25.0" prefWidth="149.0" />
+                        <Spinner fx:id="jcSwiftnessS" initialValue="0" max="2" min="0" prefHeight="25.0" prefWidth="149.0" />
                      </HBox>
                      <Label text="Slowness">
                         <padding>
@@ -450,7 +483,7 @@
                         <padding>
                            <Insets left="10.0" />
                         </padding>
-                        <Spinner fx:id="jcSlownessS" initialValue="1" max="4" min="1" prefHeight="25.0" prefWidth="149.0" />
+                        <Spinner fx:id="jcSlownessS" initialValue="0" max="4" min="0" prefHeight="25.0" prefWidth="149.0" />
                      </HBox>
                   </VBox>
                </VBox>
@@ -540,7 +573,7 @@
                      </HBox>
                   </VBox>
                </VBox>
-               <VBox alignment="TOP_CENTER" prefHeight="382.0" prefWidth="200.0">
+               <VBox alignment="TOP_CENTER" prefHeight="265.0" prefWidth="200.0">
                   <TextArea fx:id="jcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
@@ -555,6 +588,9 @@
                </VBox>
             </HBox>
          </AnchorPane>
+         <tooltip>
+            <Tooltip text="Finds a jump based off of the initial speed forwards" />
+         </tooltip>
       </Tab>
    </TabPane>
 </AnchorPane>

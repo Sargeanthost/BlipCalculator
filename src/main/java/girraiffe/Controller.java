@@ -36,6 +36,7 @@ public class Controller {
     @FXML private TextField bscNumJumpsTf;
     @FXML private TextArea bscOutputTa;
     @FXML private Spinner<Integer> bscSlownessS;
+    @FXML private Spinner<Integer> bscTierMmS;
     @FXML private TextField bscJumpAngleTf;
     @FXML private Spinner<Integer> bscSwiftnessS;
     @FXML private ComboBox<String> bscJumpTypeCb;
@@ -91,7 +92,7 @@ public class Controller {
                                 case "Tier Calculator":
                                     setStandardOut(new PrintStream(tcConsole));
                                     break;
-                                case "Backwards Speed Calculator":
+                                case "Backwards Speed Block Calculator":
                                     setStandardOut(new PrintStream(bscConsole));
                                     break;
                                 case "Jump Calculator":
@@ -190,12 +191,14 @@ public class Controller {
                     Integer.parseInt(bscNumJumpsTf.getText()),
                     bscSwiftnessS.getValue(),
                     bscSlownessS.getValue(),
-                    Float.parseFloat(bscInitSpeedBackwardsTf.getText()),
+                    bscTierMmS.getValue(),
+                    Double.parseDouble(bscInitSpeedBackwardsTf.getText()),
                     Float.parseFloat(bscJumpAngleTf.getText()),
                     bscMmTypeCb.getValue(),
                     bscJumpTypeCb.getValue(),
                     Boolean.valueOf(bscStrafeCb.getValue())
             );
+            bsc.calculateBackwardsSpeed();
         } catch (Exception ignore){
             System.out.println("One of the variables has not been assigned!");
         }
