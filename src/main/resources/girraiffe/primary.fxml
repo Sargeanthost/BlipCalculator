@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
    <MenuBar layoutY="2.0" maxHeight="25.0" minHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Menu mnemonicParsing="false" text="Options">
          <CheckMenuItem fx:id="alwaysOnTopCmi" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top">
@@ -322,15 +322,13 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                      </padding>
-                     <children>
-                        <Spinner fx:id="bscTierMmS" initialValue="0" max="7" min="-256" prefWidth="120.0">
-                           <tooltip>
-                              <Tooltip text="The tier you are jumping on e.g.  slab is + 3" />
-                           </tooltip>
-                        </Spinner>
-                     </children>
+                     <Spinner fx:id="bscTierMmS" initialValue="0" max="7" min="-256" prefWidth="120.0">
+                        <tooltip>
+                           <Tooltip text="The tier you are jumping on e.g.  slab is + 3"/>
+                        </tooltip>
+                     </Spinner>
                   </HBox>
                   <Label text="Jump Angle">
                      <padding>
@@ -342,15 +340,13 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                      </padding>
-                     <children>
-                        <TextField fx:id="bscJumpAngleTf" prefWidth="120.0" text="0">
-                           <tooltip>
-                              <Tooltip text="The angle you jump forward at???????" />
-                           </tooltip>
-                        </TextField>
-                     </children>
+                     <TextField fx:id="bscJumpAngleTf" prefWidth="120.0" text="0">
+                        <tooltip>
+                           <Tooltip text="The angle you jump forward at???????"/>
+                        </tooltip>
+                     </TextField>
                   </HBox>
                   <Label text="Momentum Type">
                      <padding>
@@ -362,11 +358,9 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                      </padding>
-                     <children>
-                        <ComboBox fx:id="bscMmTypeCb" prefWidth="120.0" promptText="Choose Momentum" />
-                     </children>
+                     <ComboBox fx:id="bscMmTypeCb" prefWidth="120.0" promptText="Choose Momentum"/>
                   </HBox>
                   <Label text="Jump Type">
                      <padding>
@@ -378,32 +372,27 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                      </padding>
-                     <children>
-                        <ComboBox fx:id="bscJumpTypeCb" prefWidth="120.0" promptText="Choose Jump" />
-                     </children>
+                     <ComboBox fx:id="bscJumpTypeCb" prefWidth="120.0" promptText="Choose Jump"/>
                   </HBox>
                </VBox>
-               <VBox layoutX="210.0" layoutY="10.0" maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="134.0">
-                  <children>
-                     <Label layoutX="10.0" layoutY="72.0" text="Strafing on jump">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <tooltip>
-                           <Tooltip text="Momentum type." />
-                        </tooltip>
-                     </Label>
-                     <HBox layoutX="10.0" layoutY="109.0">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <children>
-                           <ComboBox fx:id="bscStrafeCb" prefWidth="120.0" promptText="Choose State" />
-                        </children>
-                     </HBox>
-                  </children>
+               <VBox layoutX="210.0" layoutY="10.0" maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity"
+                     minWidth="-Infinity" prefHeight="265.0" prefWidth="134.0">
+                  <Label layoutX="10.0" layoutY="72.0" text="Strafing on jump">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Momentum type."/>
+                     </tooltip>
+                  </Label>
+                  <HBox layoutX="10.0" layoutY="109.0">
+                     <padding>
+                        <Insets left="10.0"/>
+                     </padding>
+                     <ComboBox fx:id="bscStrafeCb" prefWidth="120.0" promptText="Choose State"/>
+                  </HBox>
                </VBox>
                <VBox prefHeight="265.0" prefWidth="200.0">
                   <TextArea fx:id="bscOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">

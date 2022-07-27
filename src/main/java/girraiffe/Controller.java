@@ -89,17 +89,10 @@ public class Controller {
                 .addListener(
                         (observableValue, oldTab, newTab) -> {
                             switch (newTab.getText()) {
-                                case "Tier Calculator":
-                                    setStandardOut(new PrintStream(tcConsole));
-                                    break;
-                                case "Backwards Speed Block Calculator":
-                                    setStandardOut(new PrintStream(bscConsole));
-                                    break;
-                                case "Jump Calculator":
-                                    setStandardOut(new PrintStream(jcConsole));
-                                    break;
-                                default:
-                                    setStandardOut(new PrintStream(bcConsole));
+                                case "Tier Calculator" -> setStandardOut(new PrintStream(tcConsole));
+                                case "Backwards Speed Block Calculator" -> setStandardOut(new PrintStream(bscConsole));
+                                case "Jump Calculator" -> setStandardOut(new PrintStream(jcConsole));
+                                default -> setStandardOut(new PrintStream(bcConsole));
                             }
                         });
     }
@@ -146,7 +139,7 @@ public class Controller {
 
     @FXML
     private void clearOutput(ActionEvent e) {
-        //cant think of another way without reflection hell, and cant target current textarea so have to just clear them all
+        //can't think of another way without reflection hell, and can't target current textarea so have to just clear them all
         bcConsole.console.clear();
         tcConsole.console.clear();
         bscConsole.console.clear();
@@ -196,7 +189,7 @@ public class Controller {
                     Float.parseFloat(bscJumpAngleTf.getText()),
                     bscMmTypeCb.getValue(),
                     bscJumpTypeCb.getValue(),
-                    Boolean.valueOf(bscStrafeCb.getValue())
+                    Boolean.parseBoolean(bscStrafeCb.getValue())
             );
             bsc.calculateBackwardsSpeed();
         } catch (Exception ignore){

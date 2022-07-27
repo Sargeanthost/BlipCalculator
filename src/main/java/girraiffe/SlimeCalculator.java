@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlimeCalculator {
-    float startingHeight;
-    float slimeHeight;
-    boolean jump;
+    final float startingHeight;
+    final float slimeHeight;
+    final boolean jump;
 
     public SlimeCalculator(float startingHeight, float slimeHeight, boolean jump) {
         this.startingHeight = startingHeight;

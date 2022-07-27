@@ -13,7 +13,7 @@ public class TierCalculator {
         } else{
             System.out.println("Offsets: ");
             tierHelper.offsetList(startingHeight, true).stream()
-                    .filter(f -> f > 0) //some how we get up to negative 4...
+                    .filter(f -> f > 0) //somehow we get up to negative 4...
                     .map(height -> tierHelper.entranceGenerator(height, false))
                     .forEach(System.out::println);
             System.out.println();
