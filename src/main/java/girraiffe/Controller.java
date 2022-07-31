@@ -3,81 +3,81 @@ package girraiffe;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
     //menu
     @FXML private CheckMenuItem alwaysOnTopCmi;
-    @FXML private MenuItem clearOutputMi;
     //blip calculator
+    @FXML private TextField bcStartingHeightTf;
     @FXML private TextField bcBlipBottomHeightTf;
     @FXML private TextField bcBlipPossibleTf;
     @FXML private TextField bcBlipTopHeightTf;
-    @FXML private Spinner<Integer> bcChainS;
     @FXML private TextField bcJumpApexTf;
     @FXML private TextField bcMinimumBottomBlipHeightTf;
     @FXML private TextField bcNearestTierTf;
+    @FXML private Spinner<Integer> bcChainS;
     @FXML private TextArea bcOutputTa;
-    @FXML private TextField bcStartingHeightTf;
     //backwards speeds calculator
     @FXML private TextField bscInitSpeedBackwardsTf;
-    @FXML private ComboBox<String> bscMmTypeCb;
     @FXML private TextField bscNumJumpsTf;
-    @FXML private TextArea bscOutputTa;
-    @FXML private Spinner<Integer> bscSlownessS;
-    @FXML private Spinner<Integer> bscTierMmS;
     @FXML private TextField bscJumpAngleTf;
-    @FXML private Spinner<Integer> bscSwiftnessS;
-    @FXML private ComboBox<String> bscJumpTypeCb;
+    @FXML private ComboBox<String> bscMmTypeCb;
     @FXML private ComboBox<String> bscStrafeCb;
+    @FXML private ComboBox<String> bscJumpTypeCb;
+    @FXML private Spinner<Integer> bscSwiftnessS;
+    @FXML private Spinner<Integer> bscTierMmS;
+    @FXML private Spinner<Integer> bscSlownessS;
+    @FXML private TextArea bscOutputTa;
     //jump calculator
     @FXML private TextField jcBoundaryTf;
-    @FXML private CheckBox jcDelayedCb;
-    @FXML private CheckBox jcIceCb;
     @FXML private TextField jcInitSpeedTf;
+    @FXML private TextField jcYLimitTf;
+    @FXML private TextField jcUpdaryTf;
+    @FXML private CheckBox jcDelayedCb;
+//    @FXML private CheckBox jcAirborneCb;
+    @FXML private ComboBox<String> jcFloorTypeCb;
     @FXML private ComboBox<String> jcMmTypeCb;
-    @FXML private TextArea jcOutputTa;
-    @FXML private CheckBox jcSlimeCb;
     @FXML private Spinner<Integer> jcSlownessS;
     @FXML private Spinner<Integer> jcSwiftnessS;
-    @FXML private TextField jcUpdaryTf;
-    @FXML private TextField jcYLimitTf;
+    @FXML private TextArea jcOutputTa;
     //tier calculator
-    @FXML private TextArea tcOutputTa;
     @FXML private TextField tcStartingHeightTf;
     @FXML private CheckBox tcIsJump;
+    @FXML private TextArea tcOutputTa;
+    //slime calculator
+    @FXML private TextField sStartingHeightTf;
+    @FXML private TextField sSlimeHeightTf;
+    @FXML private CheckBox sIsJumpCb;
+    @FXML private TextArea sOutputTa;
     //global
     @FXML private TabPane tabPane;
-    private BlipCalculator blipCalculator;
-    private TierCalculator tierCalculator;
     private Console bcConsole;
     private Console tcConsole;
     private Console bscConsole;
     private Console jcConsole;
+    private Console sConsole;
 
     @FXML
     private void initialize() {
         //call these inside calculate function
-        blipCalculator = new BlipCalculator();
-        tierCalculator = new TierCalculator();
         bcConsole = new Console(bcOutputTa);
         tcConsole = new Console(tcOutputTa);
         bscConsole = new Console(bscOutputTa);
         jcConsole = new Console(jcOutputTa);
+        sConsole = new Console(sOutputTa);
 
-        setComboBoxes();
-        setNumericFormat();
+        initComboBoxes();
+        initNumericFormat();
         initOutputPaneListener();
     }
 
@@ -89,36 +89,41 @@ public class Controller {
                 .addListener(
                         (observableValue, oldTab, newTab) -> {
                             switch (newTab.getText()) {
-                                case "Tier Calculator" -> setStandardOut(new PrintStream(tcConsole));
-                                case "Backwards Speed Block Calculator" -> setStandardOut(new PrintStream(bscConsole));
-                                case "Jump Calculator" -> setStandardOut(new PrintStream(jcConsole));
+                                case "Tier" -> setStandardOut(new PrintStream(tcConsole));
+                                case "Slime" -> setStandardOut(new PrintStream(sConsole));
+//                                case "Landing" -> setStandardOut(new PrintStream(lConsole));
+                                case "Backwards Speed Block" -> setStandardOut(new PrintStream(bscConsole));
+//                                case "Backwards Speed Input" -> setStandardOut(new PrintStream(bsiConsole));
+                                case "Jump" -> setStandardOut(new PrintStream(jcConsole));
                                 default -> setStandardOut(new PrintStream(bcConsole));
                             }
                         });
     }
 
-    private void setComboBoxes() {
-        // .98  1  1.000048  1.00306323  1.08802
+    private void initComboBoxes() {
         bscMmTypeCb
                 .getItems()
-                .addAll("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+                .setAll(new ArrayList<>(List.of("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45")));
         bscMmTypeCb.getSelectionModel().selectFirst();
         bscStrafeCb
                 .getItems()
-                .addAll("No", "Yes");
+                .setAll(new ArrayList<>(List.of("No", "Yes")));
         bscStrafeCb.getSelectionModel().selectFirst();
-        //check for strafe on each of these
         bscJumpTypeCb
                 .getItems()
-                .addAll("Jam", "Fmm", "Pessi");
+                .setAll(new ArrayList<>(List.of("Jam", "Fmm", "Pessi")));
         bscJumpTypeCb.getSelectionModel().selectFirst();
         jcMmTypeCb
                 .getItems()
-                .addAll("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45");
+                .setAll(new ArrayList<>(List.of("No 45 Strafe", "45 Strafe", "Half Angle", "Cyn 45", "Optifine 45")));
         jcMmTypeCb.getSelectionModel().selectFirst();
+        jcFloorTypeCb
+                .getItems()
+                .setAll(new ArrayList<>(List.of("Normal", "Ice", "Slime")));
+        jcFloorTypeCb.getSelectionModel().selectFirst();
     }
 
-    private void setNumericFormat() {
+    private void initNumericFormat() {
         Helper.setDecimalNumericFormatter(bcStartingHeightTf);
         Helper.setDecimalNumericFormatter(bcBlipTopHeightTf);
         Helper.setDecimalNumericFormatter(bcBlipBottomHeightTf);
@@ -138,30 +143,57 @@ public class Controller {
     }
 
     @FXML
-    private void clearOutput(ActionEvent e) {
-        //can't think of another way without reflection hell, and can't target current textarea so have to just clear them all
-        bcConsole.console.clear();
-        tcConsole.console.clear();
-        bscConsole.console.clear();
-        jcConsole.console.clear();
+    private void clearAllOutputs(ActionEvent e) {
+        e.consume();
+        for (Field field : this.getClass().getDeclaredFields()) {
+            if (field.getType() == Console.class) {
+                try {
+                    Method clear = field.getType().getDeclaredMethod("clear");
+                    clear.invoke(field.get(this));
+                } catch (NoSuchMethodException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InvocationTargetException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
 
+    @FXML
+    private void clearCurrentOutput(ActionEvent e) {
+        e.consume();
+        Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+        switch (currentTab.getText()) {
+            case "Backwards Speed Block" -> bscConsole.console.clear();
+//            case "Backwards Speed Input" -> bsiConsole.console.clear();
+            case "Jump" -> jcConsole.console.clear();
+            case "Tier" -> tcConsole.console.clear();
+//            case "Slime" -> sConsole.console.clear();
+//            case "Landing" -> lConsole.console.clear();
+            default -> bcConsole.console.clear();
+        }
+    }
+    private void setStandardOut(PrintStream printStream) {
+        System.setErr(printStream);
+        System.setOut(printStream);
     }
 
     @FXML
     private void bcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
-            float topHeight = Float.parseFloat(bcBlipTopHeightTf.getText());
-            float bottomHeight = Float.parseFloat(bcBlipBottomHeightTf.getText());
+            BlipCalculator blipCalculator = new BlipCalculator();
             blipCalculator.calculateBlip(
                     bcChainS.getValue(),
                     Float.parseFloat(bcStartingHeightTf.getText()),
-                    topHeight,
-                    bottomHeight,
+                    Float.parseFloat(bcBlipTopHeightTf.getText()),
+                    Float.parseFloat(bcBlipBottomHeightTf.getText()),
                     this);
         } catch (Exception ignore) {
             System.out.println(
-                    "Starting height, blip top height, or blip bottom height has not been assigned!");
+                    "One of the variables has not been assigned!");
         }
     }
 
@@ -169,8 +201,8 @@ public class Controller {
     private void tcCalculateAndPrint(ActionEvent e) {
         e.consume();
         try {
-            tierCalculator.calculateAndOutputTier(
-                    Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
+            TierCalculator tc = new TierCalculator(Float.parseFloat(tcStartingHeightTf.getText()), tcIsJump.isSelected());
+            tc.calculateAndOutputTier();
         } catch (Exception ignore) {
             System.out.println("Starting height has not been assigned!");
         }
@@ -180,7 +212,7 @@ public class Controller {
     private void bscCalculateAndPrint(ActionEvent e){
         e.consume();
         try{
-            BackwardsSpeedCalculator bsc = new BackwardsSpeedCalculator(
+            BackwardsSpeedBlockCalculator bsc = new BackwardsSpeedBlockCalculator(
                     Integer.parseInt(bscNumJumpsTf.getText()),
                     bscSwiftnessS.getValue(),
                     bscSlownessS.getValue(),
@@ -197,6 +229,41 @@ public class Controller {
         }
     }
 
+    @FXML
+    private void jcCalculateAndPrint(ActionEvent e){
+        e.consume();
+        try{
+            JumpCalculator jc = new JumpCalculator(
+                    jcSwiftnessS.getValue(),
+                    jcSlownessS.getValue(),
+                    Double.parseDouble(jcInitSpeedTf.getText()),
+                    Double.parseDouble(jcYLimitTf.getText()),
+                    Double.parseDouble(jcBoundaryTf.getText()),
+                    Double.parseDouble(jcUpdaryTf.getText()),
+                    jcFloorTypeCb.getValue(),
+                    jcMmTypeCb.getValue(),
+                    jcDelayedCb.isSelected());
+            jc.calculateJump();
+        } catch (Exception ignore){
+            System.out.println("One of the variables has not been assigned!");
+        }
+    }
+
+    @FXML
+    private void sCalculateAndPrint(ActionEvent e){
+        e.consume();
+        try{
+                SlimeCalculator s = new SlimeCalculator(
+                        Float.parseFloat(sStartingHeightTf.getText()),
+                        Float.parseFloat(sSlimeHeightTf.getText()),
+                        sIsJumpCb.isSelected()
+                        );
+                s.calculateSlime();
+                } catch (Exception ignore){
+                System.out.println("One of the variables has not been assigned!");
+        }
+    }
+
     public void setBlipCalculatorOutput(
             String blipPossibleTf,
             String nearestTierTf,
@@ -208,10 +275,6 @@ public class Controller {
         bcMinimumBottomBlipHeightTf.setText(minimumBottomBlipHeightTf);
     }
 
-    public void setStandardOut(PrintStream printStream) {
-        System.setErr(printStream);
-        System.setOut(printStream);
-    }
 
     public static class Console extends OutputStream {
         private final TextArea console;

@@ -20,14 +20,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="girraiffe.Controller">
    <MenuBar layoutY="2.0" maxHeight="25.0" minHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Menu mnemonicParsing="false" text="Options">
          <CheckMenuItem fx:id="alwaysOnTopCmi" mnemonicParsing="false" onAction="#isStageAlwaysOnTop" text="Always on Top">
             <accelerator>
                <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></CheckMenuItem>
-         <MenuItem fx:id="clearOutputMi" mnemonicParsing="false" onAction="#clearOutput" text="Clear Output">
+         <MenuItem mnemonicParsing="false" onAction="#clearCurrentOutput" text="Clear Current Output">
+            <accelerator>
+               <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+            </accelerator>
+         </MenuItem>
+         <MenuItem mnemonicParsing="false" onAction="#clearAllOutputs" text="Clear All Outputs">
             <accelerator>
                <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator>
@@ -35,7 +40,7 @@
       </Menu>
    </MenuBar>
    <TabPane fx:id="tabPane" layoutY="25.0" prefHeight="295.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-      <Tab closable="false" text="Blip Calculator">
+      <Tab closable="false" text="Blip">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <HBox prefHeight="266.0" prefWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <VBox prefWidth="200.0">
@@ -174,41 +179,37 @@
             <Tooltip text="Calculates if a blip is possible and prints the entrances for the blip" />
          </tooltip>
       </Tab>
-      <Tab closable="false" text="Tier Calculator">
+      <Tab closable="false" text="Tier">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <HBox prefHeight="266.0" prefWidth="600.0">
                <VBox prefHeight="266.0" prefWidth="400.0">
-                  <VBox prefWidth="200.0">
-                     <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                        <Label text="Starting Height">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <tooltip>
-                              <Tooltip text="The Y coordinate from which to calculate the offsets for entrances" />
-                           </tooltip>
-                        </Label>
-                        <HBox>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <TextField fx:id="tcStartingHeightTf" text="0" />
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="47.0">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                           <CheckBox fx:id="tcIsJump" maxHeight="-Infinity" minHeight="25.0" mnemonicParsing="false" prefHeight="25.0" text="Jump?">
-                              <tooltip>
-                                 <Tooltip text="If you jump from this height" />
-                              </tooltip>
-                           </CheckBox>
-                        </HBox>
-                     </VBox>
-                  </VBox>
+                  <Label text="Starting Height">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="The Y coordinate from which to calculate the offsets for entrances" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="tcStartingHeightTf" text="0" />
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <CheckBox fx:id="tcIsJump" maxHeight="-Infinity" minHeight="25.0" mnemonicParsing="false" prefHeight="25.0" text="Jump?">
+                        <tooltip>
+                           <Tooltip text="If you jump from this height" />
+                        </tooltip>
+                     </CheckBox>
+                  </HBox>
                </VBox>
                <VBox prefHeight="267.0" prefWidth="200.0">
                   <TextArea fx:id="tcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
@@ -229,7 +230,91 @@
             <Tooltip text="Prints each tier offset and the entrance if one exists" />
          </tooltip>
       </Tab>
-      <Tab closable="false" text="Backwards Speed Block Calculator">
+      <Tab text="Slime">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="266.0" prefWidth="600.0">
+                           <children>
+                              <VBox prefHeight="266.0" prefWidth="400.0">
+                                 <children>
+                                    <Label text="Starting Height">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                       <tooltip>
+                                          <Tooltip text="The Y coordinate from which to calculate the offsets for entrances" />
+                                       </tooltip>
+                                    </Label>
+                                    <HBox>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <children>
+                                          <TextField fx:id="sStartingHeightTf" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <Label text="Slime Height">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                       <tooltip>
+                                          <Tooltip text="The Y coordinate from which to calculate the offsets for entrances" />
+                                       </tooltip>
+                                    </Label>
+                                    <HBox>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <children>
+                                          <TextField fx:id="sSlimeHeightTf" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <children>
+                                          <CheckBox fx:id="sIsJumpCb" maxHeight="-Infinity" minHeight="25.0" mnemonicParsing="false" prefHeight="25.0" text="Jump?">
+                                             <tooltip>
+                                                <Tooltip text="If you jump from this height" />
+                                             </tooltip>
+                                          </CheckBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="267.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="sOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
+                                       <VBox.margin>
+                                          <Insets right="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </TextArea>
+                                    <HBox alignment="CENTER" prefHeight="69.0" prefWidth="190.0">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" onAction="#sCalculateAndPrint" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab closable="false" text="Backward Speed Block ">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <HBox prefHeight="266.0" prefWidth="600.0">
                <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="133.0">
@@ -322,11 +407,11 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                      </padding>
                      <Spinner fx:id="bscTierMmS" initialValue="0" max="7" min="-256" prefWidth="120.0">
                         <tooltip>
-                           <Tooltip text="The tier you are jumping on e.g.  slab is + 3"/>
+                           <Tooltip text="The tier you are jumping on e.g.  slab is + 3" />
                         </tooltip>
                      </Spinner>
                   </HBox>
@@ -340,11 +425,11 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                      </padding>
                      <TextField fx:id="bscJumpAngleTf" prefWidth="120.0" text="0">
                         <tooltip>
-                           <Tooltip text="The angle you jump forward at???????"/>
+                           <Tooltip text="The angle you jump forward at???????" />
                         </tooltip>
                      </TextField>
                   </HBox>
@@ -358,9 +443,9 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                      </padding>
-                     <ComboBox fx:id="bscMmTypeCb" prefWidth="120.0" promptText="Choose Momentum"/>
+                     <ComboBox fx:id="bscMmTypeCb" prefWidth="120.0" promptText="Choose Momentum" />
                   </HBox>
                   <Label text="Jump Type">
                      <padding>
@@ -372,26 +457,25 @@
                   </Label>
                   <HBox>
                      <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                      </padding>
-                     <ComboBox fx:id="bscJumpTypeCb" prefWidth="120.0" promptText="Choose Jump"/>
+                     <ComboBox fx:id="bscJumpTypeCb" prefWidth="120.0" promptText="Choose Jump" />
                   </HBox>
                </VBox>
-               <VBox layoutX="210.0" layoutY="10.0" maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity"
-                     minWidth="-Infinity" prefHeight="265.0" prefWidth="134.0">
+               <VBox layoutX="210.0" layoutY="10.0" maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="134.0">
                   <Label layoutX="10.0" layoutY="72.0" text="Strafing on jump">
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <tooltip>
-                        <Tooltip text="Momentum type."/>
+                        <Tooltip text="Momentum type." />
                      </tooltip>
                   </Label>
                   <HBox layoutX="10.0" layoutY="109.0">
                      <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                      </padding>
-                     <ComboBox fx:id="bscStrafeCb" prefWidth="120.0" promptText="Choose State"/>
+                     <ComboBox fx:id="bscStrafeCb" prefWidth="120.0" promptText="Choose State" />
                   </HBox>
                </VBox>
                <VBox prefHeight="265.0" prefWidth="200.0">
@@ -413,156 +497,142 @@
             <Tooltip text="Calculates the blocks needed for a specific backwards speed" />
          </tooltip>
       </Tab>
-      <Tab closable="false" text="Jump Calculator">
+      <Tab text="Backward Speed Input">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+      <Tab closable="false" text="Landing">
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <HBox prefHeight="266.0" prefWidth="600.0">
-               <VBox prefHeight="266.0" prefWidth="200.0">
-                  <VBox maxHeight="266.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                     <Label text="Initial Speed">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <tooltip>
-                           <Tooltip text="Your initial speed backwards. Can be calculated with BSC tab." />
-                        </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="jcInitSpeedTf" prefHeight="25.0" prefWidth="149.0" text="0" />
-                     </HBox>
-                     <Label text="Y Limit">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <tooltip>
-                           <Tooltip text="Y level up until where you want to check" />
-                        </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="jcYLimitTf" prefHeight="25.0" prefWidth="149.0" text="0" />
-                     </HBox>
-                     <Label text="Swiftness">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <tooltip>
-                           <Tooltip text="Level of swiftness potion" />
-                        </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <Spinner fx:id="jcSwiftnessS" initialValue="0" max="2" min="0" prefHeight="25.0" prefWidth="149.0" />
-                     </HBox>
-                     <Label text="Slowness">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <tooltip>
-                           <Tooltip text="Level of slowness potion." />
-                        </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <Spinner fx:id="jcSlownessS" initialValue="0" max="4" min="0" prefHeight="25.0" prefWidth="149.0" />
-                     </HBox>
-                  </VBox>
+               <VBox prefHeight="266.0">
+                  <Label text="Initial Speed">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Your initial speed backwards. Can be calculated with BSC tab." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="jcInitSpeedTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                  </HBox>
+                  <Label text="Y Limit">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Y level up until where you want to check" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="jcYLimitTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                  </HBox>
+                  <Label text="Swiftness">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Level of swiftness potion" />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <Spinner fx:id="jcSwiftnessS" initialValue="0" max="2" min="0" prefHeight="25.0" prefWidth="149.0" />
+                  </HBox>
+                  <Label text="Slowness">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Level of slowness potion." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <Spinner fx:id="jcSlownessS" initialValue="0" max="4" min="0" prefHeight="25.0" prefWidth="149.0" />
+                  </HBox>
                </VBox>
-               <VBox prefHeight="266.0" prefWidth="200.0">
-                  <VBox maxHeight="265.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                     <Label text="Momentum Type">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
+               <VBox prefHeight="266.0">
+                  <Label text="Updary">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="jcUpdaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                  </HBox>
+                  <Label text="Boundary">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <TextField fx:id="jcBoundaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
+                  </HBox>
+                  <Label text="Momentum Type">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Momentum type." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <ComboBox fx:id="jcMmTypeCb" prefWidth="149.0" promptText="Choose Momentum" />
+                  </HBox>
+                  <Label text="Floor Type">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Momentum type." />
+                     </tooltip>
+                  </Label>
+                  <HBox>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <children>
+                        <ComboBox fx:id="jcFloorTypeCb" prefWidth="149.0" promptText="Choose Block" />
+                     </children>
+                  </HBox>
+               </VBox>
+               <VBox prefHeight="266.0">
+                  <children>
+                     <CheckBox fx:id="jcDelayedCb" minHeight="25.0" mnemonicParsing="false" text="Delayed?">
                         <tooltip>
-                           <Tooltip text="Momentum type." />
+                           <Tooltip text="Check if you run a tick before jumping." />
                         </tooltip>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <ComboBox fx:id="jcMmTypeCb" prefWidth="149.0" promptText="Choose Momentum" />
-                     </HBox>
-                     <Label text="Updary">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="jcUpdaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
-                     </HBox>
-                     <Label text="Boundary">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                     </Label>
-                     <HBox>
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <TextField fx:id="jcBoundaryTf" prefHeight="25.0" prefWidth="149.0" text="0" />
-                     </HBox>
-                     <HBox maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0">
-                        <padding>
-                           <Insets bottom="10.0" left="10.0" />
-                        </padding>
-                        <CheckBox fx:id="jcDelayedCb" minHeight="25.0" mnemonicParsing="false" text="Delayed?">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <padding>
-                              <Insets right="5.0" />
-                           </padding>
-                           <tooltip>
-                              <Tooltip text="Check if you run a tick before jumping." />
-                           </tooltip>
-                        </CheckBox>
-                        <CheckBox fx:id="jcIceCb" minHeight="25.0" mnemonicParsing="false" text="On Ice?">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                           <tooltip>
-                              <Tooltip text="Check if you run on ice." />
-                           </tooltip>
-                        </CheckBox>
                         <VBox.margin>
                            <Insets top="10.0" />
                         </VBox.margin>
-                     </HBox>
-                     <HBox maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0">
-                        <padding>
-                           <Insets left="10.0" />
-                        </padding>
-                        <CheckBox fx:id="jcSlimeCb" maxHeight="-Infinity" minHeight="25.0" mnemonicParsing="false" prefHeight="25.0" text="On Slime?">
-                           <padding>
-                              <Insets bottom="10.0" />
-                           </padding>
-                           <tooltip>
-                              <Tooltip text="Check if you run on slime." />
-                           </tooltip>
-                           <HBox.margin>
-                              <Insets top="10.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                     </HBox>
-                  </VBox>
+                     </CheckBox>
+                  </children>
+                  <HBox.margin>
+                     <Insets left="6.0" right="6.0" />
+                  </HBox.margin>
                </VBox>
-               <VBox alignment="TOP_CENTER" prefHeight="265.0" prefWidth="200.0">
+               <VBox alignment="CENTER_RIGHT" prefHeight="265.0" prefWidth="200.0">
                   <TextArea fx:id="jcOutputTa" editable="false" focusTraversable="false" prefHeight="188.0" prefWidth="190.0" wrapText="true">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
@@ -572,7 +642,7 @@
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin>
-                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
+                     <Button alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" mnemonicParsing="false" onAction="#jcCalculateAndPrint" prefWidth="120.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 0;" text="Calculate and Print" textAlignment="CENTER" />
                   </HBox>
                </VBox>
             </HBox>

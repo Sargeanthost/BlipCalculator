@@ -1,7 +1,7 @@
 // Credit goes to Drakou111
 package girraiffe;
 
-public class BackwardsSpeedCalculator {
+public class BackwardsSpeedBlockCalculator {
     private final int numJump;
     private final int tierMomentum;
     private final float jumpAngle;
@@ -12,7 +12,7 @@ public class BackwardsSpeedCalculator {
     private double speedLvlX;
     private double x;
 
-    public BackwardsSpeedCalculator(
+    public BackwardsSpeedBlockCalculator(
             int numJump,
             int swiftnessLvl,
             int slownessLvl,

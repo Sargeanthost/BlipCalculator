@@ -8,19 +8,12 @@ public class TierHelper {
     private float nextPosition = 0.0f;
     private float minimumBottomBlipHeight = 0.0f;
 
-    public boolean isBlipPossible(
-            float blipTopHeight, float blipBottomHeight, float position, float nextPosition) {
-        if (blipBottomHeight >= blipTopHeight || position < blipTopHeight) {
-            return false;
-        }
-        if (position > blipTopHeight && nextPosition < blipBottomHeight) {
-            return true;
-        }
-        System.out.println("Unexpected blip condition");
-        return true;
-    }
-
-    public void calculateOffsets(float blipBottomHeight, float startingHeight) {
+    /**
+     * Calculates the Bottom Blip Height for the given starting height and bottom blip height.
+     * @param blipBottomHeight the bottom blip height
+     * @param startingHeight the starting height
+     */
+    public void calculateEndOfBlipPosition(float blipBottomHeight, float startingHeight) {
         // https://www.mcpk.wiki/wiki/Tiers
         final double MM_CUTOFF_1_8 = 0.005;
         int ticks = 1;
@@ -31,12 +24,14 @@ public class TierHelper {
         float positionNextTick = position; // not good for first tick
 
         while (true) {
+            //cannot blip before 7 ticks, first blip is between tick 8-9.
             if (ticks < 7 || !(positionNextTick < blipBottomHeight)) {
                 ++ticks;
                 offset += momentum;
                 momentum -= 0.08f;
                 momentum *= 0.98f;
 
+                //Inertia
                 if (Math.abs(momentum) >= MM_CUTOFF_1_8) {
                     nextOffset += momentum;
                 } else {
@@ -52,6 +47,12 @@ public class TierHelper {
         setPositions(position, positionNextTick);
     }
 
+    /**
+     * Adds the Y coordinate at each tick to the returned list.
+     * @param startingHeight The starting height
+     * @param hasJumped whether you jumped
+     * @return returns a list of all the Y coordinates at each tick.
+     */
     public List<Float> offsetList(float startingHeight, boolean hasJumped) {
         final double MM_CUTOFF_1_8 = 0.0054945055; //.005/.91 for air, /.98 for ground
         float momentum = hasJumped ? 0.42f : 0.0f;

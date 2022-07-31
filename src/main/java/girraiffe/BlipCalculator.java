@@ -8,7 +8,7 @@ public class BlipCalculator {
     }
 
     /**
-     * Calculates blip when jumping from {@code startingHeight} and has the sideeffect of calling a print to the output.
+     * Calls {@code TierHelper#calculateEndOfBlipPosition} chain number of times and outputs the final run's variables.
      *
      * @param chain how many times to chain the blip
      * @param startingHeight the starting height before you jump into a blip
@@ -25,20 +25,20 @@ public class BlipCalculator {
         float position = startingHeight;
         float jumpApex = 0;
         for (int i = 0; i < chain; i++) {
-            tierHelper.calculateOffsets(blipBottomHeight, position);
+            tierHelper.calculateEndOfBlipPosition(blipBottomHeight, position);
             position = tierHelper.getPosition();
             jumpApex = tierHelper.calculateJumpApex(position);
-            if (!tierHelper.isBlipPossible(
+            if (!isBlipPossible(
                     blipTopHeight, blipBottomHeight, position, tierHelper.getNextPosition())) {
                 // a blip can incorrectly be called possible even though a previous blip in the
-                // chain failed, this "serializes" the blips (I think. at the least it doesn't hurt)"
+                // chain failed, this "serializes" the blips (I think. at the least it doesn't hurt)
                 break;
             }
         }
 
         setControllerBlipCalculatorOutput(
                 controller,
-                (tierHelper.isBlipPossible(
+                (isBlipPossible(
                                 blipTopHeight,
                                 blipBottomHeight,
                                 position,
@@ -71,5 +71,17 @@ public class BlipCalculator {
                 .filter(s -> !s.equals(""))
                 .forEach(System.out::println);
         System.out.println();
+    }
+
+    private boolean isBlipPossible(
+            float blipTopHeight, float blipBottomHeight, float position, float nextPosition) {
+        if (blipBottomHeight >= blipTopHeight || position < blipTopHeight) {
+            return false;
+        }
+        if (position > blipTopHeight && nextPosition < blipBottomHeight) {
+            return true;
+        }
+        System.out.println("Unexpected blip condition");
+        return true;
     }
 }

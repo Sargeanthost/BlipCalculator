@@ -1,7 +1,14 @@
 package girraiffe;
 
 public class TierCalculator {
-    public void calculateAndOutputTier(float startingHeight, boolean selected) {
+    private final boolean selected;
+    private final float startingHeight;
+
+    public TierCalculator(float startingHeight, boolean selected){
+        this.startingHeight = startingHeight;
+        this.selected = selected;
+    }
+    public void calculateAndOutputTier() {
         TierHelper tierHelper = new TierHelper();
         if (!selected) {
             System.out.println("Offsets: ");
