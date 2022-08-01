@@ -23,57 +23,28 @@ public class SlimeCalculator {
         apexOffsetArray.add(startingHeight);
         float momentum = jump ? 0.42f : 0.0f;
         final double MM_CUTOFF_1_8 = 0.005;
-        //        float momentum = 0.42f;
-        float nextOffset = momentum;
-        float offset = 0.0f;
         float position = startingHeight;
-//        float positionPrevTick = position; // not good for first tick
-//        float positionNextTick = position; // not good for first tick
 
         while (true) {
-            // cannot blip before 7 ticks, first blip is between tick 8-9.
-            // 0.019 is to check if its equal to the first tier, this is to prevent infinite loop
-            //            if (!(positionNextTick <= slimeHeight + 0.019)) {
-            //                offset += momentum;
-//            positionPrevTick += momentum;
-            //if momentum -= 0.08f *= .98 < position +.08 you cant get another positive momentum boost and thus you have finished
-            //slime bouncing
             momentum -= 0.08f;
             momentum *= 0.98f;
 
-            // Inertia
+            // Inertia, unnecessary?
             if (Math.abs(momentum) < MM_CUTOFF_1_8) {
                 momentum = 0;
             }
+
+            if(position == slimeHeight && position + momentum < slimeHeight) {
+                System.out.println("end condition");
+                break;
+            }
+
             position += momentum;
-            //                else {
-            //                    nextOffset += momentum;
-            //                }
-            // if bigger than previous and bigger than next, then we have a peak; add to arraylist
 
-//            if ((position + momentum) < position && position > positionPrevTick) {
-//                apexOffsetArray.add(position);
-//            }
-//            position += momentum;
-
-            //                position = startingHeight + offset;
-            //                positionNextTick = startingHeight + nextOffset;
-            //                positionNextTick = position + nextOffset;
             if ((position < slimeHeight)) {
                 momentum = -momentum;
                 position = slimeHeight;
-//                positionPrevTick = position;
             }
-            //                if((positionNextTick < slimeHeight)){
-            //                    momentum = -momentum;
-            //                    offset = momentum;
-            //                    position = slimeHeight;
-            //                }
-            //            if ()
-            //                continue;
-            ////            }
-
-            //            break;
         }
     }
 
