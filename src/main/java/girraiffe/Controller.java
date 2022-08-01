@@ -15,6 +15,11 @@ import java.util.List;
 
 public class Controller {
 
+    private Console bcConsole;
+    private Console tcConsole;
+    private Console bscConsole;
+    private Console jcConsole;
+    private Console sConsole;
     //menu
     @FXML private CheckMenuItem alwaysOnTopCmi;
     //blip calculator
@@ -61,11 +66,6 @@ public class Controller {
     @FXML private TextArea sOutputTa;
     //global
     @FXML private TabPane tabPane;
-    private Console bcConsole;
-    private Console tcConsole;
-    private Console bscConsole;
-    private Console jcConsole;
-    private Console sConsole;
 
     @FXML
     private void initialize() {
@@ -98,6 +98,21 @@ public class Controller {
                                 default -> setStandardOut(new PrintStream(bcConsole));
                             }
                         });
+    }
+
+    @FXML
+    private void clearCurrentOutput(ActionEvent e) {
+        e.consume();
+        Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+        switch (currentTab.getText()) {
+            case "Backwards Speed Block" -> bscConsole.console.clear();
+//            case "Backwards Speed Input" -> bsiConsole.console.clear();
+            case "Jump" -> jcConsole.console.clear();
+            case "Tier" -> tcConsole.console.clear();
+            case "Slime" -> sConsole.console.clear();
+//            case "Landing" -> lConsole.console.clear();
+            default -> bcConsole.console.clear();
+        }
     }
 
     private void initComboBoxes() {
@@ -150,31 +165,13 @@ public class Controller {
                 try {
                     Method clear = field.getType().getDeclaredMethod("clear");
                     clear.invoke(field.get(this));
-                } catch (NoSuchMethodException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IllegalAccessException ex) {
-                    throw new RuntimeException(ex);
-                } catch (InvocationTargetException ex) {
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         }
     }
 
-    @FXML
-    private void clearCurrentOutput(ActionEvent e) {
-        e.consume();
-        Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        switch (currentTab.getText()) {
-            case "Backwards Speed Block" -> bscConsole.console.clear();
-//            case "Backwards Speed Input" -> bsiConsole.console.clear();
-            case "Jump" -> jcConsole.console.clear();
-            case "Tier" -> tcConsole.console.clear();
-//            case "Slime" -> sConsole.console.clear();
-//            case "Landing" -> lConsole.console.clear();
-            default -> bcConsole.console.clear();
-        }
-    }
     private void setStandardOut(PrintStream printStream) {
         System.setErr(printStream);
         System.setOut(printStream);
@@ -289,6 +286,10 @@ public class Controller {
 
         public void write(int b) {
             appendText(String.valueOf((char) b));
+        }
+
+        public void clear(){
+            Platform.runLater(console::clear);
         }
     }
 }
