@@ -3,11 +3,21 @@ package girraiffe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Calculates all coordinates and bounces for a slime jump.
+ */
 public class SlimeCalculator {
     final float startingHeight;
     final float slimeHeight;
     final boolean jump;
 
+    /**
+     * Constructor.
+     *
+     * @param startingHeight starting height
+     * @param slimeHeight    slime height
+     * @param jump           whether you jumped from the starting height
+     */
     public SlimeCalculator(float startingHeight, float slimeHeight, boolean jump) {
         this.startingHeight = startingHeight;
         this.slimeHeight = slimeHeight;
@@ -38,8 +48,7 @@ public class SlimeCalculator {
             }
 
             // checks for local maximum
-            if (position < position + momentum
-                    && position + momentum > position + momentum + nextMomentum) {
+            if (position < position + momentum && position + momentum > position + momentum + nextMomentum) {
                 apexArray.add(position + momentum);
                 positions.add("Bounce: " + (apexArray.size()));
             }
@@ -63,6 +72,12 @@ public class SlimeCalculator {
         System.out.println();
     }
 
+    /**
+     * Formats the position to have an entrance concatenated.
+     *
+     * @param height the height to be formatted
+     * @return the formatted position
+     */
     private String format(float height) {
         TierHelper tierHelper = new TierHelper();
         return tierHelper.entranceGenerator(height, false);

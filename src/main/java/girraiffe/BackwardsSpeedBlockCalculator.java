@@ -1,17 +1,34 @@
 // Credit goes to Drakou111
+
 package girraiffe;
 
+/**
+ * Class for finding the blocks required for a specific backwards speed and entered inputs.
+ */
 public class BackwardsSpeedBlockCalculator {
     private final int numJump;
     private final int tierMomentum;
     private final float jumpAngle;
     private final boolean strafe;
     private final String jumpType;
-    private double speedMultiplier = 0.98f;
+    private final double speedMultiplier;
     private double combinedPotion; // combination of swiftness and slowness
     private double speedLvlX;
-    private double x;
+    private double tempX;
 
+    /**
+     * Class for finding the blocks required for a specific backwards speed and entered inputs.
+     *
+     * @param numJump the number of forward jumps, not including the transition jump from backwards to forwards
+     * @param swiftnessLvl the level of swiftness potion
+     * @param slownessLvl the level of slowness potion
+     * @param tierMomentum the height of the blocks above the ground. Flat ground is 0 and a slab is 3
+     * @param initialSpeedBackwards the initial speed of the backwards a tick before the jump.
+     * @param jumpAngle the facing on the jump tick
+     * @param mmType the 45 type
+     * @param jumpType the inputs on the jump tick
+     * @param strafe whether you strafe on the jump tick
+     */
     public BackwardsSpeedBlockCalculator(
             int numJump,
             int swiftnessLvl,
@@ -30,18 +47,10 @@ public class BackwardsSpeedBlockCalculator {
         this.strafe = strafe;
 
         switch (mmType) {
-            case "45 Strafe" ->
-                // normal 45
-                    this.speedMultiplier = 1.0;
-            case "Half Angle" ->
-                // consult half angle list
-                    this.speedMultiplier = 1.000048;
-            case "Cyn 45" ->
-                // turning to like 9023402394789 degrees
-                    this.speedMultiplier = 1.00306323;
-            case "Optifine 45" ->
-                // fastmath
-                    this.speedMultiplier = 1.08802;
+            case "45 Strafe", default -> this.speedMultiplier = 1.0;
+            case "Half Angle" -> this.speedMultiplier = 1.000048;
+            case "Cyn 45" -> this.speedMultiplier = 1.00306323;
+            case "Optifine 45" -> this.speedMultiplier = 1.08802;
         }
 
         combinedPotion = (1 + 0.2 * swiftnessLvl) * (1 - 0.15 * slownessLvl);
@@ -49,16 +58,25 @@ public class BackwardsSpeedBlockCalculator {
             combinedPotion = 0;
         }
         speedLvlX = -initialSpeedBackwards;
-        x = -initialSpeedBackwards;
+        tempX = -initialSpeedBackwards;
     }
 
+    /**
+     * Prints the blocks required for the backwards speed and the speed at the end of the jump.
+     *
+     * @param x the x coordinate of the block
+     */
     private void print(double x) {
         System.out.println(x - .6 + " bm");
         speedLvlX = speedLvlX * 0.91 + .026 * speedMultiplier;
         System.out.println(speedLvlX + " b/t");
     }
 
+    /**
+     * Method for finding the blocks required for a specific backwards speed and entered inputs.
+     */
     public void calculateBackwardsSpeed() {
+        double cos = Math.cos(Math.toRadians(jumpAngle + 45.0));
         switch (jumpType) {
             case ("Pessi"):
                 int count = 0;
@@ -68,15 +86,15 @@ public class BackwardsSpeedBlockCalculator {
                     int n = 0;
                     if (count == 1) {
                         speedLvlX *= .546;
-                        x += speedLvlX;
+                        tempX += speedLvlX;
                         movementMultiplier = 1;
                     } else {
                         speedLvlX = speedLvlX * 0.91 + .1274 * combinedPotion + 0.2;
-                        x += speedLvlX;
+                        tempX += speedLvlX;
                     }
 
                     speedLvlX = speedLvlX * .546 + (0.02 * movementMultiplier * speedMultiplier);
-                    x += speedLvlX;
+                    tempX += speedLvlX;
 
                     if (numJump - count >= 1) {
                         n--;
@@ -88,11 +106,11 @@ public class BackwardsSpeedBlockCalculator {
                         }
 
                         speedLvlX = speedLvlX * 0.91 + .026 * speedMultiplier;
-                        x += speedLvlX;
+                        tempX += speedLvlX;
                         n++;
                     }
                 }
-                print(x);
+                print(tempX);
                 break;
             case "Fmm":
                 count = 0;
@@ -106,7 +124,7 @@ public class BackwardsSpeedBlockCalculator {
                             speedLvlX =
                                     speedLvlX * .546
                                             + (0.1 * combinedPotion)
-                                                    * Math.cos(Math.toRadians(jumpAngle + 45.0));
+                                                    * cos;
                         } else {
                             speedLvlX =
                                     speedLvlX * .546
@@ -116,10 +134,10 @@ public class BackwardsSpeedBlockCalculator {
                     } else {
                         speedLvlX = speedLvlX * 0.91 + .1274 * combinedPotion + 0.2;
                     }
-                    x += speedLvlX;
+                    tempX += speedLvlX;
 
                     speedLvlX = speedLvlX * .546 + (0.02 * movementMultiplier * speedMultiplier);
-                    x += speedLvlX;
+                    tempX += speedLvlX;
 
                     if (numJump - count >= 1) {
                         n--;
@@ -131,11 +149,11 @@ public class BackwardsSpeedBlockCalculator {
                         }
 
                         speedLvlX = speedLvlX * 0.91 + .026 * speedMultiplier;
-                        x += speedLvlX;
+                        tempX += speedLvlX;
                         n++;
                     }
                 }
-                print(x);
+                print(tempX);
                 break;
             case "Jam":
                 count = 0;
@@ -148,19 +166,20 @@ public class BackwardsSpeedBlockCalculator {
                             speedLvlX =
                                     speedLvlX * .546
                                             + (.13 * combinedPotion)
-                                                    * Math.cos(Math.toRadians(jumpAngle + 45.0))
+                                                    * cos
                                             + 0.2 * Math.cos(Math.toRadians(jumpAngle));
                         } else {
-                            speedLvlX = speedLvlX * .546 + (.1274 * combinedPotion + 0.2) * Math.cos(Math.toRadians(jumpAngle));
+                            speedLvlX = speedLvlX * .546 + (.1274 * combinedPotion + 0.2)
+                                * Math.cos(Math.toRadians(jumpAngle));
 
                         }
                     } else {
                         speedLvlX = speedLvlX * 0.91 + .1274 * combinedPotion + 0.2;
                     }
-                    x += speedLvlX;
+                    tempX += speedLvlX;
 
                     speedLvlX = speedLvlX * .546 + (0.02 * movementMultiplier * speedMultiplier);
-                    x += speedLvlX;
+                    tempX += speedLvlX;
 
                     if (numJump - count >= 1) {
                         n--;
@@ -172,11 +191,11 @@ public class BackwardsSpeedBlockCalculator {
                         }
 
                         speedLvlX = speedLvlX * 0.91 + .026 * speedMultiplier;
-                        x += speedLvlX;
+                        tempX += speedLvlX;
                         n++;
                     }
                 }
-                print(x);
+                print(tempX);
                 break;
             default:
                 System.out.println("Unrecognized jump type.");

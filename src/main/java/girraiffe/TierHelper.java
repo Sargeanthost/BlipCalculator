@@ -3,6 +3,9 @@ package girraiffe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for offsets.
+ */
 public class TierHelper {
     private float position = 0.0f;
     private float nextPosition = 0.0f;
@@ -10,8 +13,9 @@ public class TierHelper {
 
     /**
      * Calculates the Bottom Blip Height for the given starting height and bottom blip height.
+     *
      * @param blipBottomHeight the bottom blip height
-     * @param startingHeight the starting height
+     * @param startingHeight   the starting height
      */
     public void calculateEndOfBlipPosition(float blipBottomHeight, float startingHeight) {
         // https://www.mcpk.wiki/wiki/Tiers
@@ -24,14 +28,14 @@ public class TierHelper {
         float positionNextTick = position; // not good for first tick
 
         while (true) {
-            //cannot blip before 7 ticks, first blip is between tick 8-9.
+            // cannot blip before 7 ticks, first blip is between tick 8-9.
             if (ticks < 7 || !(positionNextTick < blipBottomHeight)) {
                 ++ticks;
                 offset += momentum;
                 momentum -= 0.08f;
                 momentum *= 0.98f;
 
-                //Inertia
+                // Inertia
                 if (Math.abs(momentum) >= MM_CUTOFF_1_8) {
                     nextOffset += momentum;
                 } else {
@@ -49,8 +53,9 @@ public class TierHelper {
 
     /**
      * Adds the Y coordinate at each tick to the returned list.
+     *
      * @param startingHeight The starting height
-     * @param hasJumped whether you jumped
+     * @param hasJumped      whether you jumped
      * @return returns a list of all the Y coordinates at each tick.
      */
     public List<Float> offsetList(float startingHeight, boolean hasJumped) {
@@ -88,10 +93,10 @@ public class TierHelper {
      * Checks if there is a small entrance possible for the given height. Doesn't check negative
      * numbers as that's impossible in minecraft
      *
-     * @param height the height to check
+     * @param height    the height to check
      * @param exclusive weather or not to print the height even though an entrance wasn't found
      * @return returns either the given height concatenated with the entrance, or the entrance if
-     *     exclusive is set to false
+     * exclusive is set to false
      */
     public String entranceGenerator(float height, boolean exclusive) {
         // TODO add normal 2 block entrance, this happens at lower tiers.

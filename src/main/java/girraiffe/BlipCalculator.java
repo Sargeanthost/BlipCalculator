@@ -1,5 +1,6 @@
 package girraiffe;
 
+/** Calculates all statistics for a blip. */
 public class BlipCalculator {
     private final TierHelper tierHelper;
 
@@ -8,7 +9,8 @@ public class BlipCalculator {
     }
 
     /**
-     * Calls {@code TierHelper#calculateEndOfBlipPosition} chain number of times and outputs the final run's variables.
+     * Calls {@code TierHelper#calculateEndOfBlipPosition} chain number of times and outputs the
+     * final run's variables.
      *
      * @param chain how many times to chain the blip
      * @param startingHeight the starting height before you jump into a blip
@@ -63,8 +65,9 @@ public class BlipCalculator {
         printOffsets(position);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private void printOffsets(float lastBlipHeight) {
-        //TODO dont print offsets when lastblipheight doesnt contain anything
+        // TODO don't print offsets when lastblipheight doesn't contain anything
         System.out.println("Offsets: ");
         tierHelper.offsetList(lastBlipHeight, true).stream()
                 .map(height -> tierHelper.entranceGenerator(height, true))
